@@ -1,0 +1,23 @@
+
+
+Frontend configurations:
+/lexis-app : add .env to store environment variables like api endpoints/api's 
+and add .env to gitignore for easier deployment
+
+Frontend folder structure(/src):
+
+assets :  images, fonts, static files 
+
+components : Reusable building blocks of  app
+
+context: for context api (user auth etc)
+
+pages :  app's main web pages/sections
+
+hooks : custom react hooks repo (if want to implement)
+
+services: API calls & external connections
+
+To run Frontend:
+cd Frontend -> cd lexis-app -> npm run dev
+
