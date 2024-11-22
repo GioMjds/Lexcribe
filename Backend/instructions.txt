@@ -1,0 +1,33 @@
+Backend Configurations and Structure
+
+- add .gitignore
+
+- add .env(for local machine database connections and api keys) and add inside 
+.gitnore(type .env inside)
+
+create a virtual environment( for Django project and configurations) - make sure that your on the Backend directory
+
+----------------------------------- commands ------------------
+ py -m venv venv
+
+ venv\Scripts\activate (to activate virtual environment)
+
+ Then type pip install -r requirements.txt
+
+ add venv folder to .gitignore(type venv/ inside .gitignore)
+---------------------------------------------------------------
+
+-- Run Backend Commands(type in terminal in sequence)--
+
+  cd Backend -> venv\Scripts\activate -> cd lexis_backend -> py manage.py runserver
+
+
+-------if database schema is designed or is been structured--------
+
+cd Backend -> venv\Scripts\activate -> cd lexis_backend -> py manage.py makemigrations -> py manage.py migrate
+To create the database models inside your local machine
+
+database to be use in the project is still unknown
+
+
+
