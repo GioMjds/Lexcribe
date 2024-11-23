@@ -1,9 +1,23 @@
 Backend Configurations and Structure
-
+inside /Backend
 - add .gitignore
 
 - add .env(for local machine database connections and api keys) and add inside 
 .gitnore(type .env inside)
+
+- inside .env file add all environment variables below for configurations in Django settings
+
+DB_NAME = ""
+DB_USER = ""
+DB_PASS = ""
+DB_HOST = ""
+DB_PORT = ""
+SECRET_KEY = ""
+CLIENT_ID = ""
+CLIENT_SECRET = ""
+EMAIL_HOST = ""
+HOST_PASS = ""
+
 
 create a virtual environment( for Django project and configurations) - make sure that your on the Backend directory
 
@@ -17,7 +31,7 @@ create a virtual environment( for Django project and configurations) - make sure
  add venv folder to .gitignore(type venv/ inside .gitignore)
 ---------------------------------------------------------------
 
--- Run Backend Commands(type in terminal in sequence)--
+-- Run Backend Commands(type in terminal in sequence) --
 
   cd Backend -> venv\Scripts\activate -> cd lexis_backend -> py manage.py runserver
 
