@@ -5,13 +5,10 @@ import { faEye, faEyeSlash, faTimes } from '@fortawesome/free-solid-svg-icons';
 import GoogleButton from '../components/GoogleButton';
 import { Link } from 'react-router-dom';
 import { useMyContext } from '../context/MyContext';
-import axios from 'axios';
+import axios from 'axios'
 
-interface ShowGenerateLogin {
-  setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-const Login: React.FC<ShowGenerateLogin> = ({ setShowLogin }) => {
+const Login: React.FC = () => {
   const [show, setShow] = useState(false);
   const { setIsAuthenticated } = useMyContext();
   const [loading, setLoading] = useState(false)
@@ -25,9 +22,6 @@ const Login: React.FC<ShowGenerateLogin> = ({ setShowLogin }) => {
     setShow(!show);
   };
 
-  const closeLogin = () => {
-    setShowLogin(false);
-  }
 
   const loginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,9 +76,7 @@ const Login: React.FC<ShowGenerateLogin> = ({ setShowLogin }) => {
 
 
       <div className="relative flex flex-col p-6 z-20 bg-loginbg  border-formcolor border-2 rounded-lg shadow-2xl w-96">
-        <div onClick={closeLogin} className='cursor-pointer'>
-          <FontAwesomeIcon icon={faTimes} className='text-cyan-500 text-base' />
-        </div>
+        
         <h2 className="text-2xl font-semibold text-center text-cyan-500">Log in</h2>
 
         <div className="flex items-center justify-center flex-row mb-2">
