@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 type FocusState = {
     username: boolean;
@@ -9,7 +11,7 @@ type FocusState = {
     confirmPass: boolean;
 };
 
-const SignUp = () => {
+const SignUp: FC = () => {
     const [focus, setFocus] = useState<FocusState>({
         username: false,
         email: false,
@@ -21,18 +23,47 @@ const SignUp = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPass, setConfirmPass] = useState<string>('');
+    const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string; confirmPass?: string }>({});
 
     const handleFocus = (field: string) => setFocus({ ...focus, [field]: true });
 
     const handleBlur = (field: string) => setFocus({ ...focus, [field]: false });
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
-
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
-
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
-
     const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => setConfirmPass(e.target.value);
+
+    const validateUsername = (username: string) => {
+        const regex = /^[a-zA-Z0-9]{3,}$/;
+        return regex.test(username);
+    };
+
+    const validateEmail = (email: string) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    const validatePassword = (password: string) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return regex.test(password);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        // Implement / revise the other logic for the sign-up page here if you implement the back-end for it
+        e.preventDefault();
+        const newErrors: any = {};
+
+        if (!validateUsername(username)) newErrors.username = "Username must be at least 3 characters long and alphanumeric."
+        if (!validateEmail(email)) newErrors.email = "Invalid email format."
+        if (!validatePassword(password)) newErrors.password = "Password must be at least 8 characters long."
+        if (password !== confirmPass) newErrors.confirmPass = "Passwords do not match."
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+    }
 
     useEffect(() => {
         document.title = "Sign Up | Lexscribe";
@@ -44,7 +75,7 @@ const SignUp = () => {
                 <div className="w-full bg-white rounded-xl shadow-lg shadow-cyan-600/50 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Sign Up</h1>
-                        <form action="" className="space-y-4 md:space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                             <div>
                                 <label
                                     htmlFor="username"
@@ -128,6 +159,18 @@ const SignUp = () => {
                                 animate={{ type: "spring", stiffness: 400 }}
                             >
                                 Sign Up
+                            </motion.button>
+                            <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
+                            <motion.button
+                                className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                animate={{ type: "spring", stiffness: 400 }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faGoogle}
+                                    className="mr-2"
+                                /> Google
                             </motion.button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</Link>
