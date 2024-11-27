@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import React, { FC, useEffect, useState } from "react"
@@ -49,6 +50,45 @@ const Login: FC = () => {
             setErrors((prev) => ({ ...prev, email: "Invalid email format." }));
         } else {
             setErrors((prev) => ({ ...prev, email: undefined }));
+
+import React from 'react'
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash, faTimes } from '@fortawesome/free-solid-svg-icons';
+import GoogleButton from '../components/GoogleButton';
+import { Link } from 'react-router-dom';
+import { useMyContext } from '../context/MyContext';
+import axios from 'axios'
+
+
+const Login: React.FC = () => {
+  const [show, setShow] = useState(false);
+  const { setIsAuthenticated } = useMyContext();
+  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  const toggleIcon = () => {
+    setShow(!show);
+  };
+
+
+  const loginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+    setLoading(true);
+    try {
+      const response = await axios.post(`${apiUrl}/login/`, {
+        email: email,
+        password: password
+      }, {
+        headers: {
+          "Content-Type": 'application/json'
+
         }
     };
 
@@ -179,6 +219,13 @@ const Login: FC = () => {
             </div>
         </section>
     )
+
+      }
+    }
+
+  };
+
+ 
 }
 
 export default Login
