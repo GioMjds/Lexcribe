@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 type FocusState = {
     username: boolean;
@@ -80,10 +80,10 @@ const SignUp: FC = () => {
                                 <label
                                     htmlFor="username"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Your username
+                                    Your username
                                 </label>
                                 <motion.input
-                                    type="text" 
+                                    type="text"
                                     name="username"
                                     value={username}
                                     onFocus={() => handleFocus('username')}
@@ -99,10 +99,10 @@ const SignUp: FC = () => {
                                 <label
                                     htmlFor="email"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Your email
+                                    Your email
                                 </label>
                                 <motion.input
-                                    type="email" 
+                                    type="email"
                                     name="email"
                                     value={email}
                                     onFocus={() => handleFocus('email')}
@@ -118,10 +118,10 @@ const SignUp: FC = () => {
                                 <label
                                     htmlFor="password"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Your password
+                                    Your password
                                 </label>
                                 <motion.input
-                                    type="password" 
+                                    type="password"
                                     name="password"
                                     value={password}
                                     onFocus={() => handleFocus('password')}
@@ -137,10 +137,10 @@ const SignUp: FC = () => {
                                 <label
                                     htmlFor="confirm"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Confirm password
+                                    Confirm password
                                 </label>
                                 <motion.input
-                                    type="password" 
+                                    type="password"
                                     name="confirmPass"
                                     value={confirmPass}
                                     onFocus={() => handleFocus('confirmPass')}
@@ -161,17 +161,30 @@ const SignUp: FC = () => {
                                 Sign Up
                             </motion.button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
-                            <motion.button
-                                className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                animate={{ type: "spring", stiffness: 400 }}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faGoogle}
-                                    className="mr-2"
-                                /> Google
-                            </motion.button>
+                            <div className="flex justify-between space-x-2">
+                                <motion.button
+                                    className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    animate={{ type: "spring", stiffness: 400 }}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faGoogle}
+                                        className="mr-2"
+                                    /> Google
+                                </motion.button>
+                                <motion.button
+                                    className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    animate={{ type: "spring", stiffness: 400 }}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faFacebook}
+                                        className="mr-2"
+                                    /> Facebook
+                                </motion.button>
+                            </div>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</Link>
                             </p>

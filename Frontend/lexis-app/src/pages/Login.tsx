@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import React, { FC, useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 type FocusState = {
     email: boolean;
@@ -98,7 +98,7 @@ const Login: FC = () => {
                                     onChange={handleEmailChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter your email" required />
-                                    {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
                             <div>
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
@@ -114,7 +114,7 @@ const Login: FC = () => {
                                     onChange={handlePasswordChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter your password" required />
-                                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
                             <div className="flex items-center mb-4">
                                 <input
@@ -146,13 +146,30 @@ const Login: FC = () => {
                                 Login
                             </motion.button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
-                            <button 
-                                className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700">
-                                <FontAwesomeIcon 
-                                    icon={faGoogle} 
-                                    className="mr-2" 
-                                /> Google
-                            </button>
+                            <div className="flex justify-between space-x-2">
+                                <motion.button
+                                    className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    animate={{ type: "spring", stiffness: 400 }}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faGoogle}
+                                        className="mr-2 text-lg"
+                                    /> Google
+                                </motion.button>
+                                <motion.button
+                                    className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    animate={{ type: "spring", stiffness: 400 }}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faFacebook}
+                                        className="mr-2 text-lg"
+                                    /> Facebook
+                                </motion.button>
+                            </div>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don't have an account? <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign Up</Link>
                             </p>
