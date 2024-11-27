@@ -1,7 +1,12 @@
+import { motion } from 'framer-motion';
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar: FC = () => {
+  const navigate = useNavigate();
+
+  const goToNavigate = () => navigate('/login');
+
   return (
     <nav className="bg-light-medium border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -9,9 +14,15 @@ const Navbar: FC = () => {
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Lexscribe</span>
         </Link>
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <Link to='/login' className="text-white bg-slate-500 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+          <motion.button
+            className="text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
+            onClick={goToNavigate}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            animate={{ type: "spring", stiffness: 400 }}
+          >
             Login
-          </Link>
+          </motion.button>
           <button
             data-collapse-toggle="navbar-cta"
             type="button"

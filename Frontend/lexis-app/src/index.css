@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-    width: 6px; /* width of the scrollbar */
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* background of the scrollbar track */
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #888; /* color of the scrollbar thumb */
-    border-radius: 10px; /* rounded corners of the scrollbar thumb */
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* color of the scrollbar thumb on hover */
-  }
+  width: 6px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

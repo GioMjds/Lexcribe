@@ -1,21 +1,82 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { motion } from 'framer-motion';
+import { FC } from "react";
 
-const Hero = () => {
+const line1: string = "Lexscribe AI is a conversational AI that helps you get into law school. Ask Lexscribe AI about law school admissions, LSAT, personal statements, and more.";
+
+const transition = { duration: 1, ease: [.25, .1, .25, 1] };
+const variants = {
+    hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
+    visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
+};
+
+const sentence = {
+    hidden: { opacity: 1 },
+    visible: {
+        opacity: 1,
+        transition: {
+            delay: 0.5,
+            staggerChildren: 0.02,
+        }
+    }
+}
+
+const letter = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+}
+
+const Hero: FC = () => {
+    const navigate = useNavigate();
+    const goToGenerate = () => navigate('/login');
+
     return (
         <section className="bg-light flex items-center min-h-screen dark:bg-gray-900">
-            <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-                <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                    Ask <span className="text-blue-600">Lexscribe AI</span> about Law School
-                </h1>
-                <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                    Lexscribe AI is a conversational AI that helps you get into law school. Ask Lexscribe AI about law school admissions, LSAT, personal statements, and more.
-                </p>
+            <motion.div
+                className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12"
+                initial="hidden"
+                whileInView="visible"
+                variants={variants}
+                transition={transition}
+            >
+                <motion.h1
+                    className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                >
+                    Ask <span className="text-sky-500">Lexscribe AI</span> about Law School
+                </motion.h1>
+                <motion.p
+                    className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"
+                    variants={sentence}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {line1.split("").map((char, index) => {
+                        return (
+                            <motion.span
+                                key={char + "-" + index}
+                                variants={letter}
+                            >
+                                {char}
+                            </motion.span>
+                        )
+                    })}
+                </motion.p>
                 <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                    <Link to='/login' className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-slate-500 hover:bg-slate-600 md:p-4 sm:p-4">
+                    <motion.button
+                        className="nline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-sky-500 hover:bg-sky-600 md:p-4 sm:p-4"
+                        onClick={goToGenerate}
+                        type="button"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                    >
                         Get Started &rarr;
-                    </Link>
+                    </motion.button>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 }
