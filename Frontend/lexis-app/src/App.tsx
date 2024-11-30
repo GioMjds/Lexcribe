@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import ChatBot from './pages/ChatBot'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/contact' element={<Contact />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/chat' element={<ChatBot />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
