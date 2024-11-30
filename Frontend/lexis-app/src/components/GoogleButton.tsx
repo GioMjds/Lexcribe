@@ -21,7 +21,7 @@ const GoogleButton: React.FC = () => {
 
     const handleGoogleLogin = async (code: string) => {
         try {
-            const response = await axios.post(`${apiUrl}/google-signin/`, {
+            const response = await axios.post(`${apiUrl}/google-auth/`, {
                 code: code,
             }, {
                 headers: {
@@ -30,13 +30,13 @@ const GoogleButton: React.FC = () => {
             });
 
 
-            if (response.data.Success) {
+            if (response.data.success) {
+                console.log(response.data);
                 setIsAuthenticated(true);
                 const accessToken = response.data.access_token;
                 const refreshToken = response.data.refresh_token;
                 localStorage.setItem('access_token', accessToken);
                 localStorage.setItem('refresh_token', refreshToken);
-                navigate('/generate');
             }
         } catch (error) {
             console.error("Error during Google login:", error);
