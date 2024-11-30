@@ -1,7 +1,15 @@
+
 import { Link } from "react-router-dom";
+import GoogleButton from "../components/GoogleButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
-import GoogleButton from "../components/GoogleButton";
+
+
+type FocusState = {
+    email: boolean;
+    password: boolean;
+};
 
 
 const Login: FC = () => {
@@ -115,11 +123,13 @@ const Login: FC = () => {
                             </motion.button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
                             <div className="flex justify-between space-x-2">
+
                                
                                     <GoogleButton />
                                   
                                
                         
+
                             </div>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don't have an account? <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign Up</Link>
@@ -129,7 +139,9 @@ const Login: FC = () => {
                 </div>
             </div>
         </section>
+
     );
 };
 
 export default Login;
+

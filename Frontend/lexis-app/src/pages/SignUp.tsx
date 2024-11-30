@@ -1,25 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import GoogleButton from "../components/GoogleButton";
 import { handleSignUp } from "../services/axios";
 
-// Types for focus and error states
 type FocusState = {
   username: boolean;
   email: boolean;
   password: boolean;
   confirmPass: boolean;
-};
-
-type ErrorState = {
-  username?: string;
-  email?: string;
-  password?: string;
-  confirmPass?: string;
-  general?: string;
 };
 
 const SignUp: FC = () => {
@@ -34,19 +23,22 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPass, setConfirmPass] = useState<string>("");
-  const [errors, setErrors] = useState<ErrorState>({});
+  const [errors, setErrors] = useState<{
+    username?: string;
+    email?: string;
+    password?: string;
+    confirmPass?: string;
+    general?: string;
+  }>({});
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-  const apiUrl = import.meta.env.VITE_API_URL || ""; // Fallback for API URL
-
-  // Handle focus animations
-  const handleFocus = (field: keyof FocusState) =>
+  const handleFocus = (field: string) =>
     setFocus((prev) => ({ ...prev, [field]: true }));
 
-  const handleBlur = (field: keyof FocusState) =>
+  const handleBlur = (field: string) =>
     setFocus((prev) => ({ ...prev, [field]: false }));
 
-  // Validation Functions
   const validateUsername = (username: string) =>
     /^[a-zA-Z0-9]{3,}$/.test(username);
 
@@ -58,7 +50,6 @@ const SignUp: FC = () => {
       password
     );
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -66,7 +57,7 @@ const SignUp: FC = () => {
     setErrors({});
 
     // Client-side validation
-    const validationErrors: ErrorState = {};
+    const validationErrors: { [key: string]: string } = {};
     if (!validateUsername(username))
       validationErrors.username =
         "Username must be at least 3 characters long and alphanumeric.";
@@ -92,7 +83,6 @@ const SignUp: FC = () => {
         confirmPass,
         apiUrl
       );
-
       if (response.data.success) {
         console.log(response.data);
         localStorage.setItem("username", username);
@@ -101,16 +91,18 @@ const SignUp: FC = () => {
     } catch (error: any) {
       if (error.response) {
         const { data, status } = error.response;
+        console.log(data);
 
         if (status === 500) {
           setErrors({ general: "Server is under maintenance. Please try again later." });
         } else {
-          setErrors({
+          setErrors((prevErrors) => ({
+            ...prevErrors,
             username: data.user || "",
             email: data.email || "",
             password: data.password || "",
             general: data.invalid || "",
-          });
+          }));
         }
       }
     }
@@ -141,12 +133,12 @@ const SignUp: FC = () => {
                 </label>
                 <motion.input
                   type="text"
-                  id="username"
+                  name="username"
                   value={username}
                   onFocus={() => handleFocus("username")}
                   onBlur={() => handleBlur("username")}
                   animate={{ scale: focus.username ? 1.05 : 1 }}
-                  onChange={(e:any) => setUsername(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
                   placeholder="Enter your username"
                   required
@@ -164,12 +156,12 @@ const SignUp: FC = () => {
                 </label>
                 <motion.input
                   type="email"
-                  id="email"
+                  name="email"
                   value={email}
                   onFocus={() => handleFocus("email")}
                   onBlur={() => handleBlur("email")}
                   animate={{ scale: focus.email ? 1.05 : 1 }}
-                  onChange={(e:any) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
                   placeholder="Enter your email"
                   required
@@ -187,12 +179,12 @@ const SignUp: FC = () => {
                 </label>
                 <motion.input
                   type="password"
-                  id="password"
+                  name="password"
                   value={password}
                   onFocus={() => handleFocus("password")}
                   onBlur={() => handleBlur("password")}
                   animate={{ scale: focus.password ? 1.05 : 1 }}
-                  onChange={(e:any) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
                   placeholder="Enter your password"
                   required
@@ -210,12 +202,12 @@ const SignUp: FC = () => {
                 </label>
                 <motion.input
                   type="password"
-                  id="confirmPass"
+                  name="confirmPass"
                   value={confirmPass}
                   onFocus={() => handleFocus("confirmPass")}
                   onBlur={() => handleBlur("confirmPass")}
                   animate={{ scale: focus.confirmPass ? 1.05 : 1 }}
-                  onChange={(e:any) => setConfirmPass(e.target.value)}
+                  onChange={(e: any) => setConfirmPass(e.target.value)}
                   className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
                   placeholder="Confirm your password"
                   required

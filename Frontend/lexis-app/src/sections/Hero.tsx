@@ -45,7 +45,7 @@ const Hero: FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    Ask <span className="text-sky-500">Lexscribe AI</span> about Law School
+                    Ask <span className="text-sky-500">Lexscribe AI</span> about Law
                 </motion.h1>
                 <motion.p
                     className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"

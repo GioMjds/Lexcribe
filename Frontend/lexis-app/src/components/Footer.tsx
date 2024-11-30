@@ -57,7 +57,7 @@ const Footer = () => {
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-base text-gray-500 sm:text-center dark:text-gray-400">
-            &copy; 2024 Lexscribe™️ AI | All Rights Reserved.
+            &copy; 2024 Lexscribe™ AI | All Rights Reserved.
           </span>
           <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
             <a href="https://www.facebook.com" target="_blank">
