@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import GoogleButton from '../components/GoogleButton';
 
 type FocusState = {
     username: boolean;
@@ -19,6 +21,7 @@ const SignUp: FC = () => {
         confirmPass: false,
     });
 
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -28,6 +31,10 @@ const SignUp: FC = () => {
     const handleFocus = (field: string) => setFocus({ ...focus, [field]: true });
 
     const handleBlur = (field: string) => setFocus({ ...focus, [field]: false });
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
@@ -120,7 +127,7 @@ const SignUp: FC = () => {
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
-                            <div>
+                            <div className="mb-2 relative">
                                 <label
                                     htmlFor="password"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -139,9 +146,15 @@ const SignUp: FC = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter your password" required
                                 />
+                                <FontAwesomeIcon 
+                                    icon={passwordVisible ? faEyeSlash : faEye} 
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute right-2 top-1/2 pt-2"
+                                    style={{ cursor: "pointer" }}
+                                />
                                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
-                            <div>
+                            <div className="mb-2 relative">
                                 <label
                                     htmlFor="confirm"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -159,6 +172,12 @@ const SignUp: FC = () => {
                                     onChange={handleConfirmChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Confirm your password" required
+                                />
+                                <FontAwesomeIcon 
+                                    icon={passwordVisible ? faEyeSlash : faEye} 
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute right-2 top-1/2 pt-2"
+                                    style={{ cursor: "pointer" }}
                                 />
                                 {errors.confirmPass && <p className="text-red-500 text-sm">{errors.confirmPass}</p>}
                             </div>
@@ -178,11 +197,11 @@ const SignUp: FC = () => {
                                     whileTap={{ scale: 0.95 }}
                                     animate={{ type: "spring", stiffness: 400 }}
                                 >
-                                    <FontAwesomeIcon
+                                    {/* <FontAwesomeIcon
                                         icon={faGoogle}
                                         className="mr-2"
-                                    /> Google
-                                    {/* Replace the <GoogleButton /> component */}
+                                    /> Google */}
+                                    <GoogleButton />
                                 </motion.button>
                                 <motion.button
                                     className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
@@ -197,7 +216,7 @@ const SignUp: FC = () => {
                                     {/* Replace the <FacebookButton /> component */}
                                 </motion.button>
                             </div>
-                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                            <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
                                 Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</Link>
                             </p>
                         </form>

@@ -1,5 +1,6 @@
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -30,7 +31,8 @@ const Login: FC = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    // If regex codes below are not working, you can change them with the regex codes you want to use for form validation
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
     const validateEmail = (email: string) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,35 +44,17 @@ const Login: FC = () => {
         return regex.test(password);
     };
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setEmail(value);
-        if (!validateEmail(value)) {
-            setErrors((prev) => ({ ...prev, email: "Invalid email format." }));
-        } else {
-            setErrors((prev) => ({ ...prev, email: undefined }));
-        }
-    };
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setPassword(value);
-        if (!validatePassword(value)) {
-            setErrors((prev) => ({
-                ...prev,
-                password: "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.",
-            }));
-        } else {
-            setErrors((prev) => ({ ...prev, password: undefined }));
-        }
-    };
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!validateEmail(email) || !validatePassword(password)) {
+        const newErrors: any = {};
+        
+        if (!validateEmail(email)) newErrors.email = "Invalid email address.";
+        if (!validatePassword(password)) newErrors.password = "Wrong password. Please try again.";
+        
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
-        console.log("Login successful");
     };
 
     useEffect(() => {
@@ -92,15 +76,15 @@ const Login: FC = () => {
                                     value={email}
                                     onFocus={() => handleFocus('email')}
                                     onBlur={() => handleBlur('email')}
+                                    onChange={handleEmailChange}
                                     animate={{
                                         scale: focus.email ? 1.05 : 1,
                                     }}
-                                    onChange={handleEmailChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter your email" required />
                                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
-                            <div>
+                            <div className="mb-2 relative">
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
                                 <motion.input
                                     type={passwordVisible ? "text" : "password"}
@@ -108,23 +92,19 @@ const Login: FC = () => {
                                     value={password}
                                     onFocus={() => handleFocus('password')}
                                     onBlur={() => handleBlur('password')}
+                                    onChange={handlePasswordChange}
                                     animate={{
                                         scale: focus.password ? 1.05 : 1,
                                     }}
-                                    onChange={handlePasswordChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter your password" required />
-                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-                            </div>
-                            <div className="flex items-center mb-4">
-                                <input
-                                    type="checkbox"
-                                    id="showPassword"
-                                    checked={passwordVisible}
-                                    onChange={togglePasswordVisibility}
-                                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 drk:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                                <FontAwesomeIcon 
+                                    icon={passwordVisible ? faEyeSlash : faEye} 
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute right-2 top-1/2 pt-2"
+                                    style={{ cursor: "pointer" }}
                                 />
-                                <label htmlFor="showPassword" className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-300">Show Password</label>
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-start">
@@ -173,7 +153,7 @@ const Login: FC = () => {
                                     {/* Replace the <FacebookButton /> component */}
                                 </motion.button>
                             </div>
-                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                            <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
                                 Don't have an account? <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign Up</Link>
                             </p>
                         </form>
