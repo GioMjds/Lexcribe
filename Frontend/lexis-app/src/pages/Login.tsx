@@ -1,9 +1,8 @@
-
-import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
-import React, { FC, useEffect, useState } from "react"
+import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { motion } from "framer-motion";
+import React, { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 type FocusState = {
     email: boolean;
@@ -50,45 +49,6 @@ const Login: FC = () => {
             setErrors((prev) => ({ ...prev, email: "Invalid email format." }));
         } else {
             setErrors((prev) => ({ ...prev, email: undefined }));
-
-import React from 'react'
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faTimes } from '@fortawesome/free-solid-svg-icons';
-import GoogleButton from '../components/GoogleButton';
-import { Link } from 'react-router-dom';
-import { useMyContext } from '../context/MyContext';
-import axios from 'axios'
-
-
-const Login: React.FC = () => {
-  const [show, setShow] = useState(false);
-  const { setIsAuthenticated } = useMyContext();
-  const [loading, setLoading] = useState(false)
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const apiUrl = import.meta.env.VITE_API_URL;
-
-  const toggleIcon = () => {
-    setShow(!show);
-  };
-
-
-  const loginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setEmailError("");
-    setPasswordError("");
-    setLoading(true);
-    try {
-      const response = await axios.post(`${apiUrl}/login/`, {
-        email: email,
-        password: password
-      }, {
-        headers: {
-          "Content-Type": 'application/json'
-
         }
     };
 
@@ -187,6 +147,7 @@ const Login: React.FC = () => {
                             </motion.button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
                             <div className="flex justify-between space-x-2">
+                                {/* Replace this with a pre-built Google and Facebook button components */}
                                 <motion.button
                                     className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
                                     whileHover={{ scale: 1.05 }}
@@ -197,6 +158,7 @@ const Login: React.FC = () => {
                                         icon={faGoogle}
                                         className="mr-2 text-lg"
                                     /> Google
+                                    {/* Replace the <GoogleButton /> component */}
                                 </motion.button>
                                 <motion.button
                                     className="w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700"
@@ -208,6 +170,7 @@ const Login: React.FC = () => {
                                         icon={faFacebook}
                                         className="mr-2 text-lg"
                                     /> Facebook
+                                    {/* Replace the <FacebookButton /> component */}
                                 </motion.button>
                             </div>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
@@ -219,13 +182,5 @@ const Login: React.FC = () => {
             </div>
         </section>
     )
-
-      }
-    }
-
-  };
-
- 
 }
-
 export default Login
