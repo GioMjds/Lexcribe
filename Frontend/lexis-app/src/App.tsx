@@ -1,20 +1,25 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Route, Routes} from 'react-router-dom'
 import './App.css'
 import NavBar from './components/NavBar'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Footer from './components/Footer'
+
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ChatBot from './pages/ChatBot'
 
+import { MyProvider } from './context/MyContext'
+
+
 function App() {
 
   return (
-    <BrowserRouter>
-      <NavBar />
+
+    <MyProvider>
+        <NavBar />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -25,7 +30,10 @@ function App() {
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
-    </BrowserRouter>
+
+    </MyProvider>
+    
+    
   )
 }
 
