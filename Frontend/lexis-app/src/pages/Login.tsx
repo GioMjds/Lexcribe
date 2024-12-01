@@ -1,22 +1,27 @@
-
-import { Link } from "react-router-dom";
-import GoogleButton from "../components/GoogleButton";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
+import GoogleButton from "../components/GoogleButton";
 
 type FocusState = {
     email: boolean;
     password: boolean;
 };
 
-
 const Login: FC = () => {
+    const [focus, setFocus] = useState<FocusState>({
+        email: false,
+        password: false,
+    })
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [errors, setErrors] = useState<{
+        email?: string;
+        password?: string;
+    }>({});
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -32,38 +37,17 @@ const Login: FC = () => {
         return regex.test(password);
     };
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setEmail(value);
-        if (!validateEmail(value)) {
-            setErrors((prev) => ({ ...prev, email: "Invalid email format." }));
-        } else {
-            setErrors((prev) => ({ ...prev, email: undefined }));
-        }
-    };
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setPassword(value);
-        if (!validatePassword(value)) {
-            setErrors((prev) => ({
-                ...prev,
-                password: "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.",
-            }));
-        } else {
-            setErrors((prev) => ({ ...prev, password: undefined }));
-        }
-    };
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setErrors({});
         if (!validateEmail(email) || !validatePassword(password)) {
             return;
         }
         console.log("Login successful");
     };
-
-  
 
     useEffect(() => {
         document.title = "Login | Lexscribe";
@@ -89,7 +73,7 @@ const Login: FC = () => {
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
-                            <div>
+                            <div className="mb-4 relative">
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
                                 <motion.input
                                     type={passwordVisible ? "text" : "password"}
@@ -100,17 +84,13 @@ const Login: FC = () => {
                                     placeholder="Enter your password"
                                     required
                                 />
-                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-                            </div>
-                            <div className="flex items-center mb-4">
-                                <input
-                                    type="checkbox"
-                                    id="showPassword"
-                                    checked={passwordVisible}
-                                    onChange={togglePasswordVisibility}
-                                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 drk:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                                <FontAwesomeIcon
+                                    icon={passwordVisible ? faEyeSlash : faEye}
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute right-2 top-1/2 pt-2"
+                                    style={{ cursor: 'pointer' }}
                                 />
-                                <label htmlFor="showPassword" className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-300">Show Password</label>
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
                             <motion.button
                                 type="submit"
@@ -122,17 +102,11 @@ const Login: FC = () => {
                                 Login
                             </motion.button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
-                            <div className="flex justify-between space-x-2">
-
-                               
-                                    <GoogleButton />
-                                  
-                               
-                        
-
+                            <div className="flex justify-center space-x-2 p-4">
+                                <GoogleButton />
                             </div>
-                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Don't have an account? <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign Up</Link>
+                            <p className="text-md font-light text-gray-500 dark:text-gray-400 text-center">
+                                Don't have an account? <Link to="/signup" className="font-medium text-sky-500 hover:underline">Sign Up</Link>
                             </p>
                         </form>
                     </div>
@@ -144,4 +118,3 @@ const Login: FC = () => {
 };
 
 export default Login;
-
