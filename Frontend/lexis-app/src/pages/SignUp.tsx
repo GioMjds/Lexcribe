@@ -6,21 +6,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import GoogleButton from "../components/GoogleButton";
 import { handleSignUp } from "../services/axios";
 
-type FocusState = {
-    username: boolean;
-    email: boolean;
-    password: boolean;
-    confirmPass: boolean;
-};
-
 const SignUp: FC = () => {
-    const [focus, setFocus] = useState<FocusState>({
-        username: false,
-        email: false,
-        password: false,
-        confirmPass: false,
-    });
-
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -40,12 +26,6 @@ const SignUp: FC = () => {
 
     const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
-
-    const handleFocus = (field: string) =>
-        setFocus((prev) => ({ ...prev, [field]: true }));
-
-    const handleBlur = (field: string) =>
-        setFocus((prev) => ({ ...prev, [field]: false }));
 
     const validateUsername = (username: string) =>
         /^[a-zA-Z0-9]{3,}$/.test(username);
@@ -139,13 +119,10 @@ const SignUp: FC = () => {
                                 >
                                     Your username
                                 </label>
-                                <motion.input
+                                <input
                                     type="text"
                                     name="username"
                                     value={username}
-                                    onFocus={() => handleFocus("username")}
-                                    onBlur={() => handleBlur("username")}
-                                    animate={{ scale: focus.username ? 1.05 : 1 }}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                                     className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
                                     placeholder="Enter your username"
@@ -162,13 +139,10 @@ const SignUp: FC = () => {
                                 >
                                     Your email
                                 </label>
-                                <motion.input
+                                <input
                                     type="email"
                                     name="email"
                                     value={email}
-                                    onFocus={() => handleFocus("email")}
-                                    onBlur={() => handleBlur("email")}
-                                    animate={{ scale: focus.email ? 1.05 : 1 }}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
                                     placeholder="Enter your email"
@@ -185,24 +159,22 @@ const SignUp: FC = () => {
                                 >
                                     Your password
                                 </label>
-                                <motion.input
-                                    type={passwordVisible ? "text" : "password"}
-                                    name="password"
-                                    value={password}
-                                    onFocus={() => handleFocus("password")}
-                                    onBlur={() => handleBlur("password")}
-                                    animate={{ scale: focus.password ? 1.05 : 1 }}
-                                    onChange={(e: any) => setPassword(e.target.value)}
-                                    className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
-                                    placeholder="Enter your password"
-                                    required
-                                />
-                                <FontAwesomeIcon
-                                    icon={passwordVisible ? faEyeSlash : faEye}
-                                    onClick={togglePasswordVisibility}
-                                    className="absolute right-2 top-1/2 pt-2"
-                                    style={{ cursor: 'pointer' }}
-                                />
+                                <div className="relative flex items-center">
+                                    <input
+                                        type={passwordVisible ? "text" : "password"}
+                                        name="password"
+                                        value={password}
+                                        onChange={(e: any) => setPassword(e.target.value)}
+                                        className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 pr-10 h-12"
+                                        placeholder="Enter your password"
+                                        required
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={passwordVisible ? faEyeSlash : faEye}
+                                        onClick={togglePasswordVisibility}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                    />
+                                </div>
                                 {errors.password && (
                                     <p className="text-red-500">{errors.password}</p>
                                 )}
@@ -214,24 +186,24 @@ const SignUp: FC = () => {
                                 >
                                     Confirm password
                                 </label>
-                                <motion.input
-                                    type={passwordVisible ? "text" : "password"}
-                                    name="confirmPass"
-                                    value={confirmPass}
-                                    onFocus={() => handleFocus("confirmPass")}
-                                    onBlur={() => handleBlur("confirmPass")}
-                                    animate={{ scale: focus.confirmPass ? 1.05 : 1 }}
-                                    onChange={(e: any) => setConfirmPass(e.target.value)}
-                                    className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
-                                    placeholder="Confirm your password"
-                                    required
-                                />
-                                <FontAwesomeIcon
-                                    icon={passwordVisible ? faEyeSlash : faEye}
-                                    onClick={togglePasswordVisibility}
-                                    className="absolute right-2 top-1/2 pt-2"
-                                    style={{ cursor: 'pointer' }}
-                                />
+                                <div className="relative flex items-center">
+
+                                    <input
+                                        type={passwordVisible ? "text" : "password"}
+                                        name="confirmPass"
+                                        value={confirmPass}
+                                        onChange={(e: any) => setConfirmPass(e.target.value)}
+                                        className="bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5"
+                                        placeholder="Confirm your password"
+                                        required
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={passwordVisible ? faEyeSlash : faEye}
+                                        onClick={togglePasswordVisibility}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                </div>
                                 {errors.confirmPass && (
                                     <p className="text-red-500">{errors.confirmPass}</p>
                                 )}
