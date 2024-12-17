@@ -1,6 +1,43 @@
 import axios from 'axios';
+export const logOut  = async(url:string) => {
+    const accessToken = localStorage.getItem("access_token");
+    const response = await axios.post(`${url}/logout/`,{}, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+        }
+    })
 
 
+    return response
+}
+export const sendEmailOtp = async(email :string, url:string) =>  {
+    const response = await axios.post(`${url}/email-otp/`, {
+        email:email,
+    }, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+}
+
+export const registerUser = async(otpCode :string,url:string) => {
+   const email = sessionStorage.getItem("email");
+   const username = sessionStorage.getItem("username");
+   const password = sessionStorage.getItem("password");
+   const response = await axios.post(`${url}/register/`,{
+     email:email,
+     username: username,
+     password: password,
+     otpCode : otpCode
+   }, {
+    headers : {
+        "Content-Type": "application/json"
+    }
+   })
+
+   return response
+}
 export const handleSignUp  = async(username:string, email:string, password:string, confirm:string, url:string) => {
     const response = await axios.post(`${url}/signup/`, {
         username: username,
@@ -12,6 +49,20 @@ export const handleSignUp  = async(username:string, email:string, password:strin
             'Content-Type': 'application/json'
         }
     })
+
+    return response
+}
+
+export const handleLogin =  async(email:string , password: string, url: string) => {
+    const response = await axios.post(`${url}/login/`,{
+        email: email,
+        password : password
+        }, {
+            headers:{
+                 "Content-Type": "application/json"
+            }       
+        }
+    )
 
     return response
 }

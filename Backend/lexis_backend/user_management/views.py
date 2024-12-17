@@ -2,13 +2,99 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate,logout
+from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 import os
+from .email.emails import send_otp_to_email
 from django.contrib.auth.models import User
 from rest_framework import status
 from .google.oauth import google_auth
 import requests
-# Create your views here.
+from django.core.cache import cache
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def log_out(request):
+    logout(request)
+    return Response({'success': 'Logged out successfully'},status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def email_otp(request):
+    try:     
+        email = request.data.get("email")
+        otp_generated = send_otp_to_email(email)
+        OTP_EXPIRATION_TIME = 120
+        cache.set(email,otp_generated,OTP_EXPIRATION_TIME)        
+        otp_in_cache = cache.get(email)
+        
+        if otp_in_cache:
+           return Response({"error": "OTP already sent. Please wait for it to expire."}, status=400)
+        
+        return Response({"success":"OTP sent"}, status= status.HTTP_200_OK)    
+    except Exception as e:
+        print(f"{e}")
+        
+@api_view(["POST"])
+def resend_otp(request):
+    try:     
+        email = request.data.get("email")
+        otp_generated = send_otp_to_email(email)
+        OTP_EXPIRATION_TIME = 120
+        cache.set(email,otp_generated,OTP_EXPIRATION_TIME) 
+        
+        return Response({"success":"OTP sent"}, status= status.HTTP_200_OK)    
+    except Exception as e:
+        print(f"{e}")
+
+
+@api_view(["POST"])
+def register_user(request):
+    try:
+        
+        username = request.data.get("username")
+        email = request.data.get("email")
+        password = request.data.get("password")
+        recieved_otp = request.data.get("otpCode")
+        
+        cached_otp = cache.get(email)
+        
+      
+        if cached_otp is None:
+            return Response({"error": "OTP expired. Please request a new one."}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+        if cached_otp and str(cached_otp) == str(recieved_otp):
+            user = User.objects.create(
+                username=username,
+                email=email,
+                password=make_password(password)  
+            )
+            
+         
+            user.save()
+            
+ 
+            refresh = RefreshToken.for_user(user)
+            
+            return Response({
+                "success": "User registered successfully.",
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            }, status=status.HTTP_200_OK)        
+        else:
+            return Response({"error": "Incorrect OTP code. Please try again."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    except Exception as e:
+      
+        print(f"Error: {e}")
+        return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        
+    
+    
+    
 @api_view(["POST"])
 def user_login(request):
     
@@ -27,7 +113,7 @@ def user_login(request):
         
         username = user.username
         
-        user_auth = authenticate(request, username=username, password= password)
+        user_auth = authenticate(request, username=username, password = password)
         
         if user_auth is None:
             return Response({"password":"Password is Incorrect"}, status= status.HTTP_401_UNAUTHORIZED)
@@ -42,10 +128,7 @@ def user_login(request):
     
     except Exception as e:
         return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.contrib.auth.models import User
+ 
 
 @api_view(["POST"])
 def user_signup(request):

@@ -4,11 +4,16 @@ import { motion } from "framer-motion";
 import React, { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleButton from "../components/GoogleButton";
-
+import { useNavigate } from 'react-router-dom';
+import { useMyContext } from '../context/MyContext';
+import { handleLogin } from '../services/axios';
 const Login: FC = () => {
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const {setIsAuthenticated} = useMyContext();
+    const navigate = useNavigate();
     const [errors, setErrors] = useState<{
         email?: string;
         password?: string;
@@ -18,27 +23,51 @@ const Login: FC = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const validateEmail = (email: string) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
-
-    const validatePassword = (password: string) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return regex.test(password);
-    };
-
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setErrors({});
-        if (!validateEmail(email) || !validatePassword(password)) {
-            return;
+    
+        try {
+            const response = await handleLogin(email, password, apiUrl);
+    
+            if (response.status === 200) {
+                localStorage.setItem("access_token", response.data.access);
+                localStorage.setItem("refresh_token", response.data.refresh);
+                navigate('/chat');
+                setIsAuthenticated(true);
+              
+            }
+        } catch (error: any) {
+            const data = error.response?.data;
+    
+            if (data) {
+                if (data?.email) {
+
+                    setErrors((prev) => ({
+                        ...prev,
+                        email: data.email,
+                    }));
+
+                } else if (data?.password) {
+
+                    setErrors((prev) => ({
+                        ...prev,
+                        password: data.password,
+                    }));
+
+                } else {
+                    alert("Invalid Credentials");
+                }
+
+            } else {
+                alert("Lexscribe is under maintenance. Please try again later.");
+            }
         }
-        console.log("Login successful");
     };
+    
 
     useEffect(() => {
         document.title = "Login | Lexscribe";

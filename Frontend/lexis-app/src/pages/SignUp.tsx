@@ -4,8 +4,8 @@ import React, { FC, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import GoogleButton from "../components/GoogleButton";
-import { handleSignUp } from "../services/axios";
-
+import { handleSignUp,sendEmailOtp } from "../services/axios";
+import { validateEmail,validatePassword,validateUsername } from "../utils/validation";
 const SignUp: FC = () => {
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("");
@@ -27,60 +27,48 @@ const SignUp: FC = () => {
     const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    const validateUsername = (username: string) =>
-        /^[a-zA-Z0-9]{3,}$/.test(username);
-
-    const validateEmail = (email: string) =>
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    const validatePassword = (password: string) =>
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-            password
-        );
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Reset errors
+        
+     
         setErrors({});
-
-        // Client-side validation
-        const validationErrors: { [key: string]: string } = {};
-        if (!validateUsername(username))
-            validationErrors.username =
-                "Username must be at least 3 characters long and alphanumeric.";
-        if (!validateEmail(email))
-            validationErrors.email = "Invalid email format.";
-        if (!validatePassword(password))
-            validationErrors.password =
-                "Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.";
-        if (password !== confirmPass)
-            validationErrors.confirmPass = "Passwords do not match.";
-
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
+    
+      
+        const usernameError = validateUsername(username);
+        const emailError = validateEmail(email);
+        const passwordError = validatePassword(password, confirmPass);
+    
+      
+        const hasErrors = usernameError || emailError || passwordError;
+    
+        if (usernameError) {
+            setErrors((prev) => ({ ...prev, username: usernameError }));
         }
-
-        // Backend API call
+    
+        if (emailError) {
+            setErrors((prev) => ({ ...prev, email: emailError }));
+        }
+    
+        if (passwordError) {
+            setErrors((prev) => ({ ...prev, password: passwordError }));
+        }
+    
+        if (hasErrors) return; 
+    
         try {
-            const response = await handleSignUp(
-                username,
-                email,
-                password,
-                confirmPass,
-                apiUrl
-            );
+            const response = await handleSignUp(username, email, password, confirmPass, apiUrl);
             if (response.data.success) {
-                console.log(response.data);
-                localStorage.setItem("username", username);
+                sessionStorage.setItem("username", username);
+                sessionStorage.setItem("email", email);
+                sessionStorage.setItem("password",password);
+                sendEmailOtp(email,apiUrl);
                 navigate("/otp");
             }
         } catch (error: any) {
             if (error.response) {
                 const { data, status } = error.response;
-                console.log(data);
-
+    
+              
                 if (status === 500) {
                     setErrors({ general: "Server is under maintenance. Please try again later." });
                 } else {
@@ -95,13 +83,13 @@ const SignUp: FC = () => {
             }
         }
     };
-
+    
     useEffect(() => {
         document.title = "Sign Up | Lexscribe";
     }, []);
 
     return (
-        <section className="bg-light dark:bg-gray-900">
+        <section className="bg-light  dark:bg-gray-900">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <div className="w-full bg-white rounded-xl shadow-lg shadow-cyan-600/50 dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

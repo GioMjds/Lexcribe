@@ -1,4 +1,5 @@
-import { Route, Routes} from 'react-router-dom'
+import {  Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.css'
 import NavBar from './components/NavBar'
 import Home from './pages/Home'
@@ -10,16 +11,38 @@ import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ChatBot from './pages/ChatBot'
-
-import { MyProvider } from './context/MyContext'
-
-
+import { MyProvider, useMyContext} from './context/MyContext'
 function App() {
+  return (
+    <MyProvider>
+      <Main />
+    </MyProvider>
+  );
+}
+
+
+function Main()  {
+  const location = useLocation();
+  const navigate = useNavigate(); 
+  const { isAuthenticated, setIsAuthenticated,toggleLog,toggleSesh } = useMyContext();
+
+  useEffect(() => { 
+    if (isAuthenticated) {
+      localStorage.setItem('currentPath', location.pathname);
+    }
+  }, [location, isAuthenticated]);
+
+  useEffect(() => {
+   const accessToken = localStorage.getItem("access_token");
+   if(accessToken) {
+    setIsAuthenticated(true);
+   }
+  },[])
+ 
 
   return (
-
-    <MyProvider>
-        <NavBar />
+    <>
+      <NavBar />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -31,10 +54,8 @@ function App() {
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
+    </>
 
-    </MyProvider>
-    
-    
   )
 }
 
