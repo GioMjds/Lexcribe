@@ -5,16 +5,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleButton from "../components/GoogleButton";
 
-type FocusState = {
-    email: boolean;
-    password: boolean;
-};
-
 const Login: FC = () => {
-    const [focus, setFocus] = useState<FocusState>({
-        email: false,
-        password: false,
-    })
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -62,7 +53,7 @@ const Login: FC = () => {
                         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
-                                <motion.input
+                                <input
                                     type="email"
                                     name="email"
                                     value={email}
@@ -75,21 +66,22 @@ const Login: FC = () => {
                             </div>
                             <div className="mb-4 relative">
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
-                                <motion.input
-                                    type={passwordVisible ? "text" : "password"}
-                                    name="password"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Enter your password"
-                                    required
-                                />
-                                <FontAwesomeIcon
-                                    icon={passwordVisible ? faEyeSlash : faEye}
-                                    onClick={togglePasswordVisibility}
-                                    className="absolute right-2 top-1/2 pt-2"
-                                    style={{ cursor: 'pointer' }}
-                                />
+                                <div className="relative flex items-center">
+                                    <input
+                                        type={passwordVisible ? "text" : "password"}
+                                        name="password"
+                                        value={password}
+                                        onChange={handlePasswordChange}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Enter your password"
+                                        required
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={passwordVisible ? faEyeSlash : faEye}
+                                        onClick={togglePasswordVisibility}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                    />
+                                </div>
                                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
                             <motion.button
