@@ -52,7 +52,7 @@ const GoogleButton: React.FC = () => {
             <button
                 onClick={login}
                 type="button"
-            // className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
+             className=" border pt-2 pb-2 pl-8 pr-8 border-black rounded-lg"
             >
                 <FontAwesomeIcon
                     icon={faGoogle}

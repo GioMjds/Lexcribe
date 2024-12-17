@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Footer from './components/Footer'
-
+import OTPassword from './pages/OTPassword'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
@@ -27,6 +27,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/chat' element={<ChatBot />} />
+        <Route path='/otp' element={<OTPassword />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
