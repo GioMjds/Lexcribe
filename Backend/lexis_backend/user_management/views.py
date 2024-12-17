@@ -116,7 +116,7 @@ def user_login(request):
         user_auth = authenticate(request, username=username, password = password)
         
         if user_auth is None:
-            return Response({"password":"Password is Incorrect"}, status= status.HTTP_401_UNAUTHORIZED)
+            return Response({"password":"Your password is incorrect"}, status= status.HTTP_401_UNAUTHORIZED)
         
         get_token = RefreshToken.for_user(user_auth)
         

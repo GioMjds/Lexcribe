@@ -1,22 +1,29 @@
-import { motion } from 'framer-motion';
-import { FC } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMyContext } from '../context/MyContext';
 import { logOut } from '../services/axios';
+import ModalSelector from './ModalSelector';
+
 const Navbar: FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated,setIsAuthenticated } = useMyContext();
+  const { isAuthenticated, setIsAuthenticated } = useMyContext();
   const goToNavigate = () => navigate('/login');
+  const [logoutModal, setLogoutModal] = useState<boolean>(false);
+
   const apiUrl = import.meta.env.VITE_API_URL;
-  const handleLogout = async() => {
-    const response = await logOut(apiUrl)
+  
+  const handleLogout = async () => {
+    const response = await logOut(apiUrl);
     if (response.status === 200) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       setIsAuthenticated(false);
+      setLogoutModal(false);
       navigate('/');
+    }
   }
-  }
+
   return (
     <nav className="bg-light-medium border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -31,7 +38,7 @@ const Navbar: FC = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               animate={{ type: "spring", stiffness: 400 }}
-              onClick={handleLogout}
+              onClick={() => setLogoutModal(true)}
             >
               Logout
             </motion.button>
@@ -44,9 +51,7 @@ const Navbar: FC = () => {
             >
             </button>
           </div>
-
         ) : (
-
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <motion.button
               className="text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
@@ -92,6 +97,21 @@ const Navbar: FC = () => {
             </li>
           </ul>
         </div>
+
+        <AnimatePresence>
+          {logoutModal && (
+            <ModalSelector
+              isOpen={logoutModal}
+              onClose={() => setLogoutModal(false)}
+              onConfirm={handleLogout}
+              h2='Confirm Logout'
+              paragraph='Are you sure you want to logout?'
+              cancelMsg="Cancel"
+              actionMsg="Logout"
+            />
+          )}
+        </AnimatePresence>
+
       </div>
     </nav>
   );
