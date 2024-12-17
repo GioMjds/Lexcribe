@@ -52,6 +52,7 @@ const GoogleButton: React.FC = () => {
             <button
                 onClick={login}
                 type="button"
+
              className=" border pt-2 pb-2 pl-8 pr-8 border-black rounded-lg"
             >
                 <FontAwesomeIcon
