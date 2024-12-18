@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { FC } from "react";
+import { useMyContext } from "../context/MyContext";
 
 const line1: string = "Lexscribe AI is a conversational AI that helps you get into law school. Ask Lexscribe AI about law school admissions, LSAT, personal statements, and more.";
 
@@ -28,7 +29,12 @@ const letter = {
 
 const Hero: FC = () => {
     const navigate = useNavigate();
-    const goToGenerate = () => navigate('/login');
+    const { isAuthenticated } = useMyContext();
+
+    const goToGenerate = () => {
+        if (isAuthenticated) navigate('/chat');
+        else navigate('/login');
+    }
 
     return (
         <section className="bg-light flex items-center min-h-screen dark:bg-gray-900">
