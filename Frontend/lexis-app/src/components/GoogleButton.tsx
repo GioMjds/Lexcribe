@@ -1,14 +1,11 @@
-import React from 'react';
+import { FC } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useMyContext } from '../context/MyContext';
 import { useGoogleLogin } from '@react-oauth/google';
-import { motion } from 'framer-motion';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const GoogleButton: React.FC = () => {
-    const navigate = useNavigate();
+const GoogleButton: FC = () => {
     const { setIsAuthenticated } = useMyContext();
     const apiUrl = import.meta.env.VITE_API_URL as string;
 
@@ -52,8 +49,7 @@ const GoogleButton: React.FC = () => {
             <button
                 onClick={login}
                 type="button"
-
-             className=" border pt-2 pb-2 pl-8 pr-8 border-black rounded-lg"
+                className=" border pt-2 pb-2 pl-8 pr-8 border-black rounded-lg"
             >
                 <FontAwesomeIcon
                     icon={faGoogle}
