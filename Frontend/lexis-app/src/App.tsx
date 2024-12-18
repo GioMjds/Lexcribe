@@ -1,4 +1,4 @@
-import {  Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import './App.css'
 import NavBar from './components/NavBar'
@@ -11,7 +11,7 @@ import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ChatBot from './pages/ChatBot'
-import { MyProvider, useMyContext} from './context/MyContext'
+import { MyProvider, useMyContext } from './context/MyContext'
 function App() {
   return (
     <MyProvider>
@@ -21,24 +21,20 @@ function App() {
 }
 
 
-function Main()  {
+function Main() {
   const location = useLocation();
-  const navigate = useNavigate(); 
-  const { isAuthenticated, setIsAuthenticated,toggleLog,toggleSesh } = useMyContext();
+  const { isAuthenticated, setIsAuthenticated } = useMyContext();
 
-  useEffect(() => { 
+  useEffect(() => {
     if (isAuthenticated) {
       localStorage.setItem('currentPath', location.pathname);
     }
   }, [location, isAuthenticated]);
 
   useEffect(() => {
-   const accessToken = localStorage.getItem("access_token");
-   if(accessToken) {
-    setIsAuthenticated(true);
-   }
-  },[])
- 
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) setIsAuthenticated(true);
+  }, [setIsAuthenticated]);
 
   return (
     <>
