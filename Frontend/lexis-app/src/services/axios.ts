@@ -1,10 +1,29 @@
 import axios from 'axios';
+
+
+
+
+export const sendPrompt = async(url:string, input: string) => {
+
+    const accessToken = localStorage.getItem("access_token");
+    const response = await axios.post(`${url}/prompt/`,{
+        input: input
+    }, {
+        headers : {
+
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    })
+
+    return response
+
+}
 export const logOut  = async(url:string) => {
     const accessToken = localStorage.getItem("access_token");
     const response = await axios.post(`${url}/logout/`,{}, {
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
+
+            'Authorization': `Bearer ${accessToken}`,
         }
     })
 

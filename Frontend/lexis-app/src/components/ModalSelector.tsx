@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 interface ModalSelectorProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => Promise<void>;
   actionMsg: string;
   cancelMsg: string;
   paragraph?: string;
@@ -42,15 +42,15 @@ const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, act
           >
             {cancelMsg}
           </motion.button>
-          <motion.button
+         
+
+          <button onClick={onConfirm}
             className='px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-700'
-            onClick={onConfirm}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 300 }}
+           type="submit"
           >
             {actionMsg}
-          </motion.button>
+          </button>               
+          
         </div>
       </motion.div>
     </motion.div>

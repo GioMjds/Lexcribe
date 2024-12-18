@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMyContext } from '../context/MyContext';
 import { logOut } from '../services/axios';
@@ -13,7 +13,8 @@ const Navbar: FC = () => {
 
   const apiUrl = import.meta.env.VITE_API_URL;
   
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
+  
     const response = await logOut(apiUrl);
     if (response.status === 200) {
       localStorage.removeItem("access_token");
@@ -103,7 +104,7 @@ const Navbar: FC = () => {
             <ModalSelector
               isOpen={logoutModal}
               onClose={() => setLogoutModal(false)}
-              onConfirm={handleLogout}
+              onConfirm = {handleLogout}
               h2='Confirm Logout'
               paragraph='Are you sure you want to logout?'
               cancelMsg="Cancel"
