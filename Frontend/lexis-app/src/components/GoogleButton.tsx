@@ -4,10 +4,12 @@ import { useMyContext } from '../context/MyContext';
 import { useGoogleLogin } from '@react-oauth/google';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleButton: FC = () => {
     const { setIsAuthenticated } = useMyContext();
     const apiUrl = import.meta.env.VITE_API_URL as string;
+    const nav = useNavigate();
 
     const handleSuccess = (response: any) => {
         const code = response.code;
@@ -37,6 +39,7 @@ const GoogleButton: FC = () => {
                 const refreshToken = response.data.refresh_token;
                 localStorage.setItem('access_token', accessToken);
                 localStorage.setItem('refresh_token', refreshToken);
+                nav('/chat');
             }
         } catch (error) {
             console.error("Error during Google login:", error);

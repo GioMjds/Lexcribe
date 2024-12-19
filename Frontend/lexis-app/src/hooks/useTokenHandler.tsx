@@ -14,9 +14,6 @@ const useTokenHandler = () => {
         const authStatus = await userAuth();
         setIsAuthenticated(authStatus);
   
-        if (!authStatus && window.location.pathname !== "/home") {
-            navigate("/home");
-          }
     } catch(error) {
         console.log("Token validation failed");
         setIsAuthenticated(false);

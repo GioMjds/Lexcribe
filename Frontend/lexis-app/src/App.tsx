@@ -33,7 +33,7 @@ function Main() {
   useEffect(() => {
     if (isAuthenticated && location.pathname !== "/home") {
       localStorage.setItem("currentPath", location.pathname);
-    }
+    } 
   }, [location, isAuthenticated]);
 
 

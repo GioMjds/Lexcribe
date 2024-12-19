@@ -61,5 +61,7 @@ export const userAuth = async (): Promise<boolean> => {
         return response ?? false; 
     }
 
+    console.log("Token expiry checked");
+
     return true; 
 };
