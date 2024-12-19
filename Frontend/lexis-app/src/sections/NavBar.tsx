@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
 import { logOut } from '../services/axios';
-import ModalSelector from './ModalSelector';
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
@@ -12,9 +12,9 @@ const Navbar: FC = () => {
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
 
   const apiUrl = import.meta.env.VITE_API_URL;
-  
+
   const handleLogout = async (): Promise<void> => {
-  
+
     const response = await logOut(apiUrl);
     if (response.status === 200) {
       localStorage.removeItem("access_token");
@@ -29,7 +29,7 @@ const Navbar: FC = () => {
     <nav className="bg-light-medium border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to='/' className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Lexscribe</span>
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Lexcribe</span>
         </Link>
 
         {isAuthenticated ? (
@@ -38,7 +38,7 @@ const Navbar: FC = () => {
               className="text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              animate={{ type: "spring", stiffness: 400 }}
+              animate={{ type: "spring" }}
               onClick={() => setLogoutModal(true)}
             >
               Logout
@@ -50,6 +50,10 @@ const Navbar: FC = () => {
               aria-controls="navbar-cta"
               aria-expanded="false"
             >
+              <span className="sr-only">Open main menu</span>
+              <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+              </svg>
             </button>
           </div>
         ) : (
@@ -59,7 +63,7 @@ const Navbar: FC = () => {
               onClick={goToNavigate}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              animate={{ type: "spring", stiffness: 400 }}
+              animate={{ type: "spring" }}
             >
               Login
             </motion.button>
@@ -76,7 +80,6 @@ const Navbar: FC = () => {
               </svg>
             </button>
           </div>
-
         )}
 
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
@@ -104,7 +107,7 @@ const Navbar: FC = () => {
             <ModalSelector
               isOpen={logoutModal}
               onClose={() => setLogoutModal(false)}
-              onConfirm = {handleLogout}
+              onConfirm={handleLogout}
               h2='Confirm Logout'
               paragraph='Are you sure you want to logout?'
               cancelMsg="Cancel"

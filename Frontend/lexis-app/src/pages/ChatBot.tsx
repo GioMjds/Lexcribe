@@ -7,9 +7,16 @@ const fadeVariants = {
   visible: { opacity: 1, transition: { duration: 1.1 } }
 };
 
+const textTypography = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.1, delay: index * 0.03 }
+  })
+}
+
 const ChatBot = () => {
-  {/* This will receive the prompt result from the server.
-  Use the result state to display generated data with animation. */}
   const [result, setResult] = useState<string>("")
   const [promptError, setPromptError] = useState<string>("")
   const [input, setInput] = useState<string>("");
@@ -25,6 +32,7 @@ const ChatBot = () => {
 
     setMessages(prev => [...prev, { type: 'user', text: input }]);
     setHasStarted(true);
+    setInput("");
 
     try {
       const response = await sendPrompt(apiUrl, input);
@@ -32,7 +40,6 @@ const ChatBot = () => {
         const aiResponse = response.data.result;
         setResult(aiResponse);
         setMessages(prev => [...prev, { type: 'ai', text: aiResponse }]);
-        setInput("");
         console.log(response.data);
       }
     } catch (error: any) {
@@ -51,7 +58,7 @@ const ChatBot = () => {
   };
 
   return (
-    <section className="bg-light min-h-screen dark:bg-gray-900 flex flex-col justify-center items-center p-4">
+    <section className="bg-light min-h-screen dark:bg-gray-900 flex flex-col justify-between items-center p-4">
       {!hasStarted ? (
         <motion.div
           className="py-28 flex flex-col items-center justify-center"
@@ -59,56 +66,70 @@ const ChatBot = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="py-1 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-sky-500">Lexcribe AI</span> about Law</h1>
+          <h1 className="p-2 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-sky-500">Lexcribe AI</span> about Law</h1>
           <p className="text-center text-pretty text-xl font-medium text-gray-700 sm:text-xl/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
-        <motion.div
-          className="flex flex-col w-full max-w-md mt-4 space-y-4 overflow-y-auto h-96 rounded-lg p-4"
-        >
+        <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 overflow-y-auto h-96 rounded-lg p-4">
           {messages.map((message, index) => (
             <motion.div
               key={index}
-              className={`p-2 rounded-lg ${message.type === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 text-gray-900 self-start'}`}
+              className={`p-2 rounded-lg ${message.type === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 text-gray-900 self-start w-4/6'}`}
               initial="hidden"
               animate="visible"
-              variants={fadeVariants}
+              variants={textTypography}
             >
-              {message.text}
+              {message.text.split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  custom={index}
+                  variants={textTypography}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {char}
+                </motion.span>
+              ))}
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       )}
 
       <motion.div
-        className="flex flex-row justify-center items-center w-full max-w-md mt-44"
+        className="flex flex-row justify-center items-center w-full max-w-4xl mb-4 p-2 dark:bg-gray-900 fixed bottom-0"
         initial="hidden"
         animate="visible"
         variants={fadeVariants}
       >
-        <form onSubmit={handleSend}>
+        <form onSubmit={handleSend} className="flex flex-row justify-center items-center w-full p-2">
           <input
             type="text"
             value={input}
             onChange={handleInputChange}
-            className="flex-grow p-4 mr-2 sm:mb-0 sm:mr-2 border h-16 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl text-gray-900"
+            className="flex-grow p-4 sm:mb-0 sm:mr-2 h-16 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 text-xl text-gray-900"
             placeholder="Ask Lexcribe AI about Law"
           />
           <button
             type="submit"
-            className="p-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200"
+            className="p-5 ml-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200"
           >
             <i className="fas fa-paper-plane"></i>
           </button>
         </form>
-
-        {promptError && (
-          <p className="text-red-500 font-bold text-lg">{promptError}</p>
-        )}
       </motion.div>
+
+      {promptError && (
+        <motion.p
+          className="text-red-500 font-bold text-lg"
+          initial='hidden'
+          animate='visible'
+          variants={fadeVariants}
+        >
+          {promptError}
+        </motion.p>
+      )}
     </section>
   );
 };
 
 export default ChatBot;
-

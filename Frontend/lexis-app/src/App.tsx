@@ -1,18 +1,18 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import './App.css'
-import NavBar from './components/NavBar'
-import Home from './pages/Home'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import Footer from './components/Footer'
-import OTPassword from './pages/OTPassword'
-import NotFound from './pages/NotFound'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
+import { Route, Routes, useLocation } from 'react-router-dom';
+import './App.css';
+import { MyProvider, useMyContext } from './context/MyContext';
 import useTokenHandler from './hooks/useTokenHandler';
-import ChatBot from './pages/ChatBot'
-import { MyProvider, useMyContext } from './context/MyContext'
+import About from './pages/About';
+import ChatBot from './pages/ChatBot';
+import Contact from './pages/Contact';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import OTPassword from './pages/OTPassword';
+import SignUp from './pages/SignUp';
+import Footer from './sections/Footer';
+import NavBar from './sections/NavBar';
 
 function App() {
   return (
@@ -22,20 +22,16 @@ function App() {
   );
 }
 
-
-function Main() {
+const Main = () => {
   const location = useLocation();
-
-
-  const { isAuthenticated} = useMyContext();
+  const { isAuthenticated } = useMyContext();
   useTokenHandler();
 
   useEffect(() => {
     if (isAuthenticated && location.pathname !== "/home") {
       localStorage.setItem("currentPath", location.pathname);
-    } 
+    }
   }, [location, isAuthenticated]);
-
 
   return (
     <>
@@ -50,7 +46,7 @@ function Main() {
         <Route path='/otp' element={<OTPassword />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
-      <Footer />
+      {!isAuthenticated && <Footer />}
     </>
 
   )
