@@ -13,6 +13,7 @@ import SignUp from './pages/SignUp'
 import useTokenHandler from './hooks/useTokenHandler';
 import ChatBot from './pages/ChatBot'
 import { MyProvider, useMyContext } from './context/MyContext'
+
 function App() {
   return (
     <MyProvider>
