@@ -12,6 +12,7 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ChatBot from './pages/ChatBot'
 import { MyProvider, useMyContext } from './context/MyContext'
+
 function App() {
   return (
     <MyProvider>
