@@ -9,17 +9,14 @@ const useTokenHandler = () => {
 
   useEffect(() => {
     const validateToken = async () => {
-
-    try {
+      try {
         const authStatus = await userAuth();
         setIsAuthenticated(authStatus);
-  
-    } catch(error) {
+      } catch (error) {
         console.log("Token validation failed");
         setIsAuthenticated(false);
         navigate("/home");
-    }
-     
+      }
     };
 
     validateToken();
