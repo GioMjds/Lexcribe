@@ -10,6 +10,7 @@ import OTPassword from './pages/OTPassword'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import useTokenHandler from './hooks/useTokenHandler';
 import ChatBot from './pages/ChatBot'
 import { MyProvider, useMyContext } from './context/MyContext'
 function App() {
@@ -23,18 +24,17 @@ function App() {
 
 function Main() {
   const location = useLocation();
-  const { isAuthenticated, setIsAuthenticated } = useMyContext();
+
+
+  const { isAuthenticated} = useMyContext();
+  useTokenHandler();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      localStorage.setItem('currentPath', location.pathname);
+    if (isAuthenticated && location.pathname !== "/home") {
+      localStorage.setItem("currentPath", location.pathname);
     }
   }, [location, isAuthenticated]);
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    if (accessToken) setIsAuthenticated(true);
-  }, [setIsAuthenticated]);
 
   return (
     <>
