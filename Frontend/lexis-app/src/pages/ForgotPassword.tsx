@@ -1,19 +1,46 @@
 import { FC, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import { sendEmailForReset } from "../services/axios";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const ForgotPassword: FC = () => {
   // Taking the current email address from the user and sending it to the back end
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-
+  const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
   // Connect the back end functionality for the forgot password feature
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-    // Continue the implementation of the forgot password feature
+    
+    try {
+      const response = await sendEmailForReset(apiUrl,email);
+      if(response.status === 200) {
+        sessionStorage.setItem("email", email);
+        navigate('/reset');
+      };
+
+
+
+    } catch(error: any) {
+      const {status ,data } = error.response;
+      setLoading(false);
+      switch(status) {
+        case 400:
+          setMessage(data.error);
+          break;
+        case 404:
+          setMessage(data.error);
+          break;
+        default:
+          alert("Lexscribe is under maintenance. Please try again later")
+      }
+
+    }
   };
 
   return (
@@ -50,7 +77,7 @@ const ForgotPassword: FC = () => {
           </motion.button>
         </form>
         {message && (
-          <p className="mt-4 text-center text-green-600 dark:text-green-400">{message}</p>
+          <p className="mt-4 text-center text-red-600">{message}</p>
         )}
         <div className="mt-4 text-center">
           <Link to="/login" className="text-base font-light text-blue-500 hover:underline">Back to Login</Link>

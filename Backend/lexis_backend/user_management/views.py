@@ -96,15 +96,19 @@ def reset_password_email(request):
         purpose = "reset_password"
         cache_key = f"{email}_{purpose}"
         
+       
+       
         if cache.get(cache_key):
             return Response({"error": "OTP already sent for reset password. Please wait for it to expire."}, status=400)
         
-        message = "Your OTP for reset password"
-        otp_generated = send_otp_to_email(email, message)
-        OTP_EXPIRATION_TIME = 120
-        cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
-        
-        return Response({"success": "OTP sent for reset password"}, status=status.HTTP_200_OK)
+        if User.objects.filter(email = email).exists():
+           message = "Your OTP for reset password"
+           otp_generated = send_otp_to_email(email, message)
+           OTP_EXPIRATION_TIME = 120
+           cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
+           return Response({"success": "OTP sent for reset password"}, status=status.HTTP_200_OK)
+        else:
+           return Response({"error" : "Email is not Registered"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         print(f"{e}")
         return Response({"error": "Something went wrong"}, status=500)

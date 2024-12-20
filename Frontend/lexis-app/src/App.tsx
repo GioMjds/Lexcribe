@@ -14,6 +14,7 @@ import SignUp from './pages/SignUp';
 import NavBar from './sections/NavBar';
 import ForgotPassword from './pages/ForgotPassword';
 import Footer from './sections/Footer';
+import OTPReset from './pages/OTPReset';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ const Main = () => {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/otp' element={<OTPassword />} />
+        <Route path='/reset' element={<OTPReset />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       {!isAuthenticated && <Footer />}
