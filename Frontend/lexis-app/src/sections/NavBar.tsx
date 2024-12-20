@@ -14,7 +14,6 @@ const Navbar: FC = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleLogout = async (): Promise<void> => {
-
     const response = await logOut(apiUrl);
     if (response.status === 200) {
       localStorage.removeItem("access_token");
@@ -26,16 +25,16 @@ const Navbar: FC = () => {
   }
 
   return (
-    <nav className="bg-light-medium border-gray-200 dark:bg-gray-900">
+    <nav className="bg-spotlight border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to='/' className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Lexcribe</span>
+          <span className="self-center text-off-white text-2xl font-semibold whitespace-nowrap dark:text-white">Lexcribe</span>
         </Link>
 
         {isAuthenticated ? (
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <motion.button
-              className="text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
+              className="text-white bg-gradient-to-br from-teal-400 to sky-500 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               animate={{ type: "spring" }}
@@ -59,7 +58,7 @@ const Navbar: FC = () => {
         ) : (
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <motion.button
-              className="text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
+              className="text-white bg-gradient-to-br from-teal-400 to sky-700 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
               onClick={goToNavigate}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -85,17 +84,17 @@ const Navbar: FC = () => {
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <Link to='/' className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>
+              <Link to='/' className='block py-2 px-3 md:p-0 text-light rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>
                 Home
               </Link>
             </li>
             <li>
-              <Link to='/about' className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>
+              <Link to='/about' className='block py-2 px-3 md:p-0 text-light rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>
                 About
               </Link>
             </li>
             <li>
-              <Link to='/contact' className='block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>
+              <Link to='/contact' className='block py-2 px-3 md:p-0 text-light rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>
                 Contact Us
               </Link>
             </li>

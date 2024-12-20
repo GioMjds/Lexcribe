@@ -82,7 +82,7 @@ const SignUp: FC = () => {
     }, []);
 
     return (
-        <section className="bg-light dark:bg-gray-900 min-h-screen flex justify-center items-center pt-8">
+        <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center pt-8">
             <div className="w-full max-w-md h-auto mb-6 bg-white rounded-xl shadow-lg shadow-cyan-600/50 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white">

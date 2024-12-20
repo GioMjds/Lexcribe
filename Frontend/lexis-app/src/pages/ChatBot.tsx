@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { motion } from "framer-motion";
 import { sendPrompt } from "../services/axios";
 
@@ -16,7 +16,7 @@ const textTypography = {
   })
 }
 
-const ChatBot = () => {
+const ChatBot: FC = () => {
   const [result, setResult] = useState<string>("")
   const [promptError, setPromptError] = useState<string>("")
   const [input, setInput] = useState<string>("");
@@ -58,7 +58,7 @@ const ChatBot = () => {
   };
 
   return (
-    <section className="bg-light min-h-screen dark:bg-gray-900 flex flex-col justify-between items-center p-4">
+    <section className="bg-spotlight min-h-screen dark:bg-gray-900 flex flex-col justify-between items-center p-4">
       {!hasStarted ? (
         <motion.div
           className="py-28 flex flex-col items-center justify-center"
@@ -66,8 +66,8 @@ const ChatBot = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="p-2 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-sky-500">Lexcribe AI</span> about Law</h1>
-          <p className="text-center text-pretty text-xl font-medium text-gray-700 sm:text-xl/8">World's First AI Chatbot for law students</p>
+          <h1 className="p-2 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-teal">Lexcribe AI</span> about Law</h1>
+          <p className="text-center text-pretty text-xl font-medium text-light-medium sm:text-xl/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
         <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 overflow-y-auto h-96 rounded-lg p-4">
