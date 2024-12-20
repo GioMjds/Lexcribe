@@ -30,8 +30,6 @@ const GoogleButton: FC = () => {
                     'Content-Type': 'application/json',
                 },
             });
-
-
             if (response.data.success) {
                 console.log(response.data);
                 setIsAuthenticated(true);
@@ -39,7 +37,7 @@ const GoogleButton: FC = () => {
                 const refreshToken = response.data.refresh_token;
                 localStorage.setItem('access_token', accessToken);
                 localStorage.setItem('refresh_token', refreshToken);
-                nav('/chat');
+                nav('/');
             }
         } catch (error) {
             console.error("Error during Google login:", error);
