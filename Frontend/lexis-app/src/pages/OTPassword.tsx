@@ -36,7 +36,7 @@ const OTPassword = () => {
         const email = sessionStorage.getItem("email");
 
         try {
-            const response = await axios.post(`${apiUrl}/res-otp/`,{
+            const response = await axios.post(`${apiUrl}/email-otp/resend/`,{
                 email: email
             },{
             headers: {
@@ -141,7 +141,7 @@ const OTPassword = () => {
                 </div>
 
                 {otpError && (
-                    <p className="text-red-500 font-bold text-lg">OTP should be in 6 digits</p>
+                    <p className="text-red-500 font-bold text-lg">{otpError}</p>
                 )} 
                 <div className="mt-4 flex justify-center space-x-4">
                     <button type="submit" className="mt-4 px-4 py-2 text-white bg-blue-600 rounded-2xl hover:bg-slate-800">
