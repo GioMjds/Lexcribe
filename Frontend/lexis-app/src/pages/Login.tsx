@@ -19,7 +19,7 @@ const Login: FC = () => {
     const navigate = useNavigate();
     const [errors, setErrors] = useState<{
         email?: string;
-        password?: string;
+        password?: string;  
     }>({});
 
     const togglePasswordVisibility = () => {
