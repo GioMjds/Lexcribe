@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMyContext } from '../context/MyContext';
 import { handleLogin } from '../services/axios';
 import Loading from '../components/Loading';
+
 const Login: FC = () => {
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
@@ -38,7 +39,7 @@ const Login: FC = () => {
             if (response.status === 200) {
                 localStorage.setItem("access_token", response.data.access);
                 localStorage.setItem("refresh_token", response.data.refresh);
-                navigate('/chat');
+                navigate('/');
                 setIsAuthenticated(true);
             }
         } catch (error: any) {
@@ -49,20 +50,13 @@ const Login: FC = () => {
                         ...prev,
                         email: data.email,
                     }));
-
                 } else if (data?.password) {
                     setErrors((prev) => ({
                         ...prev,
                         password: data.password,
                     }));
-
-                } else {
-                    alert("Invalid Credentials");
-                }
-
-            } else {
-                alert("Lexscribe is under maintenance. Please try again later.");
-            }
+                } else alert("Invalid Credentials");
+            } else alert("Lexscribe is under maintenance. Please try again later.");
         } finally {
             setLoading(false);
         }
@@ -72,7 +66,7 @@ const Login: FC = () => {
         <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center">
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg shadow-cyan-600/50 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white">Login</h1>
+                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-4xl sm:text-3xl dark:text-white">Login</h1>
                     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                         <div>
                             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
@@ -113,13 +107,16 @@ const Login: FC = () => {
                             className={`w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            animate={{ type: "spring", stiffness: 400 }}
+                            animate={{ type: "spring" }}
                         >
                             {loading ? <Loading /> : 'Login'}
                         </motion.button>
                         <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
                         <div className="flex justify-center space-x-2 p-4">
                             <GoogleButton />
+                        </div>
+                        <div className="flex justify-center">
+                            <Link to="/forgot-password" className="text-md font-light text-sky-500 hover:underline">Forgot Password?</Link>
                         </div>
                         <p className="text-md font-light text-gray-500 dark:text-gray-400 text-center">
                             Don't have an account? <Link to="/signup" className="font-medium text-sky-500 hover:underline">Sign Up</Link>

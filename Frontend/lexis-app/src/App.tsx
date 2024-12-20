@@ -11,8 +11,9 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import OTPassword from './pages/OTPassword';
 import SignUp from './pages/SignUp';
-import Footer from './sections/Footer';
 import NavBar from './sections/NavBar';
+import ForgotPassword from './pages/ForgotPassword';
+import Footer from './sections/Footer';
 
 function App() {
   return (
@@ -37,18 +38,18 @@ const Main = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Home />} />
+        {/* Change the default route of the homepage when logged in or not */}
+        <Route path='/' element={!isAuthenticated ? <Home /> : <ChatBot />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/signup' element={<SignUp />} />
-        <Route path='/chat' element={<ChatBot />} />
         <Route path='/otp' element={<OTPassword />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       {!isAuthenticated && <Footer />}
     </>
-
   )
 }
 
