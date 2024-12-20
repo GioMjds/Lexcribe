@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FC } from "react";
 import { useMyContext } from "../context/MyContext";
 
-const line1: string = "Lexscribe AI is a conversational AI that helps you get into law school. Ask Lexscribe AI about law school admissions, LSAT, personal statements, and more.";
+const line1: string = "Lexcribe AI is a conversational AI that helps you get into law school. Ask Lexcribe AI about law school admissions, LSAT, personal statements, and more.";
 
 const transition = { duration: 1, ease: [.25, .1, .25, 1] };
 const variants = {
@@ -37,7 +37,7 @@ const Hero: FC = () => {
     }
 
     return (
-        <section className="bg-light flex items-center min-h-screen dark:bg-gray-900">
+        <section className="flex items-center min-h-screen dark:bg-gray-900">
             <motion.div
                 className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12"
                 initial="hidden"
@@ -46,15 +46,15 @@ const Hero: FC = () => {
                 transition={transition}
             >
                 <motion.h1
-                    className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+                    className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-200 md:text-5xl lg:text-6xl dark:text-white"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    Ask <span className="text-sky-500">Lexscribe AI</span> about Law
+                    Ask <span className="text-teal">Lexcribe AI</span> about Law
                 </motion.h1>
                 <motion.p
-                    className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"
+                    className="mb-8 text-lg font-normal text-gray-200 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"
                     variants={sentence}
                     initial="hidden"
                     animate="visible"
@@ -72,7 +72,7 @@ const Hero: FC = () => {
                 </motion.p>
                 <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <motion.button
-                        className="nline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-sky-500 hover:bg-sky-600 md:p-4 sm:p-4"
+                        className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-gradient-to-br from-teal-400 to-sky-700 md:p-4 sm:p-4"
                         onClick={goToGenerate}
                         type="button"
                         whileHover={{ scale: 1.1 }}
