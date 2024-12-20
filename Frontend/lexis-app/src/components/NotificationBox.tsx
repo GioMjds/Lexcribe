@@ -43,3 +43,4 @@ const NotificationBox: FC<NotificationProps> = ({ isOpen, message, onClose }) =>
 }
 
 export default NotificationBox
+
