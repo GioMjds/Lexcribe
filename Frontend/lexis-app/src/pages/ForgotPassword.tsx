@@ -1,21 +1,30 @@
 import { FC, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { sendEmailForReset } from "../services/axios";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AnimatePresence, motion } from "framer-motion";
+import NotificationBox from "../components/NotificationBox";
+
+
 const ForgotPassword: FC = () => {
   // Taking the current email address from the user and sending it to the back end
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
+
+  const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
+
+
   // Connect the back end functionality for the forgot password feature
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
     
     try {
       const response = await sendEmailForReset(apiUrl,email);
@@ -41,6 +50,7 @@ const ForgotPassword: FC = () => {
       }
 
     }
+
   };
 
   return (
@@ -73,7 +83,7 @@ const ForgotPassword: FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {loading ? "Sending..." : "Send Reset Link"}
+            {loading ? "Sending..." : "Reset Password"}
           </motion.button>
         </form>
         {message && (
@@ -83,6 +93,16 @@ const ForgotPassword: FC = () => {
           <Link to="/login" className="text-base font-light text-blue-500 hover:underline">Back to Login</Link>
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {isNotificationOpen && (
+          <NotificationBox 
+            isOpen={isNotificationOpen}
+            message="Password reset link has been sent to your email address."
+            onClose={() => setIsNotificationOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
