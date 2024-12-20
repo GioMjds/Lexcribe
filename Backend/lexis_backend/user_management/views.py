@@ -20,80 +20,178 @@ def log_out(request):
     logout(request)
     return Response({'success': 'Logged out successfully'},status=status.HTTP_200_OK)
 
+
 @api_view(["POST"])
-def email_otp(request):
+def reset_password(request):
+    try:
+        email = request.data.get('email')
+        password = request.data.get('password')
+        confirm_password = request.data.get('confirm')
+        
+        if not email or not password or not confirm_password:
+            return Response({"error": "Email, password, and confirmation are required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if password != confirm_password:
+            return Response({"error": "Passwords do not match."}, status=status.HTTP_400_BAD_REQUEST)
+        
+       
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "Invalid email address."}, status=status.HTTP_404_NOT_FOUND)
+        
+        user.set_password(password)
+        user.save()
+        
+        return Response({"success": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error: {e}")  
+        return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+def resend_reset_otp(request):
     try:     
         email = request.data.get("email")
-        otp_generated = send_otp_to_email(email)
-        OTP_EXPIRATION_TIME = 120
-        cache.set(email,otp_generated,OTP_EXPIRATION_TIME)        
-        otp_in_cache = cache.get(email)
-        
-        if otp_in_cache:
-           return Response({"error": "OTP already sent. Please wait for it to expire."}, status=400)
+        message = "Your OTP for reset password"
+        otp_generated = send_otp_to_email(email,message)
+        OTP_EXPIRATION_TIME = 120     
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        cache.set(cache_key,otp_generated,OTP_EXPIRATION_TIME) 
         
         return Response({"success":"OTP sent"}, status= status.HTTP_200_OK)    
     except Exception as e:
         print(f"{e}")
+        
+@api_view(["POST"])
+def reset_password_otp(request):
+    try:
+        email = request.data.get("email")
+        otp_code = request.data.get("otpCode")
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        
+      
+        cached_otp = cache.get(cache_key)
+        
+        if cached_otp is None:
+            return Response({"error": "OTP has expired. Please request a new one."}, status=status.HTTP_404_NOT_FOUND)
+        
+       
+        if str(cached_otp) == str(otp_code):
+            return Response({"success": "Email is verified."}, status=status.HTTP_200_OK)
+        
+        return Response({"error": "Incorrect OTP code. Please try again."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return Response({"error": "An error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["POST"])
+def reset_password_email(request):   
+    try:     
+        email = request.data.get("email")
+        purpose = "reset_password"
+        cache_key = f"{email}_{purpose}"
+        
+        if cache.get(cache_key):
+            return Response({"error": "OTP already sent for reset password. Please wait for it to expire."}, status=400)
+        
+        message = "Your OTP for reset password"
+        otp_generated = send_otp_to_email(email, message)
+        OTP_EXPIRATION_TIME = 120
+        cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
+        
+        return Response({"success": "OTP sent for reset password"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"{e}")
+        return Response({"error": "Something went wrong"}, status=500)
+
+
+
+
+
+@api_view(["POST"])
+def email_otp(request):
+    try:     
+        email = request.data.get("email")
+        purpose = "account_verification"
+        cache_key = f"{email}_{purpose}"
+        
+        if cache.get(cache_key):
+            return Response({"error": "OTP already sent for account verification. Please wait for it to expire."}, status=400)
+        
+        message = "Your OTP for account verification"
+        otp_generated = send_otp_to_email(email, message)
+        OTP_EXPIRATION_TIME = 120
+        cache.set(cache_key, otp_generated, OTP_EXPIRATION_TIME)
+        
+        return Response({"success": "OTP sent for account verification"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"{e}")
+        return Response({"error": "Something went wrong"}, status=500)
+
         
 @api_view(["POST"])
 def resend_otp(request):
     try:     
         email = request.data.get("email")
-        otp_generated = send_otp_to_email(email)
-        OTP_EXPIRATION_TIME = 120
-        cache.set(email,otp_generated,OTP_EXPIRATION_TIME) 
+        message = "Your OTP for account verification"
+        otp_generated = send_otp_to_email(email,message)
+        OTP_EXPIRATION_TIME = 120     
+        purpose = "account_verification"
+        cache_key = f"{email}_{purpose}"
+        cache.set(cache_key,otp_generated,OTP_EXPIRATION_TIME) 
         
         return Response({"success":"OTP sent"}, status= status.HTTP_200_OK)    
     except Exception as e:
         print(f"{e}")
 
 
+
 @api_view(["POST"])
 def register_user(request):
     try:
-        
         username = request.data.get("username")
         email = request.data.get("email")
         password = request.data.get("password")
-        recieved_otp = request.data.get("otpCode")
+        received_otp = request.data.get("otpCode")
         
-        cached_otp = cache.get(email)
+       
+        cache_key = f"{email}_account_verification"
+        cached_otp = cache.get(cache_key)
         
-      
+       
         if cached_otp is None:
             return Response({"error": "OTP expired. Please request a new one."}, status=status.HTTP_404_NOT_FOUND)
         
-        
-        if cached_otp and str(cached_otp) == str(recieved_otp):
+       
+        if str(cached_otp) == str(received_otp):
+          
             user = User.objects.create(
                 username=username,
                 email=email,
                 password=make_password(password)  
             )
-            
-         
             user.save()
             
- 
+           
             refresh = RefreshToken.for_user(user)
             
             return Response({
                 "success": "User registered successfully.",
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
-            }, status=status.HTTP_200_OK)        
+            }, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Incorrect OTP code. Please try again."}, status=status.HTTP_400_BAD_REQUEST)
     
     except Exception as e:
-      
         print(f"Error: {e}")
         return Response({"error": "An error occurred during registration. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        
-    
-    
     
 @api_view(["POST"])
 def user_login(request):
