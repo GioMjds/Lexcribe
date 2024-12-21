@@ -14,6 +14,7 @@ import SignUp from './pages/SignUp';
 import NavBar from './sections/NavBar';
 import ForgotPassword from './pages/ForgotPassword';
 import Footer from './sections/Footer';
+import NewPassword from './pages/NewPassword';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ const Main = () => {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/otp' element={<OTPassword />} />
         <Route path='*' element={<NotFound />} />
+        <Route path='/new' element={<NewPassword />} />
       </Routes>
       {!isAuthenticated && <Footer />}
     </>
