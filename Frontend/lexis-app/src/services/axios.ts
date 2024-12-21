@@ -110,8 +110,8 @@ export const handleNewPassword = async (newPassword: string, apiUrl: string) => 
             'Content-Type': 'application/json',
         }
     });
-
     return response;
+}
 
 export const sendEmailForReset = async(url: string, email:string) => {
 
