@@ -37,6 +37,8 @@ const Login: FC = () => {
             if (response.status === 200) {
                 localStorage.setItem("access_token", response.data.access);
                 localStorage.setItem("refresh_token", response.data.refresh);
+                // Apply the user details with profile picure included here
+                
                 navigate('/');
                 setIsAuthenticated(true);
             }
