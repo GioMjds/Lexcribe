@@ -51,6 +51,7 @@ export const sendEmailOtp = async(email :string, url:string) =>  {
             "Content-Type": "application/json"
         }
     })
+    return response
 }
 
 export const registerUser = async(otpCode :string,url:string) => {
@@ -112,7 +113,7 @@ export const handleNewPassword = async (newPassword: string, apiUrl: string) => 
     });
 
     return response;
-
+}
 export const sendEmailForReset = async(url: string, email:string) => {
 
     const response = await axios.post(`${url}/reset-password/email/`,{

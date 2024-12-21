@@ -2,7 +2,6 @@ import { FC, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { sendEmailForReset } from "../services/axios";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import NotificationBox from "../components/NotificationBox";
 
