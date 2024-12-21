@@ -99,6 +99,20 @@ export const handleLogin =  async(email:string , password: string, url: string) 
     return response
 }
 
+
+export const handleNewPassword = async (newPassword: string, apiUrl: string) => {
+    const accessToken = localStorage.getItem("access_token");
+    const response = await axios.post(`${apiUrl}/reset-password/confirm`, {
+        password: newPassword,
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response;
+
 export const sendEmailForReset = async(url: string, email:string) => {
 
     const response = await axios.post(`${url}/reset-password/email/`,{
@@ -110,5 +124,4 @@ export const sendEmailForReset = async(url: string, email:string) => {
     })
 
     return response
-
 }

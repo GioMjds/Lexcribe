@@ -33,5 +33,4 @@ def send_reset_password(email):
         print(f"{e}")
         return None
 
-   
 

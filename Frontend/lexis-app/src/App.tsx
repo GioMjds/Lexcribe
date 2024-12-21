@@ -39,7 +39,6 @@ const Main = () => {
     <>
       <NavBar />
       <Routes>
-        {/* Change the default route of the homepage when logged in or not */}
         <Route path='/' element={!isAuthenticated ? <Home /> : <ChatBot />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
