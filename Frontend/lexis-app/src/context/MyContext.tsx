@@ -8,7 +8,8 @@ interface userData {
 
 interface UserDetails {
     username: string;
-    email: string
+    email: string;
+    profileImage?: string; // Optional, to be implemented and must put it in the NavBar.tsx
 }
 
 interface UserSignUp {
@@ -26,6 +27,7 @@ export const MyProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     const [userDetails, setUserDetails] = useState<UserDetails>({
         username: "",
         email: "",
+        profileImage: "",
     })
     const [sessionExpired, setSessionExpired] = useState(false);
     const [toggleLog, setToggleLog] = useState(false);

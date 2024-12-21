@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Dropdown from '../components/Dropdown';
 import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
 import { logOut } from '../services/axios';
@@ -8,6 +9,8 @@ import { logOut } from '../services/axios';
 const Navbar: FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated } = useMyContext();
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+
   const goToNavigate = () => navigate('/login');
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
 
@@ -22,7 +25,16 @@ const Navbar: FC = () => {
       setLogoutModal(false);
       navigate('/');
     }
-  }
+  };
+
+  // Implementing an separate page for the change password feature
+  const handleChangePassword = () => navigate('/change-password');
+
+  // Dropdown buttons that passes into the Dropdown component, here we can add some more buttons and their onClick functionalities
+  const profileButtons = [
+    { label: 'Change Password', onClick: handleChangePassword },
+    { label: 'Logout', onClick: () => setLogoutModal(true) }
+  ]
 
   return (
     <nav className="bg-spotlight border-gray-200 dark:bg-gray-900">
@@ -33,27 +45,20 @@ const Navbar: FC = () => {
 
         {isAuthenticated ? (
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <motion.button
-              className="text-white bg-gradient-to-br from-teal-400 to sky-500 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-sky-600 dark:hover:bg-sky-700"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              animate={{ type: "spring" }}
-              onClick={() => setLogoutModal(true)}
-            >
-              Logout
-            </motion.button>
-            <button
-              data-collapse-toggle="navbar-cta"
-              type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="navbar-cta"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
-              </svg>
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 text-white hover:bg-gray-400 focus:outline-none"
+              >
+                {/* Implement the user's profile image here */}
+                <img src="" alt="User Avatar" className='w-full h-full object-cover' />
+              </button>
+              <Dropdown
+                isOpen={dropdownOpen}
+                onClose={() => setDropdownOpen(false)}
+                buttons={profileButtons}
+              />
+            </div>
           </div>
         ) : (
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">

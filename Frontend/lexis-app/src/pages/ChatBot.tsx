@@ -74,7 +74,7 @@ const ChatBot: FC = () => {
           {messages.map((message, index) => (
             <motion.div
               key={index}
-              className={`p-2 rounded-lg ${message.type === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 text-gray-900 self-start w-4/6'}`}
+              className={`p-2 rounded-lg ${message.type === 'user' ? 'bg-blue-500 text-lg text-white self-end' : 'bg-gray-200 text-lg text-gray-900 self-start w-4/6'}`}
               initial="hidden"
               animate="visible"
               variants={textTypography}
