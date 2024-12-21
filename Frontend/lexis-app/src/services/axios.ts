@@ -30,6 +30,19 @@ export const logOut  = async(url:string) => {
 
     return response
 }
+
+export const sendOtpForReset = async(url:string, otpCode:string) => {
+    const email = sessionStorage.getItem("email");
+    const response = await axios.post(`${url}/email-otp/`, {
+        otpCode : otpCode,
+        email: email
+    }, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    return response
+}
 export const sendEmailOtp = async(email :string, url:string) =>  {
     const response = await axios.post(`${url}/email-otp/`, {
         email:email,
@@ -86,6 +99,7 @@ export const handleLogin =  async(email:string , password: string, url: string) 
     return response
 }
 
+
 export const handleNewPassword = async (newPassword: string, apiUrl: string) => {
     const accessToken = localStorage.getItem("access_token");
     const response = await axios.post(`${apiUrl}/reset-password/confirm`, {
@@ -98,4 +112,16 @@ export const handleNewPassword = async (newPassword: string, apiUrl: string) => 
     });
 
     return response;
+
+export const sendEmailForReset = async(url: string, email:string) => {
+
+    const response = await axios.post(`${url}/reset-password/email/`,{
+        email: email
+    }, {
+        headers : {
+            "Content-type": "application/json"
+        }
+    })
+
+    return response
 }
