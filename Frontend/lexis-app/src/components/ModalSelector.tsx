@@ -5,7 +5,9 @@ interface ModalSelectorProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => Promise<void>;
+  loading: boolean;
   actionMsg: string;
+  className: string;
   cancelMsg: string;
   paragraph?: string;
   h2?: string;
@@ -17,7 +19,7 @@ const modalVariants = {
   exit: { opacity: 0, y: '-50%', transition: { duration: 0.3 } }
 }
 
-const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, actionMsg, cancelMsg, paragraph, h2 }) => {
+const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, actionMsg, cancelMsg, paragraph, h2, loading, className }) => {
   if (!isOpen) return null;
   return (
     <motion.div
@@ -42,11 +44,12 @@ const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, act
           >
             {cancelMsg}
           </motion.button>
-         
 
-          <button onClick={onConfirm}
-            className='px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-700'
-           type="submit"
+          <button 
+            type="submit"
+            onClick={onConfirm}
+            className={loading ? `${className} opacity-45 cursor-not-allowed text-sm` : className}
+            disabled={loading}
           >
             {actionMsg}
           </button>               

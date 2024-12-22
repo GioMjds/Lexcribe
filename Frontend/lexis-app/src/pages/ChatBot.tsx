@@ -66,11 +66,11 @@ const ChatBot: FC = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="p-2 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-teal">Lexcribe AI</span> about Law</h1>
+          <h1 className="p-2 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask Lexcribe AI about Law</h1>
           <p className="text-center text-pretty text-xl font-medium text-light-medium sm:text-xl/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
-        <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 overflow-y-auto h-96 rounded-lg p-4">
+        <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 overflow-y-auto rounded-lg p-4">
           {messages.map((message, index) => (
             <motion.div
               key={index}
@@ -106,12 +106,12 @@ const ChatBot: FC = () => {
             type="text"
             value={input}
             onChange={handleInputChange}
-            className="flex-grow p-4 sm:mb-0 sm:mr-2 h-16 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 text-xl text-gray-900"
+            className="flex-grow p-4 sm:mb-0 sm:mr-2 h-16 border-gray-300 rounded-lg text-xl text-gray-900"
             placeholder="Ask Lexcribe AI about Law"
           />
           <button
             type="submit"
-            className="p-5 ml-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200"
+            className="p-5 ml-1 text-white bg-transparent border border-gray-300 rounded-lg transition duration-200"
           >
             <i className="fas fa-paper-plane"></i>
           </button>

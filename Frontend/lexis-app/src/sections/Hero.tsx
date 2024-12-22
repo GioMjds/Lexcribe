@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { FC } from "react";
 import { useMyContext } from "../context/MyContext";
+import { TextGenerateEffect } from "../motions/TextGenerateEffect";
 
 const line1: string = "Lexcribe AI is a conversational AI that helps you get into law school. Ask Lexcribe AI about law school admissions, LSAT, personal statements, and more.";
 
@@ -22,11 +23,6 @@ const sentence = {
     }
 }
 
-const letter = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 }
-}
-
 const Hero: FC = () => {
     const navigate = useNavigate();
     const { isAuthenticated } = useMyContext();
@@ -34,7 +30,7 @@ const Hero: FC = () => {
     const goToGenerate = () => {
         if (isAuthenticated) navigate('/chat');
         else navigate('/login');
-    }
+    }   
 
     return (
         <section className="flex items-center min-h-screen dark:bg-gray-900">
@@ -59,16 +55,7 @@ const Hero: FC = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                    {line1.split("").map((char, index) => {
-                        return (
-                            <motion.span
-                                key={char + "-" + index}
-                                variants={letter}
-                            >
-                                {char}
-                            </motion.span>
-                        )
-                    })}
+                    <TextGenerateEffect words={line1} />
                 </motion.p>
                 <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <motion.button
