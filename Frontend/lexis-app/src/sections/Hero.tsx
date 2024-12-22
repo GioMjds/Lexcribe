@@ -38,7 +38,6 @@ const Hero: FC = () => {
                 >
 
 
-
                     <TextGenerateEffect words={line1} filter={false} />
 
                 </motion.p>
