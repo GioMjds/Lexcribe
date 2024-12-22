@@ -1,17 +1,28 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
 import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
 import { logOut } from '../services/axios';
+import { getUserDetails } from '../services/axios';
+import { error } from 'console';
+
+type userDetails = {
+  username: string;
+  email: string;
+}
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated } = useMyContext();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
+  {/* State to store user details */}
+  const [userDetails , setUserDetails ] = useState<userDetails>({
+    username: "",
+    email:""
+  })
   const goToNavigate = () => navigate('/login');
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
 
@@ -30,7 +41,6 @@ const Navbar: FC = () => {
     setLoading(false);
   };
 
-  // Implementing an separate page for the change password feature
   const handleChangePassword = () => navigate('/change-password');
 
   // Dropdown buttons that passes into the Dropdown component, here we can add some more buttons and their onClick functionalities
@@ -38,6 +48,35 @@ const Navbar: FC = () => {
     { label: 'Change Password', onClick: handleChangePassword },
     { label: 'Logout', onClick: () => setLogoutModal(true) }
   ]
+
+
+  {/* async function to fetch user details */}
+  const handleUserDetails = async () => {
+    try {
+      const response = await getUserDetails(apiUrl);
+      if (response.status === 200) {
+        console.log("API Response:", response.data);
+  
+        
+        setUserDetails({
+          username: response.data.username,
+          email: response.data.email,
+        });
+      }
+    } catch (error) {
+      alert("Lexscribe is under maintenance. Please try again.");
+    }
+  };
+  {/* To check if data is in state */}
+  console.log(userDetails);
+
+  {/* Automatic fetch if user is authenticated */}
+  useEffect(() => {
+    if (isAuthenticated) {
+      handleUserDetails();
+    }
+  }, [isAuthenticated]);
+
 
   return (
     <nav className="bg-spotlight border-gray-200 dark:bg-gray-900">
