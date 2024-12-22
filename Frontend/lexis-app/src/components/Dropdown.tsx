@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { motion } from "framer-motion";
+import { dropdownVariants } from "../constants/motionVariants";
 
 interface DropdownButton {
     label: string;
@@ -19,9 +20,10 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons }) => {
     return (
         <motion.div
             className="absolute right-0 mt-2 w-48 bg-light-high rounded-md shadow-lg z-10"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={dropdownVariants}
         >
             <div className="py-1">
                 {buttons.map((button, index) => (

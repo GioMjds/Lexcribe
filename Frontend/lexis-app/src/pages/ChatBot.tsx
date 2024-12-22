@@ -1,20 +1,7 @@
 import { FC, useState } from "react";
 import { motion } from "framer-motion";
 import { sendPrompt } from "../services/axios";
-
-const fadeVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1.1 } }
-};
-
-const textTypography = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (index: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.1, delay: index * 0.03 }
-  })
-}
+import { fadeVariants, textTypography } from "../constants/motionVariants";
 
 const ChatBot: FC = () => {
   const [result, setResult] = useState<string>("")
@@ -66,7 +53,7 @@ const ChatBot: FC = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="p-2 text-4xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask Lexcribe AI about Law</h1>
+          <h1 className="p-2 text-3xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask Lexcribe AI about Law</h1>
           <p className="text-center text-pretty text-xl font-medium text-light-medium sm:text-xl/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (

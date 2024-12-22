@@ -13,9 +13,7 @@ const Features: FC = () => {
                     {featuresList.map((feature) => (
                         <motion.div 
                             key={feature.id} 
-                            className="p-6 border border-light-medium rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-700"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ type: "spring", stiffness: 300 }}
+                            className="p-6 dark:bg-gray-800 dark:border-gray-700"
                         >
                             <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-light-medium lg:h-12 lg:w-12">
                                 <i className={`${feature.icon} text-lg lg:w-6 lg:h-6 text-center`}></i>
