@@ -55,7 +55,7 @@ const Hero: FC = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                    <TextGenerateEffect words={line1} />
+                    <TextGenerateEffect filter={false} words={line1} />
                 </motion.p>
                 <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <motion.button

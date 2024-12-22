@@ -118,7 +118,7 @@ const Navbar: FC = () => {
               h2='Confirm Logout'
               paragraph='Are you sure you want to logout?'
               cancelMsg="Cancel"
-              actionMsg={loading ? "Logging out..." : "Login"}
+              actionMsg={loading ? "Logging out..." : "Logout"}
               loading={loading}
               className='px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-700'
             />

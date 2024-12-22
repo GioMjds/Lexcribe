@@ -21,7 +21,7 @@ export const TextGenerateEffect = ({
         animate(
             "span",
             { opacity: 1, filter: filter ? "blur(0)" : "none" },
-            { duration: duration ? duration : 1, delay: stagger(0.2) },
+            { duration: duration ? duration : 1, delay: stagger(0.1) },
         );
     }, [scope.current]);
 
