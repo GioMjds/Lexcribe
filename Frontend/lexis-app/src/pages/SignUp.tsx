@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import GoogleButton from "../components/GoogleButton";
 import { handleSignUp, sendEmailOtp } from "../services/axios";
 import { validateEmail, validatePassword, validateUsername } from "../utils/validation";
+
 const SignUp: FC = () => {
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("");
@@ -38,18 +39,11 @@ const SignUp: FC = () => {
 
         const hasErrors = usernameError || emailError || passwordError;
 
-        if (usernameError) {
-            setErrors((prev) => ({ ...prev, username: usernameError }));
-        }
-
-        if (emailError) {
-            setErrors((prev) => ({ ...prev, email: emailError }));
-        }
-
-        if (passwordError) {
-            setErrors((prev) => ({ ...prev, password: passwordError }));
-        }
+        if (usernameError) setErrors((prev) => ({ ...prev, username: usernameError }));
+        if (emailError) setErrors((prev) => ({ ...prev, email: emailError }));
+        if (passwordError) setErrors((prev) => ({ ...prev, password: passwordError }));
         if (hasErrors) return;
+
         try {
             const response = await handleSignUp(username, email, password, confirmPass, apiUrl);
             if (response.data.success) {
@@ -76,10 +70,6 @@ const SignUp: FC = () => {
             }
         }
     };
-
-    useEffect(() => {
-        document.title = "Sign Up | Lexscribe";
-    }, []);
 
     return (
         <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center pt-8">
@@ -189,7 +179,7 @@ const SignUp: FC = () => {
                         </div>
                         <motion.button
                             whileHover={{ scale: 1.05 }}
-                            animate={{ type: "spring", stiffness: 400 }}
+                            animate={{ type: "spring" }}
                             type="submit"
                             className="w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                         >

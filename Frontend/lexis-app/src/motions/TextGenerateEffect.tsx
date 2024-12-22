@@ -21,7 +21,7 @@ export const TextGenerateEffect = ({
         animate(
             "span",
             { opacity: 1, filter: filter ? "blur(0)" : "none" },
-            { duration: duration ? duration : 1, delay: stagger(0.2) },
+            { duration: duration ? duration : 1, delay: stagger(0.1) },
         );
     }, [scope.current]);
 
@@ -32,7 +32,7 @@ export const TextGenerateEffect = ({
                     return (
                         <motion.span
                             key={word + index}
-                            className="dark:text-white opacity-0"
+                            className={`dark:text-white opacity-0 ${className}`}
                             style={{ filter: filter ? "blur(10px)" : "none" }}
                         >
                             {word}{" "}

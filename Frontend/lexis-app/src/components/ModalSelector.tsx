@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { motion } from "framer-motion"
+import { modalVariants } from "../constants/motionVariants";
 
 interface ModalSelectorProps {
   isOpen: boolean;
@@ -11,12 +12,6 @@ interface ModalSelectorProps {
   cancelMsg: string;
   paragraph?: string;
   h2?: string;
-}
-
-const modalVariants = {
-  hidden: { opacity: 0, y: '-50%' },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  exit: { opacity: 0, y: '-50%', transition: { duration: 0.3 } }
 }
 
 const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, actionMsg, cancelMsg, paragraph, h2, loading, className }) => {
