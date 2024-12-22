@@ -10,6 +10,7 @@ const Navbar: FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated } = useMyContext();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const goToNavigate = () => navigate('/login');
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
@@ -17,6 +18,7 @@ const Navbar: FC = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleLogout = async (): Promise<void> => {
+    setLoading(true);
     const response = await logOut(apiUrl);
     if (response.status === 200) {
       localStorage.removeItem("access_token");
@@ -25,6 +27,7 @@ const Navbar: FC = () => {
       setLogoutModal(false);
       navigate('/');
     }
+    setLoading(false);
   };
 
   // Implementing an separate page for the change password feature
@@ -115,7 +118,9 @@ const Navbar: FC = () => {
               h2='Confirm Logout'
               paragraph='Are you sure you want to logout?'
               cancelMsg="Cancel"
-              actionMsg="Logout"
+              actionMsg={loading ? "Logging out..." : "Login"}
+              loading={loading}
+              className='px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-700'
             />
           )}
         </AnimatePresence>

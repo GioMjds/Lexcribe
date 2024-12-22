@@ -31,7 +31,7 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons }) => {
                             button.onClick();
                             onClose();
                         }}
-                        className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${button.className}`}
+                        className={`block px-4 py-2 text-sm text-gray-700 w-full text-left ${button.className}`}
                     >
                         {button.label}
                     </motion.button>
