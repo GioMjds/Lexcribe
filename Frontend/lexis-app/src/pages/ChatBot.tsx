@@ -57,7 +57,7 @@ const ChatBot: FC = () => {
           <p className="text-center text-pretty text-xl font-medium text-light-medium sm:text-xl/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
-        <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 overflow-y-auto rounded-lg p-4">
+        <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 rounded-lg p-4">
           {messages.map((message, index) => (
             <motion.div
               key={index}

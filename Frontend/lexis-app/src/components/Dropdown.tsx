@@ -12,9 +12,11 @@ interface DropdownProps {
     isOpen: boolean;
     onClose: () => void;
     buttons: DropdownButton[];
+    username?: string;
+    email?: string;
 }
 
-const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons }) => {
+const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email }) => {
     if (!isOpen) return null;
 
     return (
@@ -26,6 +28,10 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons }) => {
             variants={dropdownVariants}
         >
             <div className="py-1">
+                <div className="px-4 py-2 text-gray-700">
+                    <strong className="font-semibold text-base">{username}</strong>
+                    <p className="text-sm">{email}</p>
+                </div>
                 {buttons.map((button, index) => (
                     <motion.button
                         key={index}
