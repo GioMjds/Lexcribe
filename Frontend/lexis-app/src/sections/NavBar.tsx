@@ -35,8 +35,9 @@ const Navbar: FC = () => {
 
   // Dropdown buttons that passes into the Dropdown component, here we can add some more buttons and their onClick functionalities
   const profileButtons = [
+    // Either add the username and email fetched data from the backend or add that in the Dropdown.tsx component
     { label: 'Change Password', onClick: handleChangePassword },
-    { label: 'Logout', onClick: () => setLogoutModal(true) }
+    { label: 'Logout', onClick: () => setLogoutModal(true) },
   ]
 
   return (
