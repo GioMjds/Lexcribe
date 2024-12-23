@@ -6,7 +6,6 @@ import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
 import { logOut } from '../services/axios';
 import { getUserDetails } from '../services/axios';
-import { error } from 'console';
 
 type userDetails = {
   username: string;
@@ -19,7 +18,7 @@ const Navbar: FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   {/* State to store user details */}
-  const [userDetails , setUserDetails ] = useState<userDetails>({
+  const [userDetails, setUserDetails] = useState<userDetails>({
     username: "",
     email:""
   })
@@ -50,22 +49,19 @@ const Navbar: FC = () => {
     { label: 'Logout', onClick: () => setLogoutModal(true) },
   ]
 
-
   {/* async function to fetch user details */}
   const handleUserDetails = async () => {
     try {
       const response = await getUserDetails(apiUrl);
       if (response.status === 200) {
         console.log("API Response:", response.data);
-  
-        
         setUserDetails({
           username: response.data.username,
           email: response.data.email,
         });
       }
     } catch (error) {
-      alert("Lexscribe is under maintenance. Please try again.");
+      alert(`Lexscribe is under maintenance. Please try again: ${error}`);
     }
   };
   {/* To check if data is in state */}
@@ -100,6 +96,8 @@ const Navbar: FC = () => {
                 isOpen={dropdownOpen}
                 onClose={() => setDropdownOpen(false)}
                 buttons={profileButtons}
+                username={userDetails.username}
+                email={userDetails.email}
               />
             </div>
           </div>
