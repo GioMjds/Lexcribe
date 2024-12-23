@@ -1,7 +1,17 @@
 import axios from 'axios';
 
+export const getUserDetails = async(url:string) => {
 
+    const accessToken = localStorage.getItem("access_token");
+    const response = await axios.get(`${url}/profile/`, {
+        headers : {
 
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    })
+
+    return response
+}
 
 export const sendPrompt = async(url:string, input: string) => {
 

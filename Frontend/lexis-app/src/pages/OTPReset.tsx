@@ -30,29 +30,32 @@ const OTPReset = () => {
         }
     };
 
-    const resendOTP = async() => {
-        setOtpError("")
+    const resendOTP = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault(); // Prevent the form's default submit action
+        setOtpError("");
+    
         const email = sessionStorage.getItem("email");
-
+    
         try {
-            const response = await axios.post(`${apiUrl}/reset-password/resend/`,{
-                email: email
-            },{
-            headers: {
-                "Content-Type": "application/json"
-            }
-            })
-
-            if (response.status === 200){
+            const response = await axios.post(
+                `${apiUrl}/reset-password/resend/`,
+                { email: email },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+    
+            if (response.status === 200) {
                 setIsResendDisabled(true);
-                setTimer(120); 
-
-            } 
-        } catch(error:any) {
-            alert("Lexscribe is under maintenance. Please try again later.")
-
+                setTimer(120);
+            }
+        } catch (error: any) {
+            alert("Lexscribe is under maintenance. Please try again later.");
         }
     };
+    
 
     useEffect(() => {
         let interval: ReturnType<typeof setInterval> | null = null;

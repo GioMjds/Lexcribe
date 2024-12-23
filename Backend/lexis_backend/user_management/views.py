@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 import os
+from .serializers import UserDetailsSerializer
 from .email.emails import send_otp_to_email
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -288,3 +289,13 @@ def google_login(request):
     except Exception as e:
         print(f"{e}")
         return Response({"error": "Network Error"}, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def user_details(request): 
+    user = request.user
+    serializer = UserDetailsSerializer(user)
+    
+    return Response(serializer.data,status=status.HTTP_200_OK) 
+    
