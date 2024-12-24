@@ -17,7 +17,6 @@ const Navbar: FC = () => {
   const { isAuthenticated, setIsAuthenticated } = useMyContext();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  {/* State to store user details */}
   const [userDetails, setUserDetails] = useState<userDetails>({
     username: "",
     email:""
@@ -42,14 +41,11 @@ const Navbar: FC = () => {
 
   const handleChangePassword = () => navigate('/change-password');
 
-  // Dropdown buttons that passes into the Dropdown component, here we can add some more buttons and their onClick functionalities
   const profileButtons = [
-    // Either add the username and email fetched data from the backend or add that in the Dropdown.tsx component
     { label: 'Change Password', onClick: handleChangePassword },
     { label: 'Logout', onClick: () => setLogoutModal(true) },
-  ]
+  ];
 
-  {/* async function to fetch user details */}
   const handleUserDetails = async () => {
     try {
       const response = await getUserDetails(apiUrl);
@@ -64,16 +60,11 @@ const Navbar: FC = () => {
       alert(`Lexscribe is under maintenance. Please try again: ${error}`);
     }
   };
-  {/* To check if data is in state */}
   console.log(userDetails);
 
-  {/* Automatic fetch if user is authenticated */}
   useEffect(() => {
-    if (isAuthenticated) {
-      handleUserDetails();
-    }
+    if (isAuthenticated) handleUserDetails();
   }, [isAuthenticated]);
-
 
   return (
     <nav className="bg-spotlight border-gray-200 dark:bg-gray-900">
@@ -96,8 +87,8 @@ const Navbar: FC = () => {
                 isOpen={dropdownOpen}
                 onClose={() => setDropdownOpen(false)}
                 buttons={profileButtons}
-                username={userDetails.username}
-                email={userDetails.email}
+                username={userDetails?.username}
+                email={userDetails?.email}
               />
             </div>
           </div>

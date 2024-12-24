@@ -1,5 +1,5 @@
-import { FC } from "react"
 import { motion } from "framer-motion";
+import { FC, useEffect, useRef } from "react";
 import { dropdownVariants } from "../constants/motionVariants";
 
 interface DropdownButton {
@@ -17,10 +17,23 @@ interface DropdownProps {
 }
 
 const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email }) => {
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) onClose();
+        };
+        if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+        else document.removeEventListener("mousedown", handleClickOutside);
+
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
 
     return (
         <motion.div
+            ref={dropdownRef}
             className="absolute right-0 mt-2 w-48 bg-light-high rounded-md shadow-lg z-10"
             initial="hidden"
             animate="visible"
