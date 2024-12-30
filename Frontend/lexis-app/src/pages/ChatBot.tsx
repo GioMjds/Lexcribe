@@ -61,7 +61,7 @@ const ChatBot: FC = () => {
           {messages.map((message, index) => (
             <motion.div
               key={index}
-              className={`p-2 rounded-lg ${message.type === 'user' ? 'bg-blue-500 text-lg text-white self-end' : 'bg-gray-200 text-lg text-gray-900 self-start w-4/6'}`}
+              className={`p-2 rounded-lg text-base ${message.type === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 text-gray-900 self-start w-4/6'}`}
               initial="hidden"
               animate="visible"
               variants={textTypography}
@@ -93,7 +93,7 @@ const ChatBot: FC = () => {
             type="text"
             value={input}
             onChange={handleInputChange}
-            className="flex-grow p-4 sm:mb-0 sm:mr-2 h-16 border-gray-300 rounded-lg text-xl text-gray-900"
+            className="flex-grow p-4 text-base sm:mb-0 sm:mr-2 h-16 border-gray-300 rounded-lg text-gray-900"
             placeholder="Ask Lexcribe AI about Law"
           />
           <button
