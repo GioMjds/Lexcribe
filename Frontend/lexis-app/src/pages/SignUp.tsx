@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import React, { FC, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -73,9 +72,9 @@ const SignUp: FC = () => {
 
     return (
         <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center pt-8">
-            <div className="w-full max-w-md h-auto mb-6 bg-white rounded-xl shadow-lg shadow-cyan-600/50 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full max-w-md h-auto mb-6 bg-black bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white">
+                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl dark:text-white">
                         Sign Up
                     </h1>
                     {errors.general && (
@@ -85,7 +84,7 @@ const SignUp: FC = () => {
                         <div>
                             <label
                                 htmlFor="username"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                className="block mb-2 text-sm font-medium text-white dark:text-white"
                             >
                                 Your username
                             </label>
@@ -105,7 +104,7 @@ const SignUp: FC = () => {
                         <div>
                             <label
                                 htmlFor="email"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                className="block mb-2 text-sm font-medium text-white dark:text-white"
                             >
                                 Your email
                             </label>
@@ -125,7 +124,7 @@ const SignUp: FC = () => {
                         <div className="mb-4 relative">
                             <label
                                 htmlFor="password"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                className="block mb-2 text-sm font-medium text-white dark:text-white"
                             >
                                 Your password
                             </label>
@@ -142,7 +141,7 @@ const SignUp: FC = () => {
                                 <FontAwesomeIcon
                                     icon={passwordVisible ? faEyeSlash : faEye}
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 cursor-pointer"
                                 />
                             </div>
                             {errors.password && (
@@ -152,7 +151,7 @@ const SignUp: FC = () => {
                         <div className="mb-4 relative">
                             <label
                                 htmlFor="confirmPass"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                className="block mb-2 text-sm font-medium text-white dark:text-white"
                             >
                                 Confirm password
                             </label>
@@ -169,7 +168,7 @@ const SignUp: FC = () => {
                                 <FontAwesomeIcon
                                     icon={passwordVisible ? faEyeSlash : faEye}
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 cursor-pointer"
                                     style={{ cursor: 'pointer' }}
                                 />
                             </div>
@@ -177,21 +176,21 @@ const SignUp: FC = () => {
                                 <p className="text-red-500">{errors.confirmPass}</p>
                             )}
                         </div>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            animate={{ type: "spring" }}
+                        <button
                             type="submit"
                             className="w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                         >
                             Sign Up
-                        </motion.button>
-                        <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
+                        </button>
+                        <p className="text-sm font-light text-white dark:text-gray-400 text-center">
                             Or Via
                         </p>
-                        <div className="flex justify-center space-x-2">
+                        <div 
+                            className="flex justify-center space-x-2"
+                        >
                             <GoogleButton />
                         </div>
-                        <p className="text-md font-light text-gray-500 dark:text-gray-400 text-center">
+                        <p className="text-md font-light text-white dark:text-gray-400 text-center">
                             Already have an account?{" "}
                             <Link
                                 to="/login"

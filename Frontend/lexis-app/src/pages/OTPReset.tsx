@@ -83,18 +83,14 @@ const OTPReset = () => {
         setOtpError("");
 
         const otpCode = otp.join(''); 
-        if(otpCode.length === 6) {
+        if (otpCode.length === 6) {
             try {
-
                 const response = await sendOtpForReset(apiUrl, otpCode);
-
-                if(response.status === 200) {
+                if (response.status === 200) {
                     {/*I will add code here after the password reset page*/}
-
                 }
-
-            } catch (error:any) {
-                const {status , data} = error.response;
+            } catch (error: any) {
+                const { status, data } = error.response;
                 switch(status) {
                     case 400:
                         setOtpError(data.error);
@@ -108,16 +104,14 @@ const OTPReset = () => {
             }
         } else {
             setOtpError("OTP should be in 6 digits");
-            return
+            return;
         }
-        
-
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-light dark:bg-gray-900">
-            <h2 className="mb-6 text-4xl text-center font-semibold text-gray-900">Your OTPassword has been sent to your email</h2>
-            <p className="mb-4 text-3xl font-normal text-gray-500">Enter your OTP</p>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-spotlight dark:bg-gray-900">
+            <h2 className="mb-6 text-4xl text-center font-semibold text-light">Your OTPassword has been sent to your email</h2>
+            <p className="mb-4 text-3xl font-normal text-light">Enter your OTP</p>
             <form onSubmit={handleSubmit}>
                 <div className="flex space-x-2">
                     {otp.map((digit, index) => (

@@ -1,6 +1,5 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "framer-motion";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleButton from "../components/GoogleButton";
@@ -64,12 +63,12 @@ const Login: FC = () => {
 
     return (
         <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center">
-            <div className="w-full max-w-md bg-white rounded-xl shadow-lg shadow-cyan-600/50 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full max-w-md bg-black bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-4xl sm:text-3xl dark:text-white">Login</h1>
+                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl sm:text-3xl dark:text-white">Login</h1>
                     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                         <div>
-                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
+                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-white dark:text-white">Your Email</label>
                             <input
                                 type="email"
                                 name="email"
@@ -82,7 +81,7 @@ const Login: FC = () => {
                             {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                         </div>
                         <div className="mb-4 relative">
-                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
+                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-white dark:text-white">Your Password</label>
                             <div className="relative flex items-center">
                                 <input
                                     type={passwordVisible ? "text" : "password"}
@@ -96,29 +95,28 @@ const Login: FC = () => {
                                 <FontAwesomeIcon
                                     icon={passwordVisible ? faEyeSlash : faEye}
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 cursor-pointer"
                                 />
                             </div>
                             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                         </div>
-                        <motion.button
+                        <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full text-white bg-sky-500 hover:bg-primary-700 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            animate={{ type: "spring" }}
+                            className={`w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
                             {loading ? <Loading /> : 'Login'}
-                        </motion.button>
-                        <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">Or Via</p>
-                        <div className="flex justify-center space-x-2 p-4">
+                        </button>
+                        <p className="text-sm font-light text-white dark:text-gray-400 text-center">Or Via</p>
+                        <div 
+                            className="flex justify-center space-x-2"
+                        >
                             <GoogleButton />
                         </div>
                         <div className="flex justify-center">
                             <Link to="/forgot-password" className="text-md font-light text-sky-500 hover:underline">Forgot Password?</Link>
                         </div>
-                        <p className="text-md font-light text-gray-500 dark:text-gray-400 text-center">
+                        <p className="text-md font-light text-white dark:text-gray-400 text-center">
                             Don't have an account? <Link to="/signup" className="font-medium text-sky-500 hover:underline">Sign Up</Link>
                         </p>
                     </form>
