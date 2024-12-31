@@ -15,6 +15,8 @@ import NavBar from './sections/NavBar';
 import ForgotPassword from './pages/ForgotPassword';
 import Footer from './sections/Footer';
 import OTPReset from './pages/OTPReset';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 function App() {
   return (
@@ -47,6 +49,8 @@ const Main = () => {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/otp' element={<OTPassword />} />
         <Route path='/reset' element={<OTPReset />} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       {!isAuthenticated && <Footer />}

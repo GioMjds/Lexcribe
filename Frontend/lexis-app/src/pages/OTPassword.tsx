@@ -8,9 +8,9 @@ const OTPassword = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [isResendDisabled, setIsResendDisabled] = useState(false);
     const [timer, setTimer] = useState(120);
-    const [otpError,setOtpError] = useState("");
-    const navigate = useNavigate() 
-    const {setIsAuthenticated} = useMyContext();
+    const [otpError, setOtpError] = useState("");
+    const navigate = useNavigate()
+    const { setIsAuthenticated } = useMyContext();
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleChange = (value: string, index: number) => {
@@ -31,22 +31,22 @@ const OTPassword = () => {
         }
     };
 
-    const resendOTP = async() => {
+    const resendOTP = async () => {
         setOtpError("")
         const email = sessionStorage.getItem("email");
         try {
-            const response = await axios.post(`${apiUrl}/email-otp/resend/`,{
+            const response = await axios.post(`${apiUrl}/email-otp/resend/`, {
                 email: email
-            },{
-            headers: {
-                "Content-Type": "application/json"
-            }
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
-            if (response.status === 200){
+            if (response.status === 200) {
                 setIsResendDisabled(true);
-                setTimer(120); 
-            } 
-        } catch(error: any) {
+                setTimer(120);
+            }
+        } catch (error: any) {
             alert(`Lexscribe is under maintenance. Please try again later: ${error}`);
         }
     };
@@ -72,24 +72,24 @@ const OTPassword = () => {
         };
     }, [isResendDisabled, timer]);
 
-    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setOtpError("");
 
-        const otpCode = otp.join(''); 
-        if(otpCode.length === 6) {
+        const otpCode = otp.join('');
+        if (otpCode.length === 6) {
             try {
                 const response = await registerUser(otpCode, apiUrl);
-                if(response.status === 200) {
+                if (response.status === 200) {
                     console.log(response.data);
-                    localStorage.setItem("access_token",response.data.access);
-                    localStorage.setItem("refresh_token",response.data.refresh);
+                    localStorage.setItem("access_token", response.data.access);
+                    localStorage.setItem("refresh_token", response.data.refresh);
                     setIsAuthenticated(true);
-                    navigate('/chat');  
+                    navigate('/');
                 }
             } catch (error: any) {
                 const { status, data } = error.response;
-                switch(status) {
+                switch (status) {
                     case 400:
                         setOtpError(data.error);
                         break;
@@ -111,8 +111,8 @@ const OTPassword = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-spotlight dark:bg-gray-900">
-            <h2 className="mb-6 text-4xl text-center font-semibold text-gray-900">Your OTPassword has been sent to your email</h2>
-            <p className="mb-4 text-3xl font-normal text-gray-500">Enter your OTP</p>
+            <h2 className="mb-6 text-4xl text-center font-semibold text-light">Your OTP has been sent to your email</h2>
+            <p className="mb-4 text-2xl font-normal text-light">Enter your 6-digit OTP</p>
             <form onSubmit={handleSubmit}>
                 <div className="flex space-x-2">
                     {otp.map((digit, index) => (
@@ -131,7 +131,7 @@ const OTPassword = () => {
 
                 {otpError && (
                     <p className="text-red-500 font-bold text-lg">{otpError}</p>
-                )} 
+                )}
                 <div className="mt-4 flex justify-center space-x-4">
                     <button type="submit" className="mt-4 px-4 py-2 text-white bg-blue-600 rounded-2xl hover:bg-slate-800">
                         Verify OTP

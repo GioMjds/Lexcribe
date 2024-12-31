@@ -5,7 +5,7 @@ import { useMyContext } from "../context/MyContext";
 import { TextGenerateEffect } from "../motions/TextGenerateEffect";
 import { fadeUpVariants } from "../constants/motionVariants";
 
-const line1: string = "Lexcribe AI is a conversational AI that helps you get into law school. Ask Lexcribe AI about law school admissions, LSAT, personal statements, and more.";
+const line1: string = "Your personal AI legal mentor - helping law students master complex legal concepts, ace exams, and navigate their journey through law school with confidence.";
 
 const Hero: FC = () => {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Hero: FC = () => {
     const goToGenerate = () => {
         if (isAuthenticated) navigate('/chat');
         else navigate('/login');
-    }   
+    }
 
     return (
         <section className="flex items-center min-h-screen dark:bg-gray-900">
@@ -31,16 +31,13 @@ const Hero: FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    Ask <span className="text-teal">Lexcribe AI</span> about Law
+                    Ask <span className="text-purple-600 text-opacity-80">Lexcribe AI</span> about Law
                 </motion.h1>
-                <motion.p
-                    className="mb-8 text-lg font-normal text-gray-200 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"
+                <p
+                    className="mb-8 text-md font-normal text-gray-200 lg:text-md sm:px-16 xl:px-48 dark:text-gray-400"
                 >
-
-
                     <TextGenerateEffect words={line1} filter={false} />
-
-                </motion.p>
+                </p>
                 <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <motion.button
                         className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-gradient-to-br from-teal-400 to-sky-700 md:p-4 sm:p-4"

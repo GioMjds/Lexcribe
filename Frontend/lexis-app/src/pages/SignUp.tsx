@@ -1,8 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
-import React, { FC, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { FC, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleButton from "../components/GoogleButton";
+import TermsModal from "../components/TermsModal";
 import { handleSignUp, sendEmailOtp } from "../services/axios";
 import { validateEmail, validatePassword, validateUsername } from "../utils/validation";
 
@@ -19,6 +20,8 @@ const SignUp: FC = () => {
         confirmPass?: string;
         general?: string;
     }>({});
+    const [showTerms, setShowTerms] = useState<boolean>(false);
+    const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -41,33 +44,41 @@ const SignUp: FC = () => {
         if (usernameError) setErrors((prev) => ({ ...prev, username: usernameError }));
         if (emailError) setErrors((prev) => ({ ...prev, email: emailError }));
         if (passwordError) setErrors((prev) => ({ ...prev, password: passwordError }));
+
         if (hasErrors) return;
 
-        try {
-            const response = await handleSignUp(username, email, password, confirmPass, apiUrl);
-            if (response.data.success) {
-                sessionStorage.setItem("username", username);
-                sessionStorage.setItem("email", email);
-                sessionStorage.setItem("password", password);
-                sendEmailOtp(email, apiUrl);
-                navigate("/otp");
-            }
-        } catch (error: any) {
-            if (error.response) {
-                const { data, status } = error.response;
-                if (status === 500) {
-                    setErrors({ general: "Server is under maintenance. Please try again later." });
-                } else {
-                    setErrors((prevErrors) => ({
-                        ...prevErrors,
-                        username: data.user || "",
-                        email: data.email || "",
-                        password: data.password || "",
-                        general: data.invalid || "",
-                    }));
+        setShowTerms(true);
+    };
+
+    const handleTermsAccept = () => {
+        setTermsAccepted(true);
+        setShowTerms(false);
+        handleSignUp(username, email, password, confirmPass, apiUrl)
+            .then((response) => {
+                if (response.data.success) {
+                    sessionStorage.setItem("username", username);
+                    sessionStorage.setItem("email", email);
+                    sessionStorage.setItem("password", password);
+                    sendEmailOtp(email, apiUrl);
+                    navigate("/otp");
                 }
-            }
-        }
+            })
+            .catch((error) => {
+                if (error.response) {
+                    const { data, status } = error.response;
+                    if (status === 500) {
+                        setErrors({ general: "Server is under maintenance. Please try again later." });
+                    } else {
+                        setErrors((prevErrors) => ({
+                            ...prevErrors,
+                            username: data.user || "",
+                            email: data.email || "",
+                            password: data.password || "",
+                            general: data.invalid || "",
+                        }));
+                    }
+                }
+            });
     };
 
     return (
@@ -185,7 +196,7 @@ const SignUp: FC = () => {
                         <p className="text-sm font-light text-white dark:text-gray-400 text-center">
                             Or Via
                         </p>
-                        <div 
+                        <div
                             className="flex justify-center space-x-2"
                         >
                             <GoogleButton />
@@ -202,6 +213,11 @@ const SignUp: FC = () => {
                     </form>
                 </div>
             </div>
+            <TermsModal
+                isOpen={showTerms}
+                onClose={() => setShowTerms(false)}
+                onAccept={handleTermsAccept}
+            />
         </section>
     );
 };

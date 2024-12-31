@@ -56,10 +56,8 @@ const OTPReset = () => {
         }
     };
     
-
     useEffect(() => {
         let interval: ReturnType<typeof setInterval> | null = null;
-
         if (isResendDisabled && timer > 0) {
             interval = setInterval(() => {
                 setTimer((prev) => {
@@ -72,7 +70,6 @@ const OTPReset = () => {
                 });
             }, 1000);
         }
-
         return () => {
             if (interval) clearInterval(interval);
         };
@@ -110,8 +107,8 @@ const OTPReset = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-spotlight dark:bg-gray-900">
-            <h2 className="mb-6 text-4xl text-center font-semibold text-light">Your OTPassword has been sent to your email</h2>
-            <p className="mb-4 text-3xl font-normal text-light">Enter your OTP</p>
+            <h2 className="mb-6 text-4xl text-center font-semibold text-light">Your OTP has been sent to your email</h2>
+            <p className="mb-4 text-2xl font-normal text-light">Enter your 6-digit OTP</p>
             <form onSubmit={handleSubmit}>
                 <div className="flex space-x-2">
                     {otp.map((digit, index) => (
