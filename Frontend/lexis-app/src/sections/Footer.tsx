@@ -17,16 +17,16 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold text-light-medium uppercase dark:text-white">Navigation</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
-                  <Link to='/' className="hover:underline">Home</Link>
+                  <Link to='/' className="hover:text-purple-500 transition-all duration-300">Home</Link>
                 </li>
                 <li className="mb-4">
-                  <Link to='/about' className="hover:underline">About</Link>
+                  <Link to='/about' className="hover:text-purple-500 transition-all duration-300">About</Link>
                 </li>
                 <li className="mb-4">
-                  <Link to='/contact' className="hover:underline">Contact Us</Link>
+                  <Link to='/contact' className="hover:text-purple-500 transition-all duration-300">Contact Us</Link>
                 </li>
                 <li className="mb-4">
-                  <Link to='/login' className="hover:underline">Login</Link>
+                  <Link to='/login' className="hover:text-purple-500 transition-all duration-300">Login</Link>
                 </li>
               </ul>
             </div>
@@ -34,13 +34,13 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold text-light-medium uppercase dark:text-white">Follow Us</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
-                  <Link to='/' className="hover:underline">Facebook</Link>
+                  <Link to='/' className="hover:text-purple-500 transition-all duration-300">Facebook</Link>
                 </li>
                 <li className="mb-4">
-                  <Link to='/about' className="hover:underline">Twitter</Link>
+                  <Link to='/about' className="hover:text-purple-500 transition-all duration-300">Twitter</Link>
                 </li>
                 <li className="mb-4">
-                  <Link to='/contact' className="hover:underline">Linkedin</Link>
+                  <Link to='/contact' className="hover:text-purple-500 transition-all duration-300">Linkedin</Link>
                 </li>
               </ul>
             </div>
@@ -48,10 +48,10 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold text-light-medium uppercase dark:text-white">Legal</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
-                  <Link to='/' className="hover:underline">Privacy Policy</Link>
+                  <Link to='/privacy-policy' className="hover:text-purple-500 transition-all duration-300">Privacy Policy</Link>
                 </li>
                 <li className="mb-4">
-                  <Link to='/about' className="hover:underline">Terms & Conditions</Link>
+                  <Link to='/terms-and-conditions' className="hover:text-purple-500 transition-all duration-300">Terms & Conditions</Link>
                 </li>
               </ul>
             </div>

@@ -53,8 +53,8 @@ const ChatBot: FC = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="p-2 text-3xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask Lexcribe AI about Law</h1>
-          <p className="text-center text-pretty text-xl font-medium text-light-medium sm:text-xl/8">World's First AI Chatbot for law students</p>
+          <h1 className="p-2 text-3xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-80">Lexcribe AI</span> about Law</h1>
+          <p className="text-center text-pretty text-lg font-medium text-light-medium sm:text-lg/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
         <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 rounded-lg p-4">
@@ -83,7 +83,7 @@ const ChatBot: FC = () => {
       )}
 
       <motion.div
-        className="flex flex-row justify-center items-center w-full max-w-4xl mb-4 p-2 dark:bg-gray-900 fixed bottom-0"
+        className="flex flex-col justify-center items-center w-full max-w-4xl mb-4 p-2 dark:bg-gray-900 fixed bottom-0"
         initial="hidden"
         animate="visible"
         variants={fadeVariants}
@@ -103,6 +103,9 @@ const ChatBot: FC = () => {
             <i className="fas fa-paper-plane"></i>
           </button>
         </form>
+        <div className="text-center mt-2 text-sm text-light-medium">
+          <p>&copy; Lexcribe AI • 2024 | All rights reserved</p>
+        </div>
       </motion.div>
 
       {promptError && (

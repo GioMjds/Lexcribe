@@ -117,7 +117,7 @@ const Login: FC = () => {
                             <Link to="/forgot-password" className="text-md font-light text-sky-500 hover:underline">Forgot Password?</Link>
                         </div>
                         <p className="text-md font-light text-white dark:text-gray-400 text-center">
-                            Don't have an account? <Link to="/signup" className="font-medium text-sky-500 hover:underline">Sign Up</Link>
+                            Don't have an account? <Link to="/signup" className="text-sky-500 hover:underline">Sign Up</Link>
                         </p>
                     </form>
                 </div>
