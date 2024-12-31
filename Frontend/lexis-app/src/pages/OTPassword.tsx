@@ -34,7 +34,6 @@ const OTPassword = () => {
     const resendOTP = async() => {
         setOtpError("")
         const email = sessionStorage.getItem("email");
-
         try {
             const response = await axios.post(`${apiUrl}/email-otp/resend/`,{
                 email: email
@@ -42,16 +41,13 @@ const OTPassword = () => {
             headers: {
                 "Content-Type": "application/json"
             }
-            })
-
+            });
             if (response.status === 200){
                 setIsResendDisabled(true);
                 setTimer(120); 
-
             } 
-        } catch(error:any) {
-            alert("Lexscribe is under maintenance. Please try again later.")
-
+        } catch(error: any) {
+            alert(`Lexscribe is under maintenance. Please try again later: ${error}`);
         }
     };
 
@@ -83,9 +79,7 @@ const OTPassword = () => {
         const otpCode = otp.join(''); 
         if(otpCode.length === 6) {
             try {
-
                 const response = await registerUser(otpCode, apiUrl);
-
                 if(response.status === 200) {
                     console.log(response.data);
                     localStorage.setItem("access_token",response.data.access);
@@ -93,12 +87,9 @@ const OTPassword = () => {
                     setIsAuthenticated(true);
                     navigate('/chat');  
                 }
-
-            } catch (error:any) {
-                const {status , data} = error.response;
-
+            } catch (error: any) {
+                const { status, data } = error.response;
                 switch(status) {
-
                     case 400:
                         setOtpError(data.error);
                         break;
@@ -114,14 +105,12 @@ const OTPassword = () => {
             }
         } else {
             setOtpError("OTP should be in 6 digits");
-            return
+            return;
         }
-        
-
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-light dark:bg-gray-900">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-spotlight dark:bg-gray-900">
             <h2 className="mb-6 text-4xl text-center font-semibold text-gray-900">Your OTPassword has been sent to your email</h2>
             <p className="mb-4 text-3xl font-normal text-gray-500">Enter your OTP</p>
             <form onSubmit={handleSubmit}>

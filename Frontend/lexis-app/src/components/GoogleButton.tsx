@@ -50,7 +50,7 @@ const GoogleButton: FC = () => {
             <button
                 onClick={login}
                 type="button"
-                className="border pt-2 pb-2 pl-8 pr-8 border-black rounded-lg"
+                className="border pt-2 pb-2 pl-8 pr-8 border-gray-400 rounded-lg text-white bg-gradient-to-r from-light-violet to-violet-600"
             >
                 <FontAwesomeIcon
                     icon={faGoogle}

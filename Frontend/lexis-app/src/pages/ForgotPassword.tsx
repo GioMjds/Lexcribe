@@ -17,23 +17,18 @@ const ForgotPassword: FC = () => {
 
   const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
 
-
   // Connect the back end functionality for the forgot password feature
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    
     try {
       const response = await sendEmailForReset(apiUrl,email);
       if(response.status === 200) {
         sessionStorage.setItem("email", email);
         navigate('/reset');
       };
-
-
-
     } catch(error: any) {
       const {status ,data } = error.response;
       setLoading(false);
@@ -47,24 +42,22 @@ const ForgotPassword: FC = () => {
         default:
           alert("Lexscribe is under maintenance. Please try again later")
       }
-
     }
-
   };
 
   return (
     <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center">
       <motion.div
-        className="w-full max-w-lg max-h-min bg-white rounded-xl shadow-lg p-6"
+        className="w-full max-w-lg max-h-min bg-black bg-opacity-5 rounded-xl shadow-lg p-6 border border-gray-400"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">Forgot Password</h1>
-        <p className="mt-2 text-center text-gray-800 dark:text-gray-900">Enter your email address below to reset your password:</p>
+        <h1 className="text-3xl font-bold text-center text-white dark:text-white">Forgot Password</h1>
+        <p className="mt-2 text-center text-white dark:text-gray-900">Enter your email address below to reset your password:</p>
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email:</label>
+            <label htmlFor="email" className="block mb-2 text-sm font-medium text-white dark:text-white">Your Email:</label>
             <input
               type="email"
               name="email"
@@ -75,15 +68,13 @@ const ForgotPassword: FC = () => {
               placeholder="Enter your email"
             />
           </div>
-          <motion.button
+          <button
             type="submit"
             className={`w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-5 py-2.5 text-center ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={loading}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
           >
             {loading ? "Sending..." : "Reset Password"}
-          </motion.button>
+          </button>
         </form>
         {message && (
           <p className="mt-4 text-center text-red-600">{message}</p>

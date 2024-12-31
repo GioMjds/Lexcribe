@@ -27,11 +27,11 @@ const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, act
         animate='visible'
         exit='exit'
       >
-        <h2 className="text-2xl font-semibold mb-4">{h2}</h2>
-        <p className="mb-4 text-xl">{paragraph}</p>
+        <h2 className="text-xl font-semibold mb-4">{h2}</h2>
+        <p className="mb-4 text-md">{paragraph}</p>
         <div className="flex justify-end">
           <motion.button
-            className='mr-2 px-4 py-2 bg-gray-300 rounded-xl'
+            className='mr-2 px-4 py-2 text-sm bg-gray-300 rounded-xl'
             onClick={onClose}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
