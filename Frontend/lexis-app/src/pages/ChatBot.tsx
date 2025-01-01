@@ -1,11 +1,10 @@
-import { FC, useState } from "react";
 import { motion } from "framer-motion";
-import { sendPrompt } from "../services/axios";
+import { FC, useState } from "react";
 import { fadeVariants, textTypography } from "../constants/motionVariants";
+import { sendPrompt } from "../services/axios";
 
 const ChatBot: FC = () => {
-  const [result, setResult] = useState<string>("")
-  const [promptError, setPromptError] = useState<string>("")
+  const [promptError, setPromptError] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<{ type: 'user' | 'ai'; text: string }[]>([]);
   const [hasStarted, setHasStarted] = useState<boolean>(false);
@@ -25,7 +24,6 @@ const ChatBot: FC = () => {
       const response = await sendPrompt(apiUrl, input);
       if (response.status === 200) {
         const aiResponse = response.data.result;
-        setResult(aiResponse);
         setMessages(prev => [...prev, { type: 'ai', text: aiResponse }]);
         console.log(response.data);
       }
@@ -53,8 +51,8 @@ const ChatBot: FC = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="p-2 text-3xl text-center my-4 font-extrabold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-80">Lexcribe AI</span> about Law</h1>
-          <p className="text-center text-pretty text-lg font-medium text-light-medium sm:text-lg/8">World's First AI Chatbot for law students</p>
+          <h1 className="p-2 text-3xl text-center my-4 font-bold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-60">Lexcribe AI</span> about Law</h1>
+          <p className="text-center text-pretty text-lg font-normal text-light-medium sm:text-lg/8">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
         <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 rounded-lg p-4">
@@ -103,8 +101,8 @@ const ChatBot: FC = () => {
             <i className="fas fa-paper-plane"></i>
           </button>
         </form>
-        <div className="text-center mt-2 text-sm text-light-medium">
-          <p>&copy; Lexcribe AI • 2024 | All rights reserved</p>
+        <div className="text-center mt-1 text-xs text-gray-400/70">
+          <p>By using Lexcribe, you agree to our Terms and Conditions and Privacy Policy.</p>
         </div>
       </motion.div>
 

@@ -52,7 +52,7 @@ export const validateEmail = (email: string): string => {
  };
 
 
- export const validatePassword = (password: string, confirm: string): string => {
+export const validatePassword = (password: string, confirm: string): string => {
     // Check if passwords match
     if (password !== confirm) {
         return "Passwords do not match. Please try again.";
@@ -75,13 +75,13 @@ export const validateEmail = (email: string): string => {
 
     
  
-    export const validateUsername = (username: string): string => {
-        const regex = /^[A-Za-z0-9][A-Za-z0-9._\-\s]*[A-Za-z0-9]$/; // Alphanumeric, with allowed special chars at the beginning/end
-        const invalidCharsRegex = /[^A-Za-z0-9\s._\-]/; // Checks for disallowed special characters or numbers
-        const repeatedCharRegex = /(.)\1{2,}/; // Checks for repeated characters
-        const maxLength = 30; // Maximum length for username
-        const randomSequenceRegex = /([a-zA-Z0-9])\1{3,}/; // Checks for random sequences of the same character
-        const leadingTrailingSpaceRegex = /^\s|\s$/; // Checks for leading or trailing spaces
+export const validateUsername = (username: string): string => {
+    const regex = /^[A-Za-z0-9][A-Za-z0-9._\-\s]*[A-Za-z0-9]$/; // Alphanumeric, with allowed special chars at the beginning/end
+    const invalidCharsRegex = /[^A-Za-z0-9\s._\-]/; // Checks for disallowed special characters or numbers
+    const repeatedCharRegex = /(.)\1{2,}/; // Checks for repeated characters
+    const maxLength = 30; // Maximum length for username
+    const randomSequenceRegex = /([a-zA-Z0-9])\1{3,}/; // Checks for random sequences of the same character
+    const leadingTrailingSpaceRegex = /^\s|\s$/; // Checks for leading or trailing spaces
     
         // Check if the username is empty
         if (!username.trim()) return "Username is required.";
@@ -123,5 +123,5 @@ export const validateEmail = (email: string): string => {
         }
     
         return ""; // Username is valid
-    };
+};
     

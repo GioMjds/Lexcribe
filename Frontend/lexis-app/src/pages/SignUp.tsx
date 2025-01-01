@@ -1,8 +1,9 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleButton from "../components/GoogleButton";
+import Loading from "../components/Loading";
 import TermsModal from "../components/TermsModal";
 import { handleSignUp, sendEmailOtp } from "../services/axios";
 import { validateEmail, validatePassword, validateUsername } from "../utils/validation";
@@ -21,7 +22,7 @@ const SignUp: FC = () => {
         general?: string;
     }>({});
     const [showTerms, setShowTerms] = useState<boolean>(false);
-    const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -50,35 +51,47 @@ const SignUp: FC = () => {
         setShowTerms(true);
     };
 
-    const handleTermsAccept = () => {
-        setTermsAccepted(true);
-        setShowTerms(false);
-        handleSignUp(username, email, password, confirmPass, apiUrl)
-            .then((response) => {
-                if (response.data.success) {
-                    sessionStorage.setItem("username", username);
-                    sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("password", password);
-                    sendEmailOtp(email, apiUrl);
-                    navigate("/otp");
-                }
-            })
-            .catch((error) => {
-                if (error.response) {
-                    const { data, status } = error.response;
-                    if (status === 500) {
-                        setErrors({ general: "Server is under maintenance. Please try again later." });
-                    } else {
-                        setErrors((prevErrors) => ({
-                            ...prevErrors,
-                            username: data.user || "",
-                            email: data.email || "",
-                            password: data.password || "",
-                            general: data.invalid || "",
-                        }));
-                    }
-                }
-            });
+    const handleTermsAccept = async () => {
+        try {
+            setIsLoading(true);
+            setShowTerms(false);
+
+            const response = await handleSignUp(username, email, password, confirmPass, apiUrl);
+
+            if (response.data.success) {
+                const userData = {
+                    username,
+                    email,
+                    password
+                };
+                Object.entries(userData).forEach(([key, value]) => {
+                    sessionStorage.setItem(key, value);
+                });
+                await sendEmailOtp(email, apiUrl);
+                navigate("/otp");
+            }
+        } catch (error: any) {
+            if (!error.response) {
+                setErrors({ general: "Network error. Please check your connection." });
+                return;
+            }
+            const { data, status } = error.response;
+
+            if (status === 500) {
+                setErrors({ general: "Server is under maintenance. Please try again later." });
+                return;
+            }
+
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                username: data.user || "",
+                email: data.email || "",
+                password: data.password || "",
+                general: data.invalid || ""
+            }));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -189,9 +202,10 @@ const SignUp: FC = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                            disabled={isLoading}
+                            className="w-full text-white bg-sky-500 hover:bg-sky-600 disabled:bg-sky-300 disabled:cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                         >
-                            Sign Up
+                            {isLoading ? <Loading /> : "Sign Up"}
                         </button>
                         <p className="text-sm font-light text-white dark:text-gray-400 text-center">
                             Or Via
@@ -205,7 +219,7 @@ const SignUp: FC = () => {
                             Already have an account?{" "}
                             <Link
                                 to="/login"
-                                className="font-medium text-sky-500 hover:underline"
+                                className="text-sky-500 hover:underline"
                             >
                                 Login
                             </Link>
