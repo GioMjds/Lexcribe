@@ -34,7 +34,7 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
     return (
         <motion.div
             ref={dropdownRef}
-            className="absolute right-0 mt-2 w-48 bg-light-high rounded-md shadow-lg z-10"
+            className="absolute right-0 mt-2 bg-light-high rounded-md shadow-lg z-10"
             initial="hidden"
             animate="visible"
             exit="exit"

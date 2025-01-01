@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { FaEnvelope, FaHeadset } from 'react-icons/fa';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import NotificationBox from '../components/NotificationBox';
+import { validateEmail } from '../utils/validation';
 
 interface IFormInputs {
   name: string;
@@ -13,14 +14,14 @@ interface IFormInputs {
 
 const contactOptions = [
   {
-    title: "Email Us",
-    description: "Send us an email and we'll get back to you within 24 hours",
-    icon: <FaEnvelope className="w-8 h-8 text-teal-500" />,
+    title: "Email Us At",
+    description: "thelexcribe@gmail.com",
+    icon: <FaEnvelope className="w-6 h-6 lg:w-8 lg:h-8 text-teal-500" />,
   },
   {
     title: "Support",
     description: "Get instant help from our support team",
-    icon: <FaHeadset className="w-8 h-8 text-teal-500" />,
+    icon: <FaHeadset className="w-6 h-6 lg:w-8 lg:h-8 text-teal-500" />,
   }
 ];
 
@@ -33,9 +34,17 @@ const Contact = () => {
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<IFormInputs>();
 
-  // Create the back-end functionality to send their email to our email
-  // Also 
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
+    const emailError = validateEmail(data.email);
+    if (emailError) {
+      setNotification({
+        isOpen: true,
+        message: emailError,
+        type: "error",
+      });
+      return;
+    }
+
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setNotification({
@@ -52,15 +61,15 @@ const Contact = () => {
       });
     }
   };
-  
+
   return (
-    <section className="bg-spotlight min-h-screen py-12 px-4">
+    <section className="bg-spotlight min-h-screen py-16 md:py-24 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-4xl font-bold text-white text-center mb-2"
+          className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4"
         >
           Contact Us
         </motion.h1>
@@ -68,7 +77,7 @@ const Contact = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          className='text-white max-w-md mx-auto text-center text-md mb-8'
+          className='text-white max-w-2xl mx-auto text-center text-base md:text-lg mb-8'
         >
           Do you have any questions or feedback? Do you have any suggestions for the website? Let us know!
         </motion.p>
@@ -77,58 +86,63 @@ const Contact = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          className="bg-white/10 backdrop-blur-sm rounded-lg p-8 mb-8"
+          className="bg-white/10 backdrop-blur rounded-xl p-6 md:p-8 mb-8"
         >
-          {/* I add the form functionality to send the email to our email using React Hook Form (v19) */}
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="name" className="block text-white text-sm font-medium mb-2">Name</label>
+              <label htmlFor="name" className="block text-white text-base md:text-lg font-medium mb-2">Name</label>
               <input
                 {...register("name", { required: "Name is required" })}
                 type="text"
                 id="name"
-                className="w-full px-4 py-2 text-sm rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-3 text-base rounded-lg bg-white/5 text-white focus:ring-2 focus:ring-teal-500 transition-all"
                 placeholder="Your name"
               />
-              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+              {errors.name && <p className="text-red-500 text-sm mt-2">{errors.name.message}</p>}
             </div>
             <div>
-              <label htmlFor="email" className="block text-white text-sm font-medium mb-2">Email</label>
+              <label htmlFor="email" className="block text-white text-base md:text-lg font-medium mb-2">Email</label>
               <input
-                {...register("email", { required: "Email is required", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address" } })}
+                {...register("email", {
+                  required: "Email is required",
+                  validate: (value) => {
+                    const error = validateEmail(value);
+                    return error ? error : true;
+                  }
+                })}
                 type="email"
                 id="email"
-                className="w-full px-4 py-2 text-sm rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-3 text-base rounded-lg bg-white/5 text-white focus:ring-2 focus:ring-teal-500 transition-all"
                 placeholder="your@email.com"
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
             </div>
             <div>
-              <label htmlFor="name" className="block text-white text-sm font-medium mb-2">Subject</label>
+              <label htmlFor="subject" className="block text-white text-base md:text-lg font-medium mb-2">Subject</label>
               <input
                 {...register("subject", { required: "Subject is required" })}
                 type="text"
-                id="name"
-                className="w-full px-4 py-2 text-sm rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                id="subject"
+                className="w-full px-4 py-3 text-base rounded-lg bg-white/5 text-white focus:ring-2 focus:ring-teal-500 transition-all"
                 placeholder="Your subject"
               />
-              {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
+              {errors.subject && <p className="text-red-500 text-sm mt-2">{errors.subject.message}</p>}
             </div>
             <div>
-              <label htmlFor="message" className="block text-white text-sm font-medium mb-2">Message</label>
+              <label htmlFor="message" className="block text-white text-base md:text-lg font-medium mb-2">Message</label>
               <textarea
                 {...register("message", { required: "Message is required" })}
                 id="message"
-                rows={4}
-                className="w-full px-4 py-2 text-sm rounded-lg bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                rows={6}
+                className="w-full px-4 py-3 text-base rounded-lg bg-white/5 text-white resize-none focus:ring-2 focus:ring-teal-500 transition-all"
                 placeholder="Your message"
               />
-              {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
+              {errors.message && <p className="text-red-500 text-sm mt-2">{errors.message.message}</p>}
             </div>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-teal-400 to-sky-700 text-white font-medium py-3 px-4 rounded-lg hover:opacity-90 transition-opacity"
+              className="w-full bg-gradient-to-br from-teal to-sky-600 text-white py-3 px-6 rounded-lg text-base md:text-lg font-medium hover:opacity-90 transition-all duration-200 disabled:opacity-70"
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
@@ -137,7 +151,7 @@ const Contact = () => {
 
         <AnimatePresence>
           {notification.isOpen && (
-            <NotificationBox 
+            <NotificationBox
               isOpen={notification.isOpen}
               message={notification.message}
               onClose={() => setNotification(prev => ({ ...prev, isOpen: false }))}
@@ -149,7 +163,7 @@ const Contact = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          className="grid md:grid-cols-2 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8"
         >
           {contactOptions.map((option, index) => (
             <motion.div
@@ -157,13 +171,13 @@ const Contact = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 * (index + 2) }}
-              className="bg-white/10 backdrop-blur-sm rounded-lg p-8 flex flex-col items-center text-center cursor-auto"
+              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 md:p-8 flex flex-col items-center text-center"
             >
               {option.icon}
-              <h2 className="text-2xl font-semibold text-white mt-4 mb-2">
+              <h2 className="text-2xl md:text-3xl font-semibold text-white mt-4 mb-2">
                 {option.title}
               </h2>
-              <p className="text-gray-300">
+              <p className="text-gray-300 text-base md:text-lg">
                 {option.description}
               </p>
             </motion.div>
