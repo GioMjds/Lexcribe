@@ -6,13 +6,13 @@ const About = () => {
   const { isAuthenticated } = useMyContext();
 
   return (
-    <section className="bg-spotlight min-h-screen py-16 md:py-24 px-4 md:px-8">
+    <section className="bg-spotlight min-h-screen py-14 md:py-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-8 md:mb-12"
+          className="text-3xl md:text-4xl font-bold text-white text-center mb-8 md:mb-12"
         >
           About Lexcribe
         </motion.h1>
@@ -25,28 +25,28 @@ const About = () => {
         >
           <h2 className="text-xl md:text-2xl font-semibold text-white mb-4">Our Mission</h2>
           <p className="text-sm md:text-base text-gray-200 mb-6">
-            Lexcribe AI is designed to revolutionize legal education by providing law students with an intelligent AI chatbot companion. Our mission is to make legal learning more accessible, interactive, and efficient.
+            Lexcribe AI is a specialized learning tool that helps law students understand complex legal concepts through AI-powered conversations. We aim to provide an accessible and practical study companion for law students at all levels.
           </p>
           <div className="space-y-4 md:space-y-6">
             <div className="border-l-4 border-blue-400 pl-4">
               <h3 className="text-lg md:text-xl font-semibold text-white mb-2">Vision</h3>
               <p className="text-sm md:text-base text-gray-200">
-                We envision a future where every law student has access to personalized, high-quality legal education support, breaking down barriers to learning and fostering a more inclusive legal education system.
+                We strive to make legal education more approachable by providing students with an AI tool that can help explain legal concepts, answer questions, and assist with exam preparation in a clear and understandable way.
               </p>
             </div>
             <div className="border-l-4 border-blue-400 pl-4">
               <h3 className="text-lg md:text-xl font-semibold text-white mb-2">Values</h3>
               <ul className="text-sm md:text-base text-gray-200 space-y-1 md:space-y-2">
-                <li>• Excellence in Legal Education</li>
-                <li>• Innovation through Technology</li>
-                <li>• Accessibility and Inclusivity</li>
-                <li>• Continuous Improvement</li>
+                <li>• Accuracy in Legal Information</li>
+                <li>• Clear Communication</li>
+                <li>• Student-Focused Learning</li>
+                <li>• Practical Application</li>
               </ul>
             </div>
             <div className="border-l-4 border-blue-400 pl-4">
               <h3 className="text-lg md:text-xl font-semibold text-white mb-2">Impact</h3>
               <p className="text-sm md:text-base text-gray-200">
-                By combining cutting-edge AI technology with expert legal knowledge, we're helping thousands of students master complex legal concepts, prepare for exams more effectively, and build stronger foundations for their legal careers.
+                Our AI assistant helps students better understand legal terminology, case law, and key concepts by providing explanations and examples in plain language. This allows students to focus on applying their knowledge rather than getting stuck on basic comprehension.
               </p>
             </div>
           </div>

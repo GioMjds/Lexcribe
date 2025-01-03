@@ -31,10 +31,20 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
 
     if (!isOpen) return null;
 
+    // Truncate email to 22 characters and add ellipsis if it's longer
+    // This is in order the dropdown doesn't overflow
+    const truncateEmail = (email: string | undefined) => {
+        if (!email) return '';
+        if (email.length > 25) {
+            return email.substring(0, 22) + '...';
+        }
+        return email;
+    };
+
     return (
         <motion.div
             ref={dropdownRef}
-            className="absolute right-0 mt-2 bg-light-high rounded-md shadow-lg z-10"
+            className="absolute right-0 mt-2 bg-light-high rounded-md shadow-lg z-10 min-w-[200px] w-max"
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -43,7 +53,7 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
             <div className="py-1">
                 <div className="px-4 py-2 text-gray-700">
                     <strong className="font-semibold text-base">{username}</strong>
-                    <p className="text-sm">{email}</p>
+                    <p className="text-xs text-gray-400 truncate">{truncateEmail(email)}</p>
                 </div>
                 {buttons.map((button, index) => (
                     <motion.button
