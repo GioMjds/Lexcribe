@@ -1,5 +1,5 @@
-import { FC } from "react"
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
+import { FC, useEffect } from "react";
 import { modalVariants } from "../constants/motionVariants";
 
 interface ModalSelectorProps {
@@ -15,7 +15,18 @@ interface ModalSelectorProps {
 }
 
 const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, actionMsg, cancelMsg, paragraph, h2, loading, className }) => {
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+
+    if (isOpen) document.addEventListener('keydown', handleEscapeKey);
+
+    return () => document.removeEventListener('keydown', handleEscapeKey);;
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
   return (
     <motion.div
       className='fixed inset-0 flex items-center justify-center bg-black z-50 bg-opacity-50'
@@ -40,15 +51,15 @@ const ModalSelector: FC<ModalSelectorProps> = ({ isOpen, onClose, onConfirm, act
             {cancelMsg}
           </motion.button>
 
-          <button 
+          <button
             type="submit"
             onClick={onConfirm}
             className={loading ? `${className} opacity-45 cursor-not-allowed text-sm` : className}
             disabled={loading}
           >
             {actionMsg}
-          </button>               
-          
+          </button>
+
         </div>
       </motion.div>
     </motion.div>

@@ -44,7 +44,7 @@ const Navbar: FC = () => {
   const profileButtons = [
     { label: 'See Profile', onClick: () => navigate('/profile/:username_id') },
     { label: 'Change Password', onClick: handleChangePassword },
-    { label: 'Logout', onClick: () => setLogoutModal(true) },
+    { label: 'Logout', onClick: () => setLogoutModal(true), className: 'text-red-500 border-t border-gray-200 mt-2 pt-2' },
   ];
 
   const handleUserDetails = async () => {
@@ -95,7 +95,6 @@ const Navbar: FC = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to='/' className='text-light hover:text-purple-600 transition-all duration-300'>
               Home
@@ -108,7 +107,6 @@ const Navbar: FC = () => {
             </Link>
           </div>
 
-          {/* Auth Buttons */}
           <div className="flex items-center md:order-2 space-x-2 md:space-x-3">
             {isAuthenticated ? (
               <>
@@ -139,7 +137,6 @@ const Navbar: FC = () => {
               </motion.button>
             )}
 
-            {/* Hamburger Menu Button */}
             <motion.button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="inline-flex md:hidden items-center justify-center p-2 w-8 h-8 text-gray-200 rounded-lg hover:bg-white/10 focus:outline-none"
@@ -160,7 +157,6 @@ const Navbar: FC = () => {
             </motion.button>
           </div>
 
-          {/* Mobile Menu */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
@@ -199,7 +195,6 @@ const Navbar: FC = () => {
         </div>
       </nav>
 
-      {/* Logout Modal */}
       <AnimatePresence>
         {logoutModal && (
           <ModalSelector
@@ -216,7 +211,6 @@ const Navbar: FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Mobile Menu Backdrop */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
