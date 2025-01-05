@@ -65,7 +65,18 @@ const Login: FC = () => {
         <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center">
             <div className="w-full max-w-md bg-black bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl sm:text-3xl dark:text-white">Login</h1>
+                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl sm:text-3xl dark:text-white">Login <span className='text-sm font-normal'>via</span> </h1>
+                    
+                    <div className="flex justify-center">
+                        <GoogleButton />
+                    </div>
+                    
+                    <div className="flex items-center justify-center">
+                        <div className="flex-grow border-t border-gray-300"></div>
+                        <span className="mx-4 text-sm text-white">or continue manually</span>
+                        <div className="flex-grow border-t border-gray-300"></div>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                         <div>
                             <label htmlFor="email" className="block mb-2 text-sm font-medium text-white dark:text-white">Your Email</label>
@@ -74,7 +85,7 @@ const Login: FC = () => {
                                 name="email"
                                 value={email}
                                 onChange={handleEmailChange}
-                                className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg caret-purple-600 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Enter your email"
                                 required
                             />
@@ -88,7 +99,7 @@ const Login: FC = () => {
                                     name="password"
                                     value={password}
                                     onChange={handlePasswordChange}
-                                    className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    className="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg caret-purple-600 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter your password"
                                     required
                                 />
@@ -107,14 +118,9 @@ const Login: FC = () => {
                         >
                             {loading ? <Loading /> : 'Login'}
                         </button>
-                        <p className="text-sm font-light text-white dark:text-gray-400 text-center">Or Via</p>
-                        <div 
-                            className="flex justify-center space-x-2"
-                        >
-                            <GoogleButton />
-                        </div>
+                        
                         <div className="flex justify-center">
-                            <Link to="/forgot-password" className="text-md font-light text-sky-500 hover:underline">Forgot Password?</Link>
+                            <Link to="/forgot-password" className="text-md font-light text-sky-500 hover:underline">Forgot your password?</Link>
                         </div>
                         <p className="text-md font-light text-white dark:text-gray-400 text-center">
                             Don't have an account? <Link to="/signup" className="text-sky-500 hover:underline">Sign Up</Link>
@@ -123,7 +129,6 @@ const Login: FC = () => {
                 </div>
             </div>
         </section>
-
     );
 };
 

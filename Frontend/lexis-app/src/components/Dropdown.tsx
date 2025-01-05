@@ -6,6 +6,7 @@ interface DropdownButton {
     label: string;
     onClick: () => void;
     className?: string;
+    icon?: React.ReactNode;
 }
 
 interface DropdownProps {
@@ -62,9 +63,9 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
                             button.onClick();
                             onClose();
                         }}
-                        className={`block px-4 py-2 text-sm text-gray-700 w-full text-left ${button.className}`}
+                        className={`flex items-center gap-2 px-4 py-2 text-sm text-gray-900 w-full text-left ${button.className}`}
                     >
-                        {button.label}
+                        {button.icon} {button.label}
                     </motion.button>
                 ))}
             </div>

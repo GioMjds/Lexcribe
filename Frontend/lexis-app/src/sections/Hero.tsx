@@ -23,7 +23,7 @@ const Hero: FC = () => {
                 initial="hidden"
                 animate="visible"
                 variants={fadeUpVariants}
-                transition={{ duration: 1, ease: [.25, .1, .25, 1] }}
+                transition={{ duration: 0.5 }}
             >
                 <motion.h1
                     className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-200 md:text-5xl lg:text-6xl dark:text-white"

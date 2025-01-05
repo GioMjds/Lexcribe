@@ -99,11 +99,19 @@ const SignUp: FC = () => {
             <div className="w-full max-w-md h-auto mb-6 bg-black bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl dark:text-white">
-                        Sign Up
+                        Sign Up <span className='text-sm font-normal'>via</span>
                     </h1>
                     {errors.general && (
                         <p className="text-red-500 text-center">{errors.general}</p>
                     )}
+                    <div className="flex flex-col items-center space-y-4">
+                        <GoogleButton />
+                        <div className="w-full flex items-center justify-center">
+                            <div className="flex-grow border-t border-gray-400"></div>
+                            <span className="px-4 text-sm text-white">or continue manually</span>
+                            <div className="flex-grow border-t border-gray-400"></div>
+                        </div>
+                    </div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label
@@ -207,14 +215,6 @@ const SignUp: FC = () => {
                         >
                             {isLoading ? <Loading /> : "Sign Up"}
                         </button>
-                        <p className="text-sm font-light text-white dark:text-gray-400 text-center">
-                            Or Via
-                        </p>
-                        <div
-                            className="flex justify-center space-x-2"
-                        >
-                            <GoogleButton />
-                        </div>
                         <p className="text-md font-light text-white dark:text-gray-400 text-center">
                             Already have an account?{" "}
                             <Link
