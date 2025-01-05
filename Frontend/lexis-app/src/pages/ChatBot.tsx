@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
 import { FC, useState, useRef, useEffect } from "react";
 import { fadeVariants, textTypography } from "../constants/motionVariants";
