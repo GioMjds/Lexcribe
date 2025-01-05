@@ -31,7 +31,7 @@ const Hero: FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    Ask <span className="text-purple-600 text-opacity-80">Lexcribe AI</span> about Law
+                    Welcome to <span className="text-purple-600 text-opacity-80">Lexcribe</span>
                 </motion.h1>
                 <p
                     className="mb-8 text-md font-normal text-gray-200 lg:text-md sm:px-16 xl:px-48 dark:text-gray-400"
