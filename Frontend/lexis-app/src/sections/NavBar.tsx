@@ -87,7 +87,7 @@ const Navbar: FC = () => {
 
   return (
     <>
-      <nav className="bg-spotlight border-gray-200 dark:bg-gray-900 relative z-50">
+      <nav className="bg-spotlight border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50 shadow-lg backdrop-blur-sm">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to='/' className="flex items-center space-x-3 rtl:space-x-reverse">
             <span className="self-center text-off-white text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white">
@@ -194,6 +194,8 @@ const Navbar: FC = () => {
           </AnimatePresence>
         </div>
       </nav>
+
+      <div className="h-16"></div>
 
       <AnimatePresence>
         {logoutModal && (

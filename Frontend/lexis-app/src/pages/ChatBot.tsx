@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FC, useState } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import { fadeVariants, textTypography } from "../constants/motionVariants";
 import { sendPrompt } from "../services/axios";
 
@@ -10,6 +10,7 @@ const ChatBot: FC = () => {
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const apiUrl = import.meta.env.VITE_API_URL2;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
@@ -20,23 +21,18 @@ const ChatBot: FC = () => {
   };
 
   const handleUpdate = async (id: number) => {
-    // Find the index of the message being edited
     const messageIndex = messages.findIndex(msg => msg.id === id);
     if (messageIndex === -1) return;
 
-    // Update the user message
     const updatedMessages = [...messages];
     updatedMessages[messageIndex].text = editText;
 
-    // Remove all messages after this one
     updatedMessages.splice(messageIndex + 1);
     setMessages(updatedMessages);
 
-    // Reset editing state
     setEditingId(null);
     setEditText("");
 
-    // Get new AI response
     try {
       const response = await sendPrompt(apiUrl, editText);
       if (response.status === 200) {
@@ -75,7 +71,6 @@ const ChatBot: FC = () => {
       if (response.status === 200) {
         const aiResponse = response.data.result;
         setMessages(prev => [...prev, { type: 'ai', text: aiResponse, id: Date.now() }]);
-        console.log(response.data);
       }
     } catch (error: any) {
       const { status, data } = error.response;
@@ -92,20 +87,28 @@ const ChatBot: FC = () => {
     }
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
-    <section className="bg-spotlight min-h-screen dark:bg-gray-900 flex flex-col justify-between items-center p-4">
+    <section className="bg-spotlight min-h-[93.2vh] dark:bg-gray-900 flex flex-col items-center">
       {!hasStarted ? (
         <motion.div
-          className="py-28 flex flex-col items-center justify-center"
+          className="h-[calc(100vh-200px)] flex flex-col items-center justify-center"
           initial="hidden"
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="p-2 text-3xl text-center my-4 font-bold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-60">Lexcribe AI</span> about Law</h1>
-          <p className="text-center text-pretty text-lg font-normal text-light-medium sm:text-lg/8">World's First AI Chatbot for law students</p>
+          <h1 className="text-3xl text-center font-bold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-60">Lexcribe AI</span> about Law</h1>
+          <p className="mt-4 text-center text-lg font-normal text-light-medium">World's First AI Chatbot for law students</p>
         </motion.div>
       ) : (
-        <div className="flex flex-col w-full max-w-screen-xl mt-4 space-y-4 rounded-lg p-4">
+        <div className="flex flex-col w-full max-w-screen-xl mt-8 space-y-4 p-2 overflow-y-auto max-h-[calc(100vh-210px)] scrollbar-none">
           {messages.map((message) => (
             <motion.div
               key={message.id}
@@ -124,31 +127,30 @@ const ChatBot: FC = () => {
               )}
 
               <div className={`p-3 rounded-lg text-base ${message.type === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-900 w-4/6'
-                }`}>
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-900 w-4/6'
+                }`} ref={messagesEndRef}  
+              >
                 {editingId === message.id ? (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
                     <input
                       type="text"
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
-                      className="w-full text-left text-white rounded px-3 py-2 focus:outline-none border-none bg-transparent"
+                      className="w-full px-2 py-1 text-gray-900 bg-transparent border-none rounded focus:outline-none"
                     />
-                    <div className="flex justify-end gap-2">
-                      <button
-                        onClick={() => handleUpdate(message.id)}
-                        className="text-white px-2 rounded-full hover:bg-gray-600/20 transition-colors duration-200"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="text-white px-2 rounded-full hover:bg-gray-600/20 transition-colors duration-200"
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => handleUpdate(message.id)}
+                      className="text-white hover:bg-gray-600/20 p-1 rounded transition-colors duration-200"
+                    >
+                      <i className="fas fa-check"></i>
+                    </button>
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="text-white hover:bg-gray-600/20 p-1 rounded transition-colors duration-200"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
                   </div>
                 ) : (
                   <motion.span
@@ -201,18 +203,18 @@ const ChatBot: FC = () => {
             type="text"
             value={input}
             onChange={handleInputChange}
-            className="flex-grow p-4 text-base sm:mb-0 sm:mr-2 h-14 border-gray-300 rounded-lg text-gray-900"
+            className="flex-grow p-4 text-base sm:mb-0 sm:mr-2 h-14 rounded-full caret-purple-600 text-gray-900"
             placeholder="Ask Lexcribe"
           />
           <button
             type="submit"
-            className="p-3 ml-1 text-gray-700 text-2xl bg-gradient-to-br from-teal to-sky-600 border border-gray-500 rounded-lg transition duration-200"
+            className="p-3 ml-1 text-gray-700 text-2xl bg-gradient-to-br from-teal to-sky-600 border border-gray-500 rounded-full w-14 h-14 transition duration-200"
           >
             <i className="fas fa-paper-plane"></i>
           </button>
         </form>
         <div className="text-center mt-1 text-xs text-gray-400/70">
-          <p>By using Lexcribe, you agree to our Terms and Conditions and Privacy Policy.</p>
+          <p>Lexcribe may occasionally provide inaccurate information. Please verify any legal advice with authoritative sources.</p>
         </div>
       </motion.div>
 
