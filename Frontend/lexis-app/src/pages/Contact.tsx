@@ -69,7 +69,7 @@ const Contact = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4"
+          className="text-3xl md:text-4xl font-bold text-white text-center mb-8 md:mb-12"
         >
           Contact Us
         </motion.h1>

@@ -6,7 +6,7 @@ const About = () => {
   const { isAuthenticated } = useMyContext();
 
   return (
-    <section className="bg-spotlight min-h-screen py-14 md:py-16 px-4 md:px-8">
+    <section className="bg-spotlight min-h-screen py-16 md:py-24 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0 }}

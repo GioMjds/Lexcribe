@@ -211,7 +211,7 @@ const SignUp: FC = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full text-white bg-sky-500 hover:bg-sky-600 disabled:bg-sky-300 disabled:cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                            className="w-full text-white bg-gradient-to-br from-teal to-sky-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                         >
                             {isLoading ? <Loading /> : "Sign Up"}
                         </button>
