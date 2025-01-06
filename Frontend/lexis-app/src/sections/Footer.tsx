@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFacebook, faTwitter, faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons"
+import { faFacebook, faTwitter, faLinkedin } from "@fortawesome/free-brands-svg-icons"
 
 const Footer = () => {
   return (
@@ -34,13 +34,13 @@ const Footer = () => {
               <h2 className="mb-6 text-md font-semibold text-purple-700/90 uppercase dark:text-white">Follow Us</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
-                  <Link to='/' className="hover:text-purple-500 transition-all duration-300">Facebook</Link>
+                  <a href="/" className="hover:text-purple-500 transition-all duration-300">Facebook</a>
                 </li>
                 <li className="mb-4">
-                  <Link to='/about' className="hover:text-purple-500 transition-all duration-300">Twitter</Link>
+                  <a href="/" className="hover:text-purple-500 transition-all duration-300">Twitter</a>
                 </li>
                 <li className="mb-4">
-                  <Link to='/contact' className="hover:text-purple-500 transition-all duration-300">Linkedin</Link>
+                  <a href="/" className="hover:text-purple-500 transition-all duration-300">Linkedin</a>
                 </li>
               </ul>
             </div>
@@ -66,14 +66,11 @@ const Footer = () => {
             <a href="https://www.facebook.com" target="_blank">
               <FontAwesomeIcon icon={faFacebook} className="w-7 h-7 hover:text-gray-400"/>
             </a>
-            <a href="https://www.facebook.com" target="_blank">
+            <a href="https://www.x.com" target="_blank">
               <FontAwesomeIcon icon={faTwitter} className="w-7 h-7 hover:text-gray-400"/>
             </a>
-            <a href="https://www.facebook.com" target="_blank">
+            <a href="https://www.linkedin.com" target="_blank">
               <FontAwesomeIcon icon={faLinkedin} className="w-7 h-7 hover:text-gray-400"/>
-            </a>
-            <a href="https://www.facebook.com" target="_blank">
-              <FontAwesomeIcon icon={faGithub} className="w-7 h-7 hover:text-gray-400"/>
             </a>
           </div>
         </div>

@@ -16,4 +16,21 @@
   ::-moz-selection {
     background-color: #8b5cf6;
   }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #433D8B;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #17153b;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2e236c;
+  }
 }

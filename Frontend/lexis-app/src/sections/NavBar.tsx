@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -5,6 +6,7 @@ import Dropdown from '../components/Dropdown';
 import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
 import { getUserDetails, logOut } from '../services/axios';
+import { FaUserCircle, FaKey, FaSignOutAlt } from 'react-icons/fa';
 
 type userDetails = {
   username: string;
@@ -42,9 +44,9 @@ const Navbar: FC = () => {
   const handleChangePassword = () => navigate('/change-password');
 
   const profileButtons = [
-    { label: 'See Profile', onClick: () => navigate('/profile/:username_id') },
-    { label: 'Change Password', onClick: handleChangePassword },
-    { label: 'Logout', onClick: () => setLogoutModal(true), className: 'text-red-500 border-t border-gray-200 mt-2 pt-2' },
+    { label: 'Profile', icon: <FaUserCircle className="w-4 h-4" />, onClick: () => navigate('/profile/:username_id') },
+    { label: 'Change Password', icon: <FaKey className="w-4 h-4" />, onClick: handleChangePassword },
+    { label: 'Logout', icon: <FaSignOutAlt className="w-4 h-4" />, onClick: () => setLogoutModal(true), className: 'text-red-500 border-t border-gray-200 mt-2 pt-2' },
   ];
 
   const handleUserDetails = async () => {
@@ -87,7 +89,7 @@ const Navbar: FC = () => {
 
   return (
     <>
-      <nav className="bg-spotlight border-gray-200 dark:bg-gray-900 relative z-50">
+      <nav className="bg-spotlight border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50 shadow-lg backdrop-blur-sm">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to='/' className="flex items-center space-x-3 rtl:space-x-reverse">
             <span className="self-center text-off-white text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white">
@@ -96,14 +98,14 @@ const Navbar: FC = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to='/' className='text-light hover:text-purple-600 transition-all duration-300'>
-              Home
+            <Link to='/' className='text-light hover:text-purple-500 transition-all duration-300'>
+              HOME
             </Link>
-            <Link to='/about' className='text-light hover:text-purple-600 transition-all duration-300'>
-              About
+            <Link to='/about' className='text-light hover:text-purple-500 transition-all duration-300'>
+              ABOUT
             </Link>
-            <Link to='/contact' className='text-light hover:text-purple-600 transition-all duration-300'>
-              Contact Us
+            <Link to='/contact' className='text-light hover:text-purple-500 transition-all duration-300'>
+              CONTACT US
             </Link>
           </div>
 
@@ -128,11 +130,14 @@ const Navbar: FC = () => {
               </>
             ) : (
               <motion.button
-                className="text-white bg-gradient-to-br from-teal to-sky-600 font-medium rounded-lg text-sm px-3 py-1.5 md:px-4 md:py-2 text-center transition-colors"
+                className="text-white bg-gradient-to-br from-teal to-sky-600 font-medium rounded-lg text-sm px-3 py-1.5 md:px-4 md:py-2 text-center transition-colors flex items-center gap-2"
                 onClick={goToNavigate}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                  <polyline points="10 17 15 12 10 7" />
+                  <line x1="15" y1="12" x2="3" y2="12" />
+                </svg>
                 Login
               </motion.button>
             )}
@@ -169,24 +174,24 @@ const Navbar: FC = () => {
                 <div className="px-4 py-4 space-y-3">
                   <Link
                     to="/"
-                    className="block py-2 text-base font-medium text-light hover:text-purple-600 transition-all duration-300"
+                    className="block py-2 text-base font-medium text-light hover:text-purple-500 transition-all duration-300"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Home
+                    HOME
                   </Link>
                   <Link
                     to="/about"
-                    className="block py-2 text-base font-medium text-light hover:text-purple-600 transition-all duration-300"
+                    className="block py-2 text-base font-medium text-light hover:text-purple-500 transition-all duration-300"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    About
+                    ABOUT
                   </Link>
                   <Link
                     to="/contact"
-                    className="block py-2 text-base font-medium text-light hover:text-purple-600 transition-all duration-300"
+                    className="block py-2 text-base font-medium text-light hover:text-purple-500 transition-all duration-300"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Contact Us
+                    CONTACT US
                   </Link>
                 </div>
               </motion.div>
@@ -194,6 +199,8 @@ const Navbar: FC = () => {
           </AnimatePresence>
         </div>
       </nav>
+
+      <div className="h-16"></div>
 
       <AnimatePresence>
         {logoutModal && (
