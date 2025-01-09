@@ -70,7 +70,7 @@ const ForgotPassword: FC = () => {
           </div>
           <button
             type="submit"
-            className={`w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-5 py-2.5 text-center ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-base px-5 py-2.5 text-center transition duration-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={loading}
           >
             {loading ? "Sending..." : "Reset Password"}

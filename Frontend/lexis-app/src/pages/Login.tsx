@@ -114,7 +114,7 @@ const Login: FC = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full text-white bg-gradient-to-br from-teal to-sky-600 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                            className={`w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-md px-5 py-2.5 text-center transition duration-300 dark:bg-sky-600 dark:hover:bg-sky-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
                             {loading ? <Loading /> : 'Login'}
                         </button>

@@ -17,6 +17,7 @@ import Footer from './sections/Footer';
 import OTPReset from './pages/OTPReset';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
+import Survey from './pages/Survey';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ const Main = () => {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/otp' element={<OTPassword />} />
         <Route path='/reset' element={<OTPReset />} />
+        <Route path='/survey' element={<Survey />} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
         <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
         <Route path='*' element={<NotFound />} />
