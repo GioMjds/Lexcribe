@@ -28,11 +28,11 @@ function App() {
 
 const Main = () => {
   const location = useLocation();
-  const { isAuthenticated } = useMyContext();
+  const { isAuthenticated,setIsAuthenticated} = useMyContext();
   useTokenHandler();
 
   useEffect(() => {
-    if (isAuthenticated && location.pathname !== "/home") {
+    if (isAuthenticated && location.pathname !== "/") {
       localStorage.setItem("currentPath", location.pathname);
     }
   }, [location, isAuthenticated]);

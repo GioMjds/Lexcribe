@@ -14,8 +14,9 @@ const useTokenHandler = () => {
         setIsAuthenticated(authStatus);
       } catch (error) {
         console.log(`Token validation failed: ${error}`);
+   
+        navigate("/");
         setIsAuthenticated(false);
-        navigate("/home");
       }
     };
 
