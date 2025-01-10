@@ -1,7 +1,7 @@
 type SurveyQuestion = {
   id: number;
   question: string;
-  type: "radio" | "checkbox" | "text";
+  type: "radio";
   options?: string[];
 };
 
