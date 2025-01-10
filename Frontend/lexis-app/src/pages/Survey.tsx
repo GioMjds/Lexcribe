@@ -11,6 +11,8 @@ const Survey = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  console.log(answers);
+
   useEffect(() => {
     // Check if user is authenticated
     // This may change to a different method of authentication
@@ -35,9 +37,10 @@ const Survey = () => {
         ...prev,
         [`q${currentQuestion + 1}`]: selectedAnswer,
       }));
-      setSelectedAnswer(null);
+     
       if (currentQuestion < surveyQuestions.length - 1) {
         setCurrentQuestion((prev) => prev + 1);
+        setSelectedAnswer(null);
       }
     } else console.warn(`No answer selected for question ${currentQuestion + 1}`);
   };
