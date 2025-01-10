@@ -1,85 +1,89 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect, FC } from 'react';
 import { surveyQuestions } from '../constants/survey-questions';
 
-const Survey = () => {
-  const navigate = useNavigate();
+const Survey: FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
+  const [answers, setAnswers] = useState<{ [key: string]: string | string[] }>({});
+  const [selectedAnswer, setSelectedAnswer] = useState<string | string[] | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated
-    // This may change to a different method of authentication
-    const user = localStorage.getItem('user');
-    // if (!user) navigate('/signup')
-  }, [navigate]);
+    const existingAnswer = answers[`q${currentQuestion + 1}`];
+    const questionType = surveyQuestions[currentQuestion].type;
+    setSelectedAnswer(existingAnswer || (questionType === 'checkbox' ? [] : null));
+  }, [currentQuestion, answers]);
 
-  const handleAnswerChange = (e: any) => {
+  const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
+
     if (surveyQuestions[currentQuestion].type === 'checkbox') {
-      setSelectedAnswer((prev: any) =>
-        checked ? [...(prev || []), value] : prev.filter((v: string) => v !== value)
-      );
+      setSelectedAnswer((prev) => {
+        const prevArray = Array.isArray(prev) ? prev : [];
+        return checked
+          ? [...prevArray, value]
+          : prevArray.filter((v) => v !== value);
+      });
     } else {
       setSelectedAnswer(value);
     }
   };
-  
+
   const confirmAnswer = () => {
-    if (selectedAnswer !== null) {
+    const questionType = surveyQuestions[currentQuestion].type;
+    const isValidAnswer = selectedAnswer !== null && (
+      (questionType === 'checkbox' && Array.isArray(selectedAnswer) && selectedAnswer.length > 0) ||
+      (questionType !== 'checkbox' && typeof selectedAnswer === 'string')
+    );
+
+    if (isValidAnswer) {
       setAnswers((prev) => ({
         ...prev,
         [`q${currentQuestion + 1}`]: selectedAnswer,
       }));
-      setSelectedAnswer(null);
+
       if (currentQuestion < surveyQuestions.length - 1) {
         setCurrentQuestion((prev) => prev + 1);
       }
-    } else console.warn(`No answer selected for question ${currentQuestion + 1}`);
+    } else {
+      console.warn(`No valid answer selected for question ${currentQuestion + 1}`);
+    }
   };
 
-  const handleSubmit = async () => {
+  // Handle the submission for 7 answers in the survey, must be connected to an API endpoint
+  const handleSubmit = () => {
     setIsSubmitting(true);
+
     const responsePayload = surveyQuestions.reduce((acc, question, index) => {
       const answerKey = `q${index + 1}`;
-      acc[question.id] = answers[answerKey] || null;
+      const answer = answers[answerKey];
+
+      acc[question.id] = question.type === 'checkbox' && Array.isArray(answer)
+        ? answer
+        : answer || null;
+
       return acc;
     }, {} as { [key: string]: any });
 
-    try {
-      // This might change depending on the API handling
-      // You can replace this with the API endpoint for user survey submission
-      const userId = JSON.parse(localStorage.getItem('user') || '{}' as any).id;
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/survey`, {
-        user_id: userId,
-        responses: responsePayload, // Use "responses" as the key
-      });
-      console.log(`Payload: ${{ user_id: userId, responses: responsePayload }}`);
-      if (response.status === 200) {
-        console.log(`Survey submitted successfully! ${responsePayload}`);
-        navigate('/');
-      }
-    } catch (error) {
-      console.error(`Error submitting survey: ${error}`);
-    }
-    console.log(responsePayload);
+    console.log('Final survey responses:', responsePayload);
+
+    const event = new CustomEvent('surveySubmit', {
+      detail: { responses: responsePayload },
+    });
+    window.dispatchEvent(event);
+
     setIsSubmitting(false);
   };
 
   const currentQuestionData = surveyQuestions[currentQuestion];
+  const isAnswerSelected = selectedAnswer !== null && (
+    (currentQuestionData.type === 'checkbox' && Array.isArray(selectedAnswer) && selectedAnswer.length > 0) ||
+    (currentQuestionData.type !== 'checkbox' && typeof selectedAnswer === 'string')
+  );
 
   return (
-    <div className="min-h-screen bg-spotlight py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-spotlight py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-white rounded-lg shadow-xl p-8"
-        >
+        <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="mb-6 text-center">
             <h2 className="text-lg font-medium text-gray-900">
               Step {currentQuestion + 1} of {surveyQuestions.length}
@@ -99,6 +103,7 @@ const Survey = () => {
                     type="radio"
                     name={`question-${currentQuestion}`}
                     value={option}
+                    checked={selectedAnswer === option}
                     className="mr-2"
                     onChange={handleAnswerChange}
                   />
@@ -115,6 +120,7 @@ const Survey = () => {
                   <input
                     type="checkbox"
                     value={option}
+                    checked={Array.isArray(selectedAnswer) && selectedAnswer.includes(option)}
                     className="mr-2"
                     onChange={handleAnswerChange}
                   />
@@ -127,6 +133,7 @@ const Survey = () => {
                 type="text"
                 className="w-full p-4 border rounded-lg"
                 placeholder="Type your answer..."
+                value={selectedAnswer as string || ''}
                 onChange={(e) => setSelectedAnswer(e.target.value)}
               />
             )}
@@ -144,16 +151,16 @@ const Survey = () => {
             {currentQuestion < surveyQuestions.length - 1 ? (
               <button
                 onClick={confirmAnswer}
-                className="py-2 px-4 bg-blue-500 text-white rounded-lg"
-                disabled={!selectedAnswer}
+                className={`py-2 px-4 rounded-lg ${isAnswerSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
+                disabled={!isAnswerSelected}
               >
                 Next
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className="py-2 px-4 bg-green-500 text-white rounded-lg"
-                disabled={!selectedAnswer || isSubmitting}
+                className={`py-2 px-4 rounded-lg ${isAnswerSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
+                disabled={!isAnswerSelected || isSubmitting}
               >
                 {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
@@ -162,17 +169,15 @@ const Survey = () => {
 
           <div className="mt-8">
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <motion.div
-                className="bg-blue-600 h-2 rounded-full"
-                initial={{ width: 0 }}
-                animate={{
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{
                   width: `${((currentQuestion + 1) / surveyQuestions.length) * 100}%`,
                 }}
-                transition={{ duration: 0.3 }}
               />
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
