@@ -1,7 +1,7 @@
 type SurveyQuestion = {
   id: number;
   question: string;
-  type: "radio" | "checkbox" | "text";
+  type: "radio";
   options?: string[];
 };
 
@@ -27,7 +27,7 @@ export const surveyQuestions: SurveyQuestion[] = [
   {
     id: 3,
     question: "What is your primary goal in using this AI chatbot?",
-    type: "checkbox",
+    type: "radio",
     options: [
       "Exam Preparation",
       "Case Understanding",
@@ -69,7 +69,7 @@ export const surveyQuestions: SurveyQuestion[] = [
   {
     id: 7,
     question: "What specific features would you find most helpful?",
-    type: "checkbox",
+    type: "radio",
     options: [
       "Case Summaries",
       "Practice Questions",
