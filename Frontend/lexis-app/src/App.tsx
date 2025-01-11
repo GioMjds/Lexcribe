@@ -1,6 +1,6 @@
+import './App.css';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import './App.css';
 import { MyProvider, useMyContext } from './context/MyContext';
 import useTokenHandler from './hooks/useTokenHandler';
 import About from './pages/About';
@@ -32,6 +32,8 @@ const Main = () => {
   const { isAuthenticated } = useMyContext();
   useTokenHandler();
 
+  const hideSectionRoutes = ['/otp', '/survey'];
+
   useEffect(() => {
     if (isAuthenticated && location.pathname !== "/") {
       localStorage.setItem("currentPath", location.pathname);
@@ -40,7 +42,7 @@ const Main = () => {
 
   return (
     <>
-      <NavBar />
+      {!hideSectionRoutes.includes(location.pathname) && <NavBar />}
       <Routes>
         <Route path='/' element={!isAuthenticated ? <Home /> : <ChatBot />} />
         <Route path='/about' element={<About />} />
