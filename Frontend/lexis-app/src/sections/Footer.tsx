@@ -14,7 +14,7 @@ const Footer = () => {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
-              <h2 className="mb-6 text-md font-semibold text-purple-700/90 uppercase dark:text-white">Navigation</h2>
+              <h2 className="mb-6 text-md font-semibold text-purple-500/90 uppercase dark:text-white">Navigation</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
                   <Link to='/' className="hover:text-purple-500 transition-all duration-300">Home</Link>
@@ -31,7 +31,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-md font-semibold text-purple-700/90 uppercase dark:text-white">Follow Us</h2>
+              <h2 className="mb-6 text-md font-semibold text-purple-500/90 uppercase dark:text-white">Follow Us</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
                   <a href="/" className="hover:text-purple-500 transition-all duration-300">Facebook</a>
@@ -45,7 +45,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-md font-semibold text-purple-700/90 uppercase dark:text-white">Legal</h2>
+              <h2 className="mb-6 text-md font-semibold text-purple-500/90 uppercase dark:text-white">Legal</h2>
               <ul className="text-light dark:text-gray-400">
                 <li className="mb-4">
                   <Link to='/privacy-policy' className="hover:text-purple-500 transition-all duration-300">Privacy Policy</Link>

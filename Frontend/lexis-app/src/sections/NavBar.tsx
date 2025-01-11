@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useEffect, useState } from 'react';
+import { FaKey, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
 import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
 import { getUserDetails, logOut } from '../services/axios';
-import { FaUserCircle, FaKey, FaSignOutAlt } from 'react-icons/fa';
 
 type userDetails = {
   username: string;
@@ -53,14 +53,13 @@ const Navbar: FC = () => {
     try {
       const response = await getUserDetails(apiUrl);
       if (response.status === 200) {
-        console.log("API Response:", response.data);
         setUserDetails({
           username: response.data.username,
           email: response.data.email,
         });
       }
     } catch (error) {
-      alert(`Lexscribe is under maintenance. Please try again: ${error}`);
+      console.warn(`Lexscribe is under maintenance. Please try again: ${error}`);
     }
   };
 
