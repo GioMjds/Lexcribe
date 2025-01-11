@@ -5,6 +5,7 @@ const Survey: FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  console.log(answers);
 
   const handleAnswerChange = (value: string) => {
     setAnswers(prev => ({

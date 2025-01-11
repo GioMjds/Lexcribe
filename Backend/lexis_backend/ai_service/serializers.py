@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import UserPrompt
+from .models import ChatArchive
 
-class UserPromptSerializer(serializers.ModelSerializer):
+class ChatArchiveSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserPrompt
-        fields = ["result"]
+        model = ChatArchive
+        fields = '__all__'
+        
+        
