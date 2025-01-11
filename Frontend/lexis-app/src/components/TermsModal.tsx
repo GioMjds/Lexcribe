@@ -113,7 +113,7 @@ const TermsModal = ({ isOpen, onClose, onAccept }: TermsModalProps) => {
                                     disabled={!isChecked}
                                     className={`px-6 py-3 rounded-lg font-medium transition-colors duration-200 
                                         ${isChecked
-                                            ? 'bg-purple-600 hover:bg-purple-700 text-white cursor-pointer'
+                                            ? 'bg-sky-600 hover:bg-sky-700 text-white cursor-pointer'
                                             : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}
                                 >
                                     Continue

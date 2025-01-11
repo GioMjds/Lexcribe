@@ -1,5 +1,6 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMyContext } from '../context/MyContext';
 import { FC, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleButton from "../components/GoogleButton";
@@ -31,6 +32,8 @@ const SignUp: FC = () => {
     const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
 
+    const { setTermsAccepted } = useMyContext();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -55,9 +58,8 @@ const SignUp: FC = () => {
         try {
             setIsLoading(true);
             setShowTerms(false);
-
+            setTermsAccepted(true);
             const response = await handleSignUp(username, email, password, confirmPass, apiUrl);
-
             if (response.data.success) {
                 const userData = {
                     username,
@@ -213,7 +215,7 @@ const SignUp: FC = () => {
                             disabled={isLoading}
                             className="w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition duration-300"
                         >
-                            {isLoading ? <Loading /> : "Sign Up"}
+                            {isLoading ? <Loading text='Signing up...' /> : "Sign Up"}
                         </button>
                         <p className="text-md font-light text-white dark:text-gray-400 text-center">
                             Already have an account?{" "}

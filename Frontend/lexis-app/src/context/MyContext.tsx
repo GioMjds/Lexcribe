@@ -19,10 +19,18 @@ interface UserSignUp {
     confirmPassword: string;
 }
 
-const MyContext = createContext<any>(null);
+interface UserSignUpRoutes {
+    isAuthenticated: boolean;
+    setIsAuthenticated: (value: boolean) => void;
+    termsAccepted: boolean;
+    setTermsAccepted: (value: boolean) => void;
+}
+
+const MyContext = createContext<UserSignUpRoutes | any>(null);
 
 export const MyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
     const [data, setData] = useState<userData[]>([])
     const [userDetails, setUserDetails] = useState<UserDetails>({
         username: "",
@@ -44,7 +52,7 @@ export const MyProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     const [runTimer, setRunTimer] = useState(false);
 
     return (
-        <MyContext.Provider value={{ isAuthenticated, setIsAuthenticated, data, setData, result, setResult, userDetails, setUserDetails, userSignUp, setUserSignUp, runTimer, setRunTimer, toggleLog, setToggleLog, sessionExpired, setSessionExpired, toggleSesh, setToggleSesh }}>
+        <MyContext.Provider value={{ isAuthenticated, setIsAuthenticated, data, setData, result, setResult, userDetails, setUserDetails, userSignUp, setUserSignUp, runTimer, setRunTimer, toggleLog, setToggleLog, sessionExpired, setSessionExpired, toggleSesh, setToggleSesh, termsAccepted, setTermsAccepted }}>
             {children}
         </MyContext.Provider>
     );

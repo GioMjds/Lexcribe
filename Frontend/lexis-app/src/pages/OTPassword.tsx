@@ -3,6 +3,7 @@ import { registerUser } from "../services/axios";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMyContext } from '../context/MyContext';
+import Loading from "../components/Loading";
 
 const OTPassword: FC = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -11,8 +12,9 @@ const OTPassword: FC = () => {
     const [otpError, setOtpError] = useState("");
     const [isVerifying, setIsVerifying] = useState<boolean>(false);
     
-    const navigate = useNavigate()
-    const { setIsAuthenticated } = useMyContext();
+    const navigate = useNavigate();
+
+    const { setIsAuthenticated, setTermsAccepted } = useMyContext();
     
     const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -89,6 +91,7 @@ const OTPassword: FC = () => {
                     localStorage.setItem("access_token", response.data.access);
                     localStorage.setItem("refresh_token", response.data.refresh);
                     setIsAuthenticated(true);
+                    setTermsAccepted(true);
                     navigate('/survey');
                 }
             } catch (error: any) {
@@ -145,14 +148,7 @@ const OTPassword: FC = () => {
                         disabled={isVerifying}
                         className={`mt-4 px-4 py-2 text-white ${isVerifying ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700'} rounded-2xl flex items-center justify-center min-w-[120px]`}
                     >
-                        {isVerifying ? (
-                            <>
-                                <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
-                                Verifying...
-                            </>
-                        ) : (
-                            'Verify OTP'
-                        )}
+                        {isVerifying ? <Loading text='Verifying...' /> : 'Verify OTP'}
                     </button>
                     <button
                         onClick={resendOTP}

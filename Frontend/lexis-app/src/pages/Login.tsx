@@ -36,8 +36,6 @@ const Login: FC = () => {
             if (response.status === 200) {
                 localStorage.setItem("access_token", response.data.access);
                 localStorage.setItem("refresh_token", response.data.refresh);
-                // Apply the user details with profile picure included here
-                
                 navigate('/');
                 setIsAuthenticated(true);
             }
@@ -116,7 +114,7 @@ const Login: FC = () => {
                             disabled={loading}
                             className={`w-full text-white bg-sky-500 hover:bg-sky-600 font-medium rounded-lg text-md px-5 py-2.5 text-center transition duration-300 dark:bg-sky-600 dark:hover:bg-sky-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
-                            {loading ? <Loading /> : 'Login'}
+                            {loading ? <Loading text='Logging in...' /> : 'Login'}
                         </button>
                         
                         <div className="flex justify-center">

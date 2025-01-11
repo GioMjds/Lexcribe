@@ -54,6 +54,7 @@ const Survey: FC = () => {
   };
 
   const handleSubmit = () => {
+    // Implement and connect the API endpoint for the survey submission here
     setIsSubmitting(true);
     const responsePayload = surveyQuestions.reduce((acc, question) => {
       acc[question.id] = {
