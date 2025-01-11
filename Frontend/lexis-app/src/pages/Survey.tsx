@@ -7,6 +7,7 @@ const Survey: FC = () => {
   const [showSubQuestion, setShowSubQuestion] = useState(false);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  console.log(answers);
 
   const handleAnswerChange = (value: string, isSubQuestion = false) => {
     const questionKey = `q${currentQuestion + 1}${isSubQuestion ? '_sub' : ''}`;

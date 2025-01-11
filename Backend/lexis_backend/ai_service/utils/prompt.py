@@ -2,6 +2,7 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
+from ai_service.models import Chat ,ChatArchive
 load_dotenv()
 
 def send_user_prompt(prompt):
@@ -15,6 +16,7 @@ def send_user_prompt(prompt):
     Returns:
         str: The AI-generated response.
     """
+    
     genai.configure(api_key=os.getenv("API_KEY"))  
     generation_config = {
         "temperature": 1,
