@@ -21,14 +21,14 @@ def general_ai_prompt(request):
         input = request.data.get("input")    
 
         prompt_title = str(input)[:25]
-        chat_archive =  ChatArchive(user = request.user, prompt_title = prompt_title)
+        chat_archive =  ChatArchive.objects.create(user = request.user, prompt_title = prompt_title)
         
 
         if input is None:
             return Response({"error": "Prompt must not be empty"}, status=status.HTTP_403_FORBIDDEN)
         
     
-        subject = Subjects.object.get(subject =  "General")
+        subject = Subjects.objects.get(subject =  "General")
             
 
         prompt_result = send_user_prompt(input)
