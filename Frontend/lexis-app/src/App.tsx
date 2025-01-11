@@ -29,7 +29,7 @@ function App() {
 
 const Main = () => {
   const location = useLocation();
-  const { isAuthenticated,setIsAuthenticated} = useMyContext();
+  const { isAuthenticated } = useMyContext();
   useTokenHandler();
 
   useEffect(() => {

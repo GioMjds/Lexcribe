@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react"
-import { use } from "react";
+import React, { useState, useEffect, FC } from "react"
 import { registerUser } from "../services/axios";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMyContext } from '../context/MyContext';
-const OTPassword = () => {
+
+const OTPassword: FC = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [isResendDisabled, setIsResendDisabled] = useState(false);
     const [timer, setTimer] = useState(120);
     const [otpError, setOtpError] = useState("");
+    const [isVerifying, setIsVerifying] = useState<boolean>(false);
+    
     const navigate = useNavigate()
     const { setIsAuthenticated } = useMyContext();
+    
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleChange = (value: string, index: number) => {
@@ -46,7 +49,7 @@ const OTPassword = () => {
                 setIsResendDisabled(true);
                 setTimer(120);
             }
-        } catch (error: any) {
+        } catch (error) {
             alert(`Lexscribe is under maintenance. Please try again later: ${error}`);
         }
     };
@@ -66,15 +69,16 @@ const OTPassword = () => {
                 });
             }, 1000);
         }
-
+        
         return () => {
             if (interval) clearInterval(interval);
         };
     }, [isResendDisabled, timer]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         setOtpError("");
+        setIsVerifying(true);
 
         const otpCode = otp.join('');
         if (otpCode.length === 6) {
@@ -85,7 +89,7 @@ const OTPassword = () => {
                     localStorage.setItem("access_token", response.data.access);
                     localStorage.setItem("refresh_token", response.data.refresh);
                     setIsAuthenticated(true);
-                    navigate('/');
+                    navigate('/survey');
                 }
             } catch (error: any) {
                 const { status, data } = error.response;
@@ -99,9 +103,11 @@ const OTPassword = () => {
                     case 500:
                         setOtpError(data.error);
                         break;
-                    default:
-                        alert("Lexscribe is under maintenance. Please try again later.")
-                }
+                        default:
+                            alert("Lexscribe is under maintenance. Please try again later.")
+                    }
+            } finally {
+                setIsVerifying(false);
             }
         } else {
             setOtpError("OTP should be in 6 digits");
@@ -132,21 +138,31 @@ const OTPassword = () => {
                 {otpError && (
                     <p className="text-red-500 font-bold text-lg">{otpError}</p>
                 )}
+
                 <div className="mt-4 flex justify-center space-x-4">
-                    <button type="submit" className="mt-4 px-4 py-2 text-white bg-blue-600 rounded-2xl hover:bg-slate-800">
-                        Verify OTP
+                    <button 
+                        type="submit" 
+                        disabled={isVerifying}
+                        className={`mt-4 px-4 py-2 text-white ${isVerifying ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700'} rounded-2xl flex items-center justify-center min-w-[120px]`}
+                    >
+                        {isVerifying ? (
+                            <>
+                                <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
+                                Verifying...
+                            </>
+                        ) : (
+                            'Verify OTP'
+                        )}
                     </button>
                     <button
                         onClick={resendOTP}
                         disabled={isResendDisabled}
-                        className={`mt-4 px-4 py-2 text-white ${isResendDisabled ? 'bg-gray-400' : 'bg-blue-600'} rounded-2xl`}
+                        className={`mt-4 px-4 py-2 text-white ${isResendDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700'} rounded-2xl`}
                     >
                         {isResendDisabled ? `Resend OTP in (${timer}s)` : 'Resend OTP'}
                     </button>
                 </div>
-
             </form>
-
         </div>
     )
 }
