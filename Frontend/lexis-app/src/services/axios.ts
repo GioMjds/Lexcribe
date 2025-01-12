@@ -1,4 +1,6 @@
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl2 = import.meta.env.VITE_API_URL2;
 
 export const getUserDetails = async(url:string) => {
 
@@ -129,6 +131,20 @@ export const sendEmailForReset = async(url: string, email:string) => {
 
     const response = await axios.post(`${url}/reset-password/email/`,{
         email: email
+    }, {
+        headers : {
+            "Content-type": "application/json"
+        }
+    })
+
+    return response
+}
+
+
+
+export const sendSurveyAnswers = async(data:any) => {
+    const response = await axios.post(`${apiUrl2}/answers/`,{
+       data
     }, {
         headers : {
             "Content-type": "application/json"

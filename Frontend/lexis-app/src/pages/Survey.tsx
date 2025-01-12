@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { surveyQuestions } from '../constants/survey-questions';
+import { sendSurveyAnswers } from '../services/axios';
+
 
 const Survey: FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -69,6 +71,16 @@ const Survey: FC = () => {
     window.dispatchEvent(new CustomEvent('surveySubmit', {
       detail: { responses: responsePayload }
     }));
+
+
+    try {
+      const response = sendSurveyAnswers(responsePayload);
+
+      
+
+    } catch(error) {
+      alert("Lexcribe is under maintenanace")
+    }
 
     setIsSubmitting(false);
   };
