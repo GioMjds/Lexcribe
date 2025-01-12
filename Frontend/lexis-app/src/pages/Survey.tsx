@@ -1,20 +1,46 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { surveyQuestions } from '../constants/survey-questions';
+
+interface SurveyResponse {
+  [key: string]: string | { main: string; q3_sub: string };
+}
 
 const Survey: FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showSubQuestion, setShowSubQuestion] = useState(false);
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [answers, setAnswers] = useState<SurveyResponse>({
+    q1: '',
+    q2: '',
+    q3: { main: '', q3_sub: '' }, 
+    q4: '',
+    q5: '',
+    q6: '',
+    q7: '',
+    q8: '',
+    q9: '',
+    q10: '',
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log(answers);
 
-  const handleAnswerChange = (value: string, isSubQuestion = false) => {
-    const questionKey = `q${currentQuestion + 1}${isSubQuestion ? '_sub' : ''}`;
-    setAnswers(prev => ({
-      ...prev,
-      [questionKey]: value
-    }));
+  const handleAnswerChange = (value: string, isSubQuestion: boolean = false) => {
+    const questionKey = `q${currentQuestion + 1}` as keyof SurveyResponse;
+
+    setAnswers(prev => {
+      if (currentQuestion + 1 === 3) {
+        const q3Answer = prev.q3 as { main: string; q3_sub: string };
+        return {
+          ...prev,
+          q3: isSubQuestion
+            ? { ...q3Answer, q3_sub: value }
+            : { ...q3Answer, main: value }
+        };
+      }
+      return {
+        ...prev,
+        [questionKey]: value
+      };
+    });
   };
 
   const goToNextQuestion = () => {
@@ -33,49 +59,43 @@ const Survey: FC = () => {
   const goToPreviousQuestion = () => {
     if (showSubQuestion) {
       setShowSubQuestion(false);
-      // Clear sub-question answer when going back
-      const subQuestionKey = `q${currentQuestion + 1}_sub`;
-      const updatedAnswers = { ...answers };
-      delete updatedAnswers[subQuestionKey];
-      setAnswers(updatedAnswers);
       return;
     }
 
     if (currentQuestion > 0) {
-      // Clear current and previous question answers
-      const updatedAnswers = { ...answers };
-      delete updatedAnswers[`q${currentQuestion + 1}`];
-      delete updatedAnswers[`q${currentQuestion + 1}_sub`];
-      delete updatedAnswers[`q${currentQuestion}`];
-      delete updatedAnswers[`q${currentQuestion}_sub`];
-      setAnswers(updatedAnswers);
+      const questionKey = `q${currentQuestion}` as keyof SurveyResponse;
+      setAnswers(prev => ({
+        ...prev,
+        [questionKey]: ''
+      }));
       setCurrentQuestion(prev => prev - 1);
     }
   };
 
   const handleSubmit = () => {
-    // Implement and connect the API endpoint for the survey submission here
+    // Connect the API endpoint for the survey submission
     setIsSubmitting(true);
-    const responsePayload = surveyQuestions.reduce((acc, question) => {
-      acc[question.id] = {
-        main: answers[`q${question.id}`] || null,
-        sub: question.subQuestion ? answers[`q${question.id}_sub`] || null : null
-      };
-      return acc;
-    }, {} as Record<number, { main: string | null; sub: string | null }>);
-
-    console.log('Final survey responses:', responsePayload);
-
+    console.log('Final survey responses:', answers);
     window.dispatchEvent(new CustomEvent('surveySubmit', {
-      detail: { responses: responsePayload }
+      detail: { responses: answers }
     }));
-
     setIsSubmitting(false);
   };
 
   const currentQuestionData = surveyQuestions[currentQuestion];
-  const selectedAnswer = answers[`q${currentQuestion + 1}`];
-  const selectedSubAnswer = answers[`q${currentQuestion + 1}_sub`];
+
+  // Helper function to get the current answer
+  const getCurrentAnswer = (isSubQuestion: boolean = false) => {
+    const questionKey = `q${currentQuestion + 1}`;
+    if (currentQuestion + 1 === 3) {
+      const q3Answer = answers.q3 as { main: string; q3_sub: string };
+      return isSubQuestion ? q3Answer.q3_sub : q3Answer.main;
+    }
+    return answers[questionKey] as string;
+  };
+
+  const selectedAnswer = getCurrentAnswer();
+  const selectedSubAnswer = getCurrentAnswer(true);
   const hasSubQuestion = Boolean(currentQuestionData.subQuestion);
   const isAnswerSelected = Boolean(selectedAnswer);
   const isSubAnswerSelected = Boolean(selectedSubAnswer);
@@ -107,10 +127,8 @@ const Survey: FC = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Question content */}
               {!showSubQuestion ? (
                 <>
-                  {/* Main question header */}
                   <div className="mb-8">
                     {currentQuestionData.questionHeader && (
                       <h2 className="text-2xl font-semibold text-gray-900 mb-2">
@@ -122,22 +140,20 @@ const Survey: FC = () => {
                     </p>
                   </div>
 
-                  {/* Main question options */}
                   <div className="space-y-3">
                     {currentQuestionData.options?.map((option, index) => (
                       <label
                         key={index}
-                        className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                          selectedAnswer === option 
-                            ? 'border-blue-500 bg-blue-50' 
-                            : 'border-gray-200 hover:border-blue-200'
-                        }`}
+                        className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${getCurrentAnswer() === option
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-200'
+                          }`}
                       >
                         <input
                           type={currentQuestionData.type}
                           name={`question-${currentQuestion}`}
                           value={option}
-                          checked={selectedAnswer === option}
+                          checked={getCurrentAnswer() === option}
                           onChange={(e) => handleAnswerChange(e.target.value)}
                           className="mt-1 mr-3"
                         />
@@ -148,7 +164,6 @@ const Survey: FC = () => {
                 </>
               ) : (
                 <>
-                  {/* Sub-question content */}
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-gray-900 mb-2">
                       Additional Question
@@ -162,17 +177,16 @@ const Survey: FC = () => {
                     {currentQuestionData.subQuestion?.options.map((option, index) => (
                       <label
                         key={index}
-                        className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                          selectedSubAnswer === option 
-                            ? 'border-blue-500 bg-blue-50' 
-                            : 'border-gray-200 hover:border-blue-200'
-                        }`}
+                        className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${getCurrentAnswer(true) === option
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-200'
+                          }`}
                       >
                         <input
                           type={currentQuestionData.subQuestion?.type}
                           name={`question-${currentQuestion}-sub`}
                           value={option}
-                          checked={selectedSubAnswer === option}
+                          checked={getCurrentAnswer(true) === option}
                           onChange={(e) => handleAnswerChange(e.target.value, true)}
                           className="mt-1 mr-3"
                         />
@@ -185,40 +199,36 @@ const Survey: FC = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation buttons */}
           <div className="mt-8 flex justify-between items-center">
             <button
               onClick={goToPreviousQuestion}
-              className={`px-6 py-2 rounded-lg transition-colors ${
-                currentQuestion > 0 || showSubQuestion
-                  ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                  : 'invisible'
-              }`}
+              className={`px-6 py-2 rounded-lg transition-colors ${currentQuestion > 0 || showSubQuestion
+                ? 'bg-sky-600 text-white hover:bg-sky-700'
+                : 'invisible'
+                }`}
               disabled={currentQuestion === 0 && !showSubQuestion}
             >
-              Back
+              &larr; Back
             </button>
-            
+
             {currentQuestion < surveyQuestions.length - 1 || showSubQuestion ? (
               <button
                 onClick={goToNextQuestion}
-                className={`px-6 py-2 rounded-lg transition-colors ${
-                  canProceed 
-                    ? 'bg-blue-500 hover:bg-blue-600 text-white' 
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
+                className={`px-6 py-2 rounded-lg transition-colors ${canProceed
+                  ? 'bg-sky-600 hover:bg-sky-700 text-white'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
                 disabled={!canProceed}
               >
-                Next
+                Next &rarr;
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className={`px-6 py-2 rounded-lg transition-colors ${
-                  canProceed && !isSubmitting
-                    ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
+                className={`px-6 py-2 rounded-lg transition-colors ${canProceed && !isSubmitting
+                  ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
                 disabled={!canProceed || isSubmitting}
               >
                 {isSubmitting ? 'Submitting...' : 'Submit'}
