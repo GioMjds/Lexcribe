@@ -1,8 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useState } from 'react';
 import { surveyQuestions } from '../constants/survey-questions';
+
 import Loading from '../components/Loading';
 import NotificationBox from '../components/NotificationBox';
+import { sendSurveyAnswers } from '../services/axios';
 
 interface SurveyResponse {
   [key: string]: string | { main: string; q3_sub: string };
@@ -86,6 +88,18 @@ const Survey: FC = () => {
     }));
     setNotificationMessage('Survey submitted successfully');
     setNotificationOpen(true);
+
+
+
+    try {
+      const response = sendSurveyAnswers(answers);
+
+      
+
+    } catch(error) {
+      alert("Lexcribe is under maintenanace")
+    }
+
     setIsSubmitting(false);
   };
 

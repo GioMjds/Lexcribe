@@ -57,14 +57,14 @@ def get_chat_history(request):
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
 def store_answer(request):
     try:
        
-        answers = {f"answer_{i}": request.data.get(f"q{i}") for i in range(1, 11)}
+        answers  = request.data.get("main")
+        print(answers)
         
        
-        user_survey = Survey.objects.create(user=request.user, **answers)
+       
         
         return Response({"success": "Stored survey context"}, status=status.HTTP_200_OK)
     except Exception as e:
