@@ -63,7 +63,7 @@ const Login: FC = () => {
         <section className="bg-spotlight dark:bg-gray-900 min-h-screen flex justify-center items-center">
             <div className="w-full max-w-md bg-black bg-opacity-5 rounded-xl border border-gray-400 dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl sm:text-3xl dark:text-white">Login <span className='text-sm font-normal'>via</span> </h1>
+                    <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-4xl sm:text-3xl dark:text-white">Login <span className='text-xl font-normal'>via</span></h1>
                     
                     <div className="flex justify-center">
                         <GoogleButton />

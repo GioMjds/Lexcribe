@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
 import { FaCheckCircle, FaTimesCircle, FaTrash } from 'react-icons/fa';
 
-interface NotificationProps {
+type NotificationProps = {
   isOpen: boolean;
   message: string;
   type?: 'success' | 'error' | 'deleted';
@@ -28,7 +28,6 @@ const NotificationBox: FC<NotificationProps> = ({ isOpen, message, type = 'succe
 
   if (!isOpen) return null;
 
-  // This is the icons depending on the status of the notification
   const getIcon = () => {
     switch (type) {
       case 'success':
@@ -57,28 +56,30 @@ const NotificationBox: FC<NotificationProps> = ({ isOpen, message, type = 'succe
   };
 
   return (
-    <motion.div
-      className="fixed inset-0 pointer-events-none z-50"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <AnimatePresence>
       <motion.div
-        className="absolute bottom-4 left-4 pointer-events-auto"
-        variants={modalVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        onClick={onClose}
+        className="fixed inset-0 pointer-events-none z-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
-        <div className={getNotificationStyles()}>
-          <div className="flex items-center space-x-3">
-            {getIcon()}
-            <p className="text-sm font-medium">{message}</p>
+        <motion.div
+          className="absolute bottom-4 left-4 pointer-events-auto"
+          variants={modalVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          onClick={onClose}
+        >
+          <div className={getNotificationStyles()}>
+            <div className="flex items-center space-x-3">
+              {getIcon()}
+              <p className="text-sm font-medium">{message}</p>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimatePresence>
   );
 }
 
