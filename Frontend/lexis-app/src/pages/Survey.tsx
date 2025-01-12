@@ -12,7 +12,7 @@ const Survey: FC = () => {
   const [answers, setAnswers] = useState<SurveyResponse>({
     q1: '',
     q2: '',
-    q3: { main: '', q3_sub: '' },
+    q3: { main: '', q3_sub: '' }, 
     q4: '',
     q5: '',
     q6: '',
@@ -23,7 +23,7 @@ const Survey: FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleAnswerChange = (value: string, isSubQuestion = false) => {
+  const handleAnswerChange = (value: string, isSubQuestion: boolean = false) => {
     const questionKey = `q${currentQuestion + 1}` as keyof SurveyResponse;
 
     setAnswers(prev => {
@@ -36,7 +36,6 @@ const Survey: FC = () => {
             : { ...q3Answer, main: value }
         };
       }
-
       return {
         ...prev,
         [questionKey]: value
@@ -64,11 +63,17 @@ const Survey: FC = () => {
     }
 
     if (currentQuestion > 0) {
+      const questionKey = `q${currentQuestion}` as keyof SurveyResponse;
+      setAnswers(prev => ({
+        ...prev,
+        [questionKey]: ''
+      }));
       setCurrentQuestion(prev => prev - 1);
     }
   };
 
   const handleSubmit = () => {
+    // Connect the API endpoint for the survey submission
     setIsSubmitting(true);
     console.log('Final survey responses:', answers);
     window.dispatchEvent(new CustomEvent('surveySubmit', {
@@ -80,7 +85,7 @@ const Survey: FC = () => {
   const currentQuestionData = surveyQuestions[currentQuestion];
 
   // Helper function to get the current answer
-  const getCurrentAnswer = (isSubQuestion = false) => {
+  const getCurrentAnswer = (isSubQuestion: boolean = false) => {
     const questionKey = `q${currentQuestion + 1}`;
     if (currentQuestion + 1 === 3) {
       const q3Answer = answers.q3 as { main: string; q3_sub: string };
@@ -140,8 +145,8 @@ const Survey: FC = () => {
                       <label
                         key={index}
                         className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${getCurrentAnswer() === option
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-blue-200'
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-200'
                           }`}
                       >
                         <input
@@ -173,8 +178,8 @@ const Survey: FC = () => {
                       <label
                         key={index}
                         className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all ${getCurrentAnswer(true) === option
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-blue-200'
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-200'
                           }`}
                       >
                         <input
@@ -198,8 +203,8 @@ const Survey: FC = () => {
             <button
               onClick={goToPreviousQuestion}
               className={`px-6 py-2 rounded-lg transition-colors ${currentQuestion > 0 || showSubQuestion
-                  ? 'bg-sky-600 text-white hover:bg-sky-700'
-                  : 'invisible'
+                ? 'bg-sky-600 text-white hover:bg-sky-700'
+                : 'invisible'
                 }`}
               disabled={currentQuestion === 0 && !showSubQuestion}
             >
@@ -210,8 +215,8 @@ const Survey: FC = () => {
               <button
                 onClick={goToNextQuestion}
                 className={`px-6 py-2 rounded-lg transition-colors ${canProceed
-                    ? 'bg-sky-600 hover:bg-sky-700 text-white'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  ? 'bg-sky-600 hover:bg-sky-700 text-white'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 disabled={!canProceed}
               >
@@ -221,8 +226,8 @@ const Survey: FC = () => {
               <button
                 onClick={handleSubmit}
                 className={`px-6 py-2 rounded-lg transition-colors ${canProceed && !isSubmitting
-                    ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 disabled={!canProceed || isSubmitting}
               >
