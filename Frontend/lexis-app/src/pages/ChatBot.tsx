@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Select } from 'antd';
 import { motion } from "framer-motion";
-import { FC, useState, useRef, useEffect } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { fadeVariants, textTypography } from "../constants/motionVariants";
 import { sendPrompt } from "../services/axios";
 
@@ -13,6 +14,7 @@ const ChatBot: FC = () => {
   const [editText, setEditText] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const apiUrl = import.meta.env.VITE_API_URL2;
+  const [promptStyle, setPromptStyle] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
@@ -130,7 +132,7 @@ const ChatBot: FC = () => {
               <div className={`p-3 rounded-lg text-base ${message.type === 'user'
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-200 text-gray-900 w-4/6'
-                }`} ref={messagesEndRef}  
+                }`} ref={messagesEndRef}
               >
                 {editingId === message.id ? (
                   <div className="flex items-center gap-2">
@@ -199,24 +201,35 @@ const ChatBot: FC = () => {
         animate="visible"
         variants={fadeVariants}
       >
+        <div className="flex flex-col justify-start items-start w-full py-3">
+          <select
+            value={promptStyle}
+            onChange={(e) => setPromptStyle(e.target.value)}
+            className="w-48 bg-white text-white text-sm bg-opacity-5 border-none rounded-full sm:mr-2 outline-none active:border-none focus:border-none"
+          >
+            <option value='Select prompt style...' className='bg-gray-900/90'>Select prompt style</option>
+            <option value="eli5" className='bg-gray-900/90'>ELI5</option>
+            <option value="highSchool" className='bg-gray-900/90'>High School Level</option>
+            <option value="college" className='bg-gray-900/90'>College Level</option>
+            <option value="expert" className='bg-gray-900/90'>Expert Level</option>
+          </select>
+        </div>
         <form onSubmit={handleSend} className="flex flex-row justify-center items-center w-full p-1">
           <input
             type="text"
             value={input}
             onChange={handleInputChange}
-            className="flex-grow p-4 text-base sm:mb-0 sm:mr-2 h-14 rounded-full caret-purple-600 text-gray-900"
+            className="flex-grow p-4 text-base sm:mb-0 h-14 rounded-full caret-purple-600 text-gray-900"
             placeholder="Ask Lexcribe"
           />
           <button
             type="submit"
-            className="p-3 ml-1 text-gray-700 text-2xl bg-gradient-to-br from-teal to-sky-600 border border-gray-500 rounded-full w-14 h-14 transition duration-200"
+            className="p-3 ml-2 text-gray-900 text-2xl bg-gradient-to-br from-teal to-sky-600 border border-gray-500 rounded-full w-14 h-14 transition duration-200"
           >
             <i className="fas fa-paper-plane"></i>
           </button>
         </form>
-        <div className="text-center mt-1 text-xs text-gray-400/70">
-          <p>Lexcribe may occasionally provide inaccurate information. Please verify any legal advice with authoritative sources.</p>
-        </div>
+        <p className="text-center mt-1 text-xs text-gray-400/70">Lexcribe may occasionally provide inaccurate information. Please verify any legal advice with authoritative sources.</p>
       </motion.div>
 
       {promptError && (

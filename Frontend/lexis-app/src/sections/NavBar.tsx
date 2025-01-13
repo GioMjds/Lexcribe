@@ -41,11 +41,11 @@ const Navbar: FC = () => {
     setLoading(false);
   };
 
-  const handleChangePassword = () => navigate('/change-password');
+  // const handleChangePassword = () => navigate('/change-password');
 
   const profileButtons = [
-    { label: 'Profile', icon: <FaUserCircle className="w-4 h-4" />, onClick: () => navigate('/profile/:username_id') },
-    { label: 'Change Password', icon: <FaKey className="w-4 h-4" />, onClick: handleChangePassword },
+    // { label: 'Profile', icon: <FaUserCircle className="w-4 h-4" />, onClick: () => navigate('/profile/:username_id') },
+    // { label: 'Change Password', icon: <FaKey className="w-4 h-4" />, onClick: handleChangePassword },
     { label: 'Logout', icon: <FaSignOutAlt className="w-4 h-4" />, onClick: () => setLogoutModal(true), className: 'text-red-500 border-t border-gray-200 mt-2 pt-2' },
   ];
 

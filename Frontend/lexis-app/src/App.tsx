@@ -57,7 +57,7 @@ const Main = () => {
         <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
-      {!isAuthenticated && <Footer />}
+      {!isAuthenticated && !hideSectionRoutes.includes(location.pathname) && <Footer />}
     </>
   )
 }
