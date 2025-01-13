@@ -1,10 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useState } from 'react';
 import { surveyQuestions } from '../constants/survey-questions';
-<<<<<<<<< Temporary merge branch 1
-import { sendSurveyAnswers } from '../services/axios';
-
-=========
 import Loading from '../components/Loading';
 import NotificationBox from '../components/NotificationBox';
 import { sendSurveyAnswers } from '../services/axios';
@@ -89,21 +85,14 @@ const Survey: FC = () => {
     window.dispatchEvent(new CustomEvent('surveySubmit', {
       detail: { responses: answers }
     }));
-<<<<<<<<< Temporary merge branch 1
-
-
-
     try {
       const response = sendSurveyAnswers(answers);
       console.log(response);
     } catch (error) {
       alert(`Lexcribe is under maintenanace: ${error}`)
     }
-
-=========
     setNotificationMessage('Survey submitted successfully');
     setNotificationOpen(true);
->>>>>>>>> Temporary merge branch 2
     setIsSubmitting(false);
   };
 
