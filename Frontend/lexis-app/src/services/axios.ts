@@ -140,12 +140,15 @@ export const sendEmailForReset = async(url: string, email:string) => {
     return response
 }
 
+interface SurveyResponse {
+    [key: string]: string | { main: string; q3_sub: string };
+  }
+  
 
-
-export const sendSurveyAnswers = async(data:any) => {
-    const response = await axios.post(`${apiUrl2}/answers/`,{
+export const sendSurveyAnswers = async(data:SurveyResponse) => {
+    const response = await axios.post(`${apiUrl2}/answers/`,
        data
-    }, {
+    , {
         headers : {
             "Content-type": "application/json"
         }

@@ -60,8 +60,9 @@ def get_chat_history(request):
 def store_answer(request):
     try:
        
-        answers  = request.data.get("main")
-        print(answers)
+        store_answer = [{f"answer_{key}": value} for key, value in request.data.items()]
+        print(store_answer)
+       
         
        
        

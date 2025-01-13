@@ -24,6 +24,7 @@ const Survey: FC = () => {
     q10: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  console.log(answers);
 
   const handleAnswerChange = (value: string, isSubQuestion: boolean = false) => {
     const questionKey = `q${currentQuestion + 1}` as keyof SurveyResponse;
@@ -86,8 +87,7 @@ const Survey: FC = () => {
 
     try {
       const response = sendSurveyAnswers(answers);
-
-      
+    
 
     } catch(error) {
       alert("Lexcribe is under maintenanace")
