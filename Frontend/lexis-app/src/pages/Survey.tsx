@@ -30,6 +30,8 @@ const Survey: FC = () => {
     q10: '',
   });
 
+  console.log(answers);
+
   const handleAnswerChange = (value: string, isSubQuestion: boolean = false) => {
     const questionKey = `q${currentQuestion + 1}` as keyof SurveyResponse;
 
@@ -92,16 +94,25 @@ const Survey: FC = () => {
 
       if(response.status === 200) {
         nav('/');
+        setNotificationMessage('Survey submitted successfully');
+        setNotificationOpen(true);
 
       }
 
+      
 
-    } catch(error) {
-      alert("Lexcribe is under maintenanace")
+
+    } catch(error:any) {
+      const {data, status} = error.response;
+      if(status === 400) {
+        alert(data.error);
+        setNotificationOpen(false);
+
+      }
+      
 
     }
-    setNotificationMessage('Survey submitted successfully');
-    setNotificationOpen(true);
+    
     setIsSubmitting(false);
   };
 

@@ -134,10 +134,13 @@ interface SurveyResponse {
   
 
 export const sendSurveyAnswers = async(data:SurveyResponse) => {
+    const accessToken = localStorage.getItem("access_token");
     const response = await axios.post(`${apiUrl2}/answers/`,
        data
     , {
         headers : {
+
+            'Authorization': `Bearer ${accessToken}`,
             "Content-type": "application/json"
         }
     })
