@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Select } from 'antd';
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect, useRef, useState } from "react";
+import Drawer from "../components/Drawer";
 import { fadeVariants, textTypography } from "../constants/motionVariants";
 import { sendPrompt } from "../services/axios";
 
@@ -13,8 +12,9 @@ const ChatBot: FC = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const apiUrl = import.meta.env.VITE_API_URL2;
   const [promptStyle, setPromptStyle] = useState<string>("");
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const apiUrl = import.meta.env.VITE_API_URL2;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
@@ -92,14 +92,47 @@ const ChatBot: FC = () => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }
+  };
+
+  const handleDrawerBtnClick = (action: string) => {
+    switch (action) {
+      case 'newChat':
+        console.log("new chat");
+        break;
+      case 'chatHistory':
+        console.log("chat history");
+        break;
+      default:
+        break;
+    }
+    setIsDrawerOpen(false);
+  };
+
+  const toggleDrawer = () => {
+    setIsDrawerOpen(prev => !prev);
+  };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   return (
-    <section className="bg-spotlight min-h-[93.2vh] dark:bg-gray-900 flex flex-col items-center">
+    <section className="bg-spotlight min-h-[93.2vh] dark:bg-gray-900 flex flex-col items-center relative">
+      <AnimatePresence>
+        <button
+          onClick={toggleDrawer}
+          className={`absolute left-0 top-1/2 transform -translate-y-24 p-4 bg-black bg-opacity-50 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'left-64 rotate-180' : ''}`}
+        >
+          <i className="fas fa-arrow-left"></i>
+        </button>
+
+        <Drawer
+          isOpen={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          drawerBtnClick={handleDrawerBtnClick}
+        />
+      </AnimatePresence>
+
       {!hasStarted ? (
         <motion.div
           className="h-[calc(100vh-200px)] flex flex-col items-center justify-center"
@@ -108,10 +141,10 @@ const ChatBot: FC = () => {
           variants={fadeVariants}
         >
           <h1 className="text-3xl text-center font-bold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-60">Lexcribe AI</span> about Law</h1>
-          <p className="mt-4 text-center text-lg font-normal text-light-medium">World's First AI Chatbot for law students</p>
+          <p className="mt-4 text-center text-lg font-normal text-light-medium">World's First AI Chatbot for Law Students</p>
         </motion.div>
       ) : (
-        <div className="flex flex-col w-full max-w-screen-xl mt-8 space-y-4 p-2 overflow-y-auto max-h-[calc(100vh-210px)] scrollbar-none">
+        <div className="flex flex-col w-full border max-w-screen-xl mt-8 space-y-4 p-2 overflow-y-auto max-h-[calc(100vh-210px)] scrollbar-none">
           {messages.map((message) => (
             <motion.div
               key={message.id}
@@ -205,10 +238,10 @@ const ChatBot: FC = () => {
           <select
             value={promptStyle}
             onChange={(e) => setPromptStyle(e.target.value)}
-            className="w-48 bg-white text-white text-sm bg-opacity-5 border-none rounded-full sm:mr-2 outline-none active:border-none focus:border-none"
+            className="w-48 bg-white text-white text-sm bg-opacity-5 border-none rounded-xl sm:mr-2 outline-none active:border-none focus:border-none"
           >
-            <option value='Select prompt style...' className='bg-gray-900/90'>Select prompt style</option>
-            <option value="eli5" className='bg-gray-900/90'>ELI5</option>
+            <option value='default' className='bg-gray-900/90'>By default</option>
+            <option value="eli5" className='bg-gray-900/90'>Explain like I'm 5 y/o</option>
             <option value="highSchool" className='bg-gray-900/90'>High School Level</option>
             <option value="college" className='bg-gray-900/90'>College Level</option>
             <option value="expert" className='bg-gray-900/90'>Expert Level</option>

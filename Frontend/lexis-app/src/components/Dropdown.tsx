@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { FC, useEffect, useRef } from "react";
-import { dropdownVariants } from "../constants/motionVariants";
+import { dropdownVariants } from "../constants/MotionVariants";
 
 interface DropdownButton {
     label: string;
@@ -32,12 +32,10 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
 
     if (!isOpen) return null;
 
-    // Truncate email to 22 characters and add ellipsis if it's longer
-    // This is in order the dropdown doesn't overflow
     const truncateEmail = (email: string | undefined) => {
         if (!email) return '';
         if (email.length > 25) {
-            return email.substring(0, 22) + '...';
+            return email.substring(0, 25) + '...';
         }
         return email;
     };

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { featuresList } from "../constants/features";
+import { featuresList } from "../constants/Features";
 
 const Features: FC = () => {
     return (

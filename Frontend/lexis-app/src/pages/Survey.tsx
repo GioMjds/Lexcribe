@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useState } from 'react';
-import { surveyQuestions } from '../constants/survey-questions';
+import { surveyQuestions } from '../constants/SurveyQuestions';
 import Loading from '../components/Loading';
 import NotificationBox from '../components/NotificationBox';
 import { sendSurveyAnswers } from '../services/axios';
@@ -14,7 +14,6 @@ const Survey: FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [showSubQuestion, setShowSubQuestion] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const nav = useNavigate();
   const [notificationOpen, setNotificationOpen] = useState<boolean>(false);
   const [notificationMessage, setNotificationMessage] = useState<string>('');
   const [answers, setAnswers] = useState<SurveyResponse>({
@@ -29,6 +28,7 @@ const Survey: FC = () => {
     q9: '',
     q10: '',
   });
+  const nav = useNavigate();
 
   console.log(answers);
 
@@ -84,6 +84,7 @@ const Survey: FC = () => {
   const handleSubmit = async () => {
     // Connect the API endpoint for the survey submission
     setIsSubmitting(true);
+    // This must be removes and replaced with the actual API call and loading state
     await new Promise(resolve => setTimeout(resolve, 2000));
     console.table(answers);
     window.dispatchEvent(new CustomEvent('surveySubmit', {
@@ -91,28 +92,19 @@ const Survey: FC = () => {
     }));
     try {
       const response = await sendSurveyAnswers(answers);
-
       if(response.status === 200) {
         nav('/');
         setNotificationMessage('Survey submitted successfully');
         setNotificationOpen(true);
 
       }
-
-      
-
-
-    } catch(error:any) {
+    } catch (error: any) {
       const {data, status} = error.response;
       if(status === 400) {
         alert(data.error);
         setNotificationOpen(false);
-
       }
-      
-
     }
-    
     setIsSubmitting(false);
   };
 
