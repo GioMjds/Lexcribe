@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { FC, useEffect, useRef } from "react";
-import { drawerBtns } from "../constants/DrawerButtons";
+import { drawerBtns } from "../constants/DrawerButtons"; // May change contents
 import { drawerVariants } from "../constants/motionVariants";
 
+// This may change contents too in drawer functional component
 interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -54,6 +55,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose, drawerBtnClick, loading }) =
           {btn.label}
         </button>
       ))}
+      {/* Fetches all the chat history from backend, also clickable per chat history */}
     </motion.div>
   )
 }

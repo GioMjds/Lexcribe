@@ -96,10 +96,13 @@ const ChatBot: FC = () => {
 
   const handleDrawerBtnClick = (action: string) => {
     switch (action) {
+      // Replace each switch-cases with a premade drawer function each button
       case 'newChat':
+        // Replace with a new chat function
         console.log("new chat");
         break;
       case 'chatHistory':
+        // Replace with a chat history function
         console.log("chat history");
         break;
       default:
