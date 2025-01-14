@@ -29,9 +29,11 @@ def general_ai_prompt(request):
         
     
         subject = Subjects.objects.get(subject =  "General")
+        survey_context = Survey.objects.get(user = request.user)
+        user_id = survey_context.user_id
             
 
-        prompt_result = send_user_prompt(input)
+        prompt_result = send_user_prompt(input, user_id)
         user_prompt = Chat.objects.create(user=request.user, user_prompt = input, ai_response = prompt_result,archive_id = chat_archive,subject_id = subject)
 
         return Response({
