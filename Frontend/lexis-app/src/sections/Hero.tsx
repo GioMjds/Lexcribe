@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+import { fadeUpVariants } from "../constants/MotionVariants";
 import { useMyContext } from "../context/MyContext";
 import { TextGenerateEffect } from "../motions/TextGenerateEffect";
-import { fadeUpVariants } from "../constants/motionVariants";
 
 const line1: string = "Your personal AI legal mentor - helping law students master complex legal concepts, ace exams, and navigate their journey through law school with confidence.";
 

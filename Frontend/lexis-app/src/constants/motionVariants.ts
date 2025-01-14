@@ -28,3 +28,8 @@ export const dropdownVariants = {
     visible: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -10 }
 };
+
+export const drawerVariants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: "-100%" },
+};

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { FC, useEffect } from "react";
-import { modalVariants } from "../constants/motionVariants";
+import { modalVariants } from "../constants/MotionVariants";
 
 interface ModalSelectorProps {
   isOpen: boolean;

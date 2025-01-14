@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { modalVariants } from '../constants/motionVariants';
+import { modalVariants } from '../constants/MotionVariants';
 import { terms } from '../constants/terms';
 
 interface TermsModalProps {
