@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FC, useEffect, useRef } from "react";
 import { drawerBtns } from "../constants/DrawerButtons"; // May change contents
-import { drawerVariants } from "../constants/motionVariants";
+import { drawerVariants } from "../constants/MotionVariants";
 
 // This may change contents too in drawer functional component
 interface DrawerProps {
@@ -36,7 +36,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose, drawerBtnClick, loading }) =
   return (
     <motion.div
       ref={drawerRef}
-      className="fixed left-0 w-full md:w-64 h-full bg-black bg-opacity-20 shadow-lg z-50"
+      className="fixed left-0 w-72 h-full bg-black bg-opacity-20 shadow-lg z-50"
       initial="closed"
       animate={isOpen ? "open" : "closed"}
       variants={drawerVariants}
@@ -49,7 +49,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose, drawerBtnClick, loading }) =
             drawerBtnClick(btn.action);
             onClose();
           }}
-          className="block w-full md:w-56 p-3 m-3 bg-blue-500 text-white rounded"
+          className="block w-64 p-3 m-3 bg-blue-500 text-white rounded"
           disabled={loading}
         >
           {btn.label}

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useEffect, useState } from 'react';
-import { FaKey, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Dropdown from '../components/Dropdown';
 import ModalSelector from '../components/ModalSelector';
@@ -21,10 +21,10 @@ const Navbar: FC = () => {
   const [userDetails, setUserDetails] = useState<userDetails>({
     username: "",
     email: ""
-  })
-  const goToNavigate = () => navigate('/login');
+  });
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const goToNavigate = () => navigate('/login');
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -88,7 +88,7 @@ const Navbar: FC = () => {
 
   return (
     <>
-      <nav className="bg-spotlight border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50 shadow-lg backdrop-blur-sm">
+      <nav className="bg-spotlight dark:bg-gray-900 fixed top-0 left-0 right-0 z-50">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to='/' className="flex items-center space-x-3 rtl:space-x-reverse">
             <span className="self-center text-off-white text-xl md:text-2xl font-semibold whitespace-nowrap dark:text-white">

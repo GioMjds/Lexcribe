@@ -8,7 +8,7 @@ export const textTypography = {
     visible: (index: number) => ({
         opacity: 1,
         y: 0,
-        transition: { duration: 0.1, delay: index * 0.03 }
+        transition: { duration: 0.001, delay: index * 0.01 }
     })
 };
 

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect, useRef, useState } from "react";
 import Drawer from "../components/Drawer";
-import { fadeVariants, textTypography } from "../constants/motionVariants";
+import { fadeVariants, textTypography } from "../constants/MotionVariants";
 import { sendPrompt } from "../services/axios";
 
 const ChatBot: FC = () => {
@@ -124,9 +124,9 @@ const ChatBot: FC = () => {
       <AnimatePresence>
         <button
           onClick={toggleDrawer}
-          className={`absolute left-0 top-1/2 transform -translate-y-24 p-4 bg-black bg-opacity-50 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'left-64 rotate-180' : ''}`}
+          className={`absolute left-0 top-1/2 transform -translate-y-24 p-4 bg-black bg-opacity-50 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'left-72 rotate-180' : ''}`}
         >
-          <i className="fas fa-arrow-left"></i>
+          <i className="fas fa-arrow-left"></i> 
         </button>
 
         <Drawer
@@ -143,11 +143,11 @@ const ChatBot: FC = () => {
           animate="visible"
           variants={fadeVariants}
         >
-          <h1 className="text-3xl text-center font-bold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-60">Lexcribe AI</span> about Law</h1>
+          <h1 className="text-3xl text-center font-bold tracking-tight leading-none text-light-high md:text-5xl lg:text-6xl dark:text-white">Ask <span className="text-purple-600 text-opacity-60">Lexcribe</span> about Law</h1>
           <p className="mt-4 text-center text-lg font-normal text-light-medium">World's First AI Chatbot for Law Students</p>
         </motion.div>
       ) : (
-        <div className="flex flex-col w-full border max-w-screen-xl mt-8 space-y-4 p-2 overflow-y-auto max-h-[calc(100vh-210px)] scrollbar-none">
+        <div className="flex flex-col w-full max-w-screen-xl mt-8 space-y-4 p-3 overflow-y-auto max-h-[calc(100vh-260px)] scrollbar-none">
           {messages.map((message) => (
             <motion.div
               key={message.id}
@@ -166,8 +166,8 @@ const ChatBot: FC = () => {
               )}
 
               <div className={`p-3 rounded-lg text-base ${message.type === 'user'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-900 w-4/6'
+                ? 'bg-sky-700/15 font-medium text-white'
+                : 'bg-sky-700/15 font-medium text-white w-4/6'
                 }`} ref={messagesEndRef}
               >
                 {editingId === message.id ? (
@@ -216,7 +216,7 @@ const ChatBot: FC = () => {
                             key={index}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.05, delay: index * 0.03 }}
+                            transition={{ duration: 0.001, delay: index * 0.01 }}
                           >
                             {char}
                           </motion.span>
@@ -243,11 +243,11 @@ const ChatBot: FC = () => {
             onChange={(e) => setPromptStyle(e.target.value)}
             className="w-48 bg-white text-white text-sm bg-opacity-5 border-none rounded-xl sm:mr-2 outline-none active:border-none focus:border-none"
           >
-            <option value='default' className='bg-gray-900/90'>By default</option>
-            <option value="eli5" className='bg-gray-900/90'>Explain like I'm 5 y/o</option>
-            <option value="highSchool" className='bg-gray-900/90'>High School Level</option>
-            <option value="college" className='bg-gray-900/90'>College Level</option>
-            <option value="expert" className='bg-gray-900/90'>Expert Level</option>
+            <option value='default' className='bg-gray-900/90'>Foundation</option>
+            <option value="eli5" className='bg-gray-900/90'>Explanation</option>
+            <option value="highSchool" className='bg-gray-900/90'>Application</option>
+            <option value="college" className='bg-gray-900/90'>Jurisprudence</option>
+            <option value="expert" className='bg-gray-900/90'>Citation</option>
           </select>
         </div>
         <form onSubmit={handleSend} className="flex flex-row justify-center items-center w-full p-1">
