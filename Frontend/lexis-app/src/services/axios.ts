@@ -1,5 +1,4 @@
 import axios from 'axios';
-const apiUrl = import.meta.env.VITE_API_URL;
 const apiUrl2 = import.meta.env.VITE_API_URL2;
 
 export const getUserDetails = async (url: string) => {
@@ -18,7 +17,6 @@ export const sendPrompt = async (url: string, input: string) => {
         input: input
     }, {
         headers: {
-
             'Authorization': `Bearer ${accessToken}`,
         }
     })
@@ -59,7 +57,7 @@ export const sendEmailOtp = async (email: string, url: string) =>  {
     return response
 }
 
-export const registerUser = async (otpCode :string, url:string) => {
+export const registerUser = async (otpCode: string, url: string) => {
    const email = sessionStorage.getItem("email");
    const username = sessionStorage.getItem("username");
    const password = sessionStorage.getItem("password");
@@ -82,7 +80,7 @@ export const handleSignUp  = async (username: string, email: string, password: s
         email: email.toLowerCase(),
         password:  password,
         confirm: confirm
-    },{
+    }, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -116,7 +114,7 @@ export const handleNewPassword = async (newPassword: string, apiUrl: string) => 
     return response;
 }
 
-export const sendEmailForReset = async(url: string, email:string) => {
+export const sendEmailForReset = async (url: string, email: string) => {
     const response = await axios.post(`${url}/reset-password/email/`,{
         email: email
     }, {
@@ -127,22 +125,21 @@ export const sendEmailForReset = async(url: string, email:string) => {
     return response
 }
 
-
 interface SurveyResponse {
     [key: string]: string | { main: string; q3_sub: string };
-  }
-  
+}
 
-export const sendSurveyAnswers = async(data:SurveyResponse) => {
+export const sendSurveyAnswers = async (data: SurveyResponse) => {
     const accessToken = localStorage.getItem("access_token");
-    const response = await axios.post(`${apiUrl2}/answers/`,
-       data
-    , {
+    const response = await axios.post(`${apiUrl2}/answers/`, data, {
         headers : {
-
             'Authorization': `Bearer ${accessToken}`,
             "Content-type": "application/json"
         }
     })
     return response
+};
+
+export const chatHistory = async () => {
+    // Connect the API endpoint for fetching the chat history here
 }

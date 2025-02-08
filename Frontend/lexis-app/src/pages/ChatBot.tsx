@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { FC, useEffect, useRef, useState } from "react";
-import Drawer from "../components/Drawer";
+import { FC, useEffect, useRef, useState, Suspense } from "react";
+import Sidebar from "../components/Sidebar";
 import { fadeVariants, textTypography } from "../constants/MotionVariants";
 import { sendPrompt } from "../services/axios";
+import MiniSkeleton from "../motions/MiniSkeleton";
 
 const ChatBot: FC = () => {
   const [promptError, setPromptError] = useState<string>("");
@@ -11,6 +12,7 @@ const ChatBot: FC = () => {
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [promptStyle, setPromptStyle] = useState<string>("");
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -26,6 +28,8 @@ const ChatBot: FC = () => {
   const handleUpdate = async (id: number) => {
     const messageIndex = messages.findIndex(msg => msg.id === id);
     if (messageIndex === -1) return;
+    
+    setIsLoading(true);
 
     const updatedMessages = [...messages];
     updatedMessages[messageIndex].text = editText;
@@ -58,12 +62,15 @@ const ChatBot: FC = () => {
         default:
           alert("Lexscribe is under maintenance. Please try again later.")
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     setPromptError("");
+    setIsLoading(true);
 
     setMessages(prev => [...prev, { type: 'user', text: input, id: Date.now() }]);
     setHasStarted(true);
@@ -87,6 +94,8 @@ const ChatBot: FC = () => {
         default:
           alert("Lexscribe is under maintenance. Please try again later.")
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,13 +105,10 @@ const ChatBot: FC = () => {
 
   const handleDrawerBtnClick = (action: string) => {
     switch (action) {
-      // Replace each switch-cases with a premade drawer function each button
       case 'newChat':
-        // Replace with a new chat function
         console.log("new chat");
         break;
       case 'chatHistory':
-        // Replace with a chat history function
         console.log("chat history");
         break;
       default:
@@ -124,12 +130,12 @@ const ChatBot: FC = () => {
       <AnimatePresence>
         <button
           onClick={toggleDrawer}
-          className={`absolute left-0 top-1/2 transform -translate-y-24 p-4 bg-black bg-opacity-50 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'left-72 rotate-180' : ''}`}
+          className={`absolute left-0 top-1/2 transform -translate-y-24 p-4 bg-black bg-opacity-0 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'opacity-0' : 'opacity-100'}`}
         >
-          <i className="fas fa-arrow-left"></i> 
+          <i className="fas fa-door-open"></i>
         </button>
 
-        <Drawer
+        <Sidebar
           isOpen={isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
           drawerBtnClick={handleDrawerBtnClick}
@@ -154,7 +160,6 @@ const ChatBot: FC = () => {
               className={`flex items-center gap-2 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               initial="hidden"
               animate="visible"
-              variants={textTypography}
             >
               {message.type === 'user' && (
                 <button
@@ -171,26 +176,28 @@ const ChatBot: FC = () => {
                 }`} ref={messagesEndRef}
               >
                 {editingId === message.id ? (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      className="w-full px-2 py-1 text-gray-900 bg-transparent border-none rounded focus:outline-none"
-                    />
-                    <button
-                      onClick={() => handleUpdate(message.id)}
-                      className="text-white hover:bg-gray-600/20 p-1 rounded transition-colors duration-200"
-                    >
-                      <i className="fas fa-check"></i>
-                    </button>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      className="text-white hover:bg-gray-600/20 p-1 rounded transition-colors duration-200"
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
+                  <Suspense fallback={<MiniSkeleton />}>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        className="w-full px-2 py-1 text-gray-100 bg-transparent border-none rounded focus:outline-none"
+                      />
+                      <button
+                        onClick={() => handleUpdate(message.id)}
+                        className="text-white hover:bg-gray-600/20 p-1 rounded transition-colors duration-200"
+                      >
+                        <i className="fas fa-check"></i>
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="text-white hover:bg-gray-600/20 p-1 rounded transition-colors duration-200"
+                      >
+                        <i className="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </Suspense>
                 ) : (
                   <motion.span
                     initial="hidden"
@@ -228,6 +235,11 @@ const ChatBot: FC = () => {
               </div>
             </motion.div>
           ))}
+          {isLoading && (
+            <Suspense fallback={null}>
+              <MiniSkeleton />
+            </Suspense>
+          )}
         </div>
       )}
 
