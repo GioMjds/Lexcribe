@@ -106,8 +106,8 @@ const OTPassword: FC = () => {
                     case 500:
                         setOtpError(data.error);
                         break;
-                        default:
-                            alert("Lexscribe is under maintenance. Please try again later.")
+                    default:
+                        alert("Lexscribe is under maintenance. Please try again later.")
                     }
             } finally {
                 setIsVerifying(false);

@@ -99,8 +99,8 @@ const Survey: FC = () => {
 
       }
     } catch (error: any) {
-      const {data, status} = error.response;
-      if(status === 400) {
+      const { data, status } = error.response;
+      if (status === 400) {
         alert(data.error);
         setNotificationOpen(false);
       }

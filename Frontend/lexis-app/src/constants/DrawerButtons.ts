@@ -6,6 +6,7 @@ interface DrawerButton {
     loading?: boolean;
 }
 
+// Additional buttons update here
 export const drawerBtns: DrawerButton[] = [
     {
         id: 1,
