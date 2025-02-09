@@ -4,12 +4,13 @@ import 'react-loading-skeleton/dist/skeleton.css';
 const MiniSkeleton = () => {
   return (
     <div className="w-4/6 space-y-2">
+      <h1>Skeleton</h1>
       <Skeleton 
-        count={3} 
-        height={40}
-        className="rounded-lg"
-        baseColor="#17153B"
-        highlightColor="#383781"
+        count={6} 
+        height={10}
+        baseColor="#17153b69"
+        highlightColor="#38378148"
+        borderRadius={8}
       />
     </div>
   );

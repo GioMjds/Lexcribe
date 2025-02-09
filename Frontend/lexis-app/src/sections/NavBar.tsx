@@ -1,27 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, useEffect, useState } from 'react';
-import { FaSignOutAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import Dropdown from '../components/Dropdown';
 import ModalSelector from '../components/ModalSelector';
 import { useMyContext } from '../context/MyContext';
-import { getUserDetails, logOut } from '../services/axios';
-
-type userDetails = {
-  username: string;
-  email: string;
-}
+import { logOut } from '../services/axios';
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated } = useMyContext();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [userDetails, setUserDetails] = useState<userDetails>({
-    username: "",
-    email: ""
-  });
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const goToNavigate = () => navigate('/login');
@@ -40,32 +28,6 @@ const Navbar: FC = () => {
     }
     setLoading(false);
   };
-
-  // const handleChangePassword = () => navigate('/change-password');
-
-  const profileButtons = [
-    // { label: 'Profile', icon: <FaUserCircle className="w-4 h-4" />, onClick: () => navigate('/profile/:username_id') },
-    // { label: 'Change Password', icon: <FaKey className="w-4 h-4" />, onClick: handleChangePassword },
-    { label: 'Logout', icon: <FaSignOutAlt className="w-4 h-4" />, onClick: () => setLogoutModal(true), className: 'text-red-500 border-t border-gray-200 mt-2 pt-2' },
-  ];
-
-  const handleUserDetails = async () => {
-    try {
-      const response = await getUserDetails(apiUrl);
-      if (response.status === 200) {
-        setUserDetails({
-          username: response.data.username,
-          email: response.data.email,
-        });
-      }
-    } catch (error) {
-      console.warn(`Lexscribe is under maintenance. Please try again: ${error}`);
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated) handleUserDetails();
-  }, [isAuthenticated]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -118,13 +80,6 @@ const Navbar: FC = () => {
                   >
                     <img alt="User Avatar" className='w-full h-full object-cover rounded-full' />
                   </button>
-                  <Dropdown
-                    isOpen={dropdownOpen}
-                    onClose={() => setDropdownOpen(false)}
-                    buttons={profileButtons}
-                    username={userDetails?.username}
-                    email={userDetails?.email}
-                  />
                 </div>
               </>
             ) : (
