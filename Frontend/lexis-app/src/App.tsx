@@ -42,7 +42,7 @@ const Main = () => {
 
   return (
     <>
-      {!hideSectionRoutes.includes(location.pathname) && <NavBar />}
+      {!isAuthenticated && !hideSectionRoutes.includes(location.pathname) && <NavBar />}
       <Routes>
         <Route path='/' element={!isAuthenticated ? <Home /> : <ChatBot />} />
         <Route path='/about' element={<About />} />

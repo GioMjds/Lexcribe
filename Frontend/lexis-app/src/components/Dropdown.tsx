@@ -13,11 +13,10 @@ interface DropdownProps {
     isOpen: boolean;
     onClose: () => void;
     buttons: DropdownButton[];
-    username?: string;
-    email?: string;
+    className?: string;
 }
 
-const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email }) => {
+const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, className }) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -32,28 +31,16 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
 
     if (!isOpen) return null;
 
-    const truncateEmail = (email: string | undefined) => {
-        if (!email) return '';
-        if (email.length > 25) {
-            return email.substring(0, 25) + '...';
-        }
-        return email;
-    };
-
     return (
         <motion.div
             ref={dropdownRef}
-            className="absolute right-0 mt-2 bg-light-high rounded-md shadow-lg z-10 min-w-[200px] w-max"
+            className={`absolute right-0 ${className} bg-light-violet/50 rounded-md shadow-lg z-10 min-w-[200px] w-max`}
             initial="hidden"
             animate="visible"
             exit="exit"
             variants={dropdownVariants}
         >
-            <div className="py-1">
-                <div className="px-4 py-2 text-gray-700">
-                    <strong className="font-semibold text-base">{username}</strong>
-                    <p className="text-xs text-gray-400 truncate">{truncateEmail(email)}</p>
-                </div>
+            <div className="py-2">
                 {buttons.map((button, index) => (
                     <motion.button
                         key={index}
@@ -61,7 +48,7 @@ const Dropdown: FC<DropdownProps> = ({ isOpen, onClose, buttons, username, email
                             button.onClick();
                             onClose();
                         }}
-                        className={`flex items-center gap-2 px-4 py-2 text-sm text-gray-900 w-full text-left ${button.className}`}
+                        className={`flex items-center gap-2 px-4 py-2 text-base text-gray-300 w-full text-left ${button.className}`}
                     >
                         {button.icon} {button.label}
                     </motion.button>
