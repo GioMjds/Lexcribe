@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect, useRef, useState, Suspense } from "react";
 import Sidebar from "../components/Sidebar";
@@ -126,11 +127,11 @@ const ChatBot: FC = () => {
   }, [messages]);
 
   return (
-    <section className="bg-spotlight min-h-[93.2vh] dark:bg-gray-900 flex flex-col items-center relative">
+    <section className="bg-spotlight min-h-screen flex flex-col items-center relative">
       <AnimatePresence>
         <button
           onClick={toggleDrawer}
-          className={`absolute left-0 top-1/2 transform -translate-y-24 p-4 bg-black bg-opacity-0 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute left-0 top-1/2 p-4 bg-black bg-opacity-0 text-white rounded transition-all duration-300 ${isDrawerOpen ? 'opacity-0' : 'opacity-100'}`}
         >
           <i className="fas fa-door-open"></i>
         </button>
@@ -153,7 +154,7 @@ const ChatBot: FC = () => {
           <p className="mt-4 text-center text-lg font-normal text-light-medium">World's First AI Chatbot for Law Students</p>
         </motion.div>
       ) : (
-        <div className="flex flex-col w-full max-w-screen-xl mt-8 space-y-4 p-3 overflow-y-auto max-h-[calc(100vh-260px)] scrollbar-none">
+        <div className="flex flex-col w-full max-w-screen-xl mt-8 space-y-4 p-3 overflow-y-auto max-h-[calc(100vh-200px)] scrollbar-none">
           {messages.map((message) => (
             <motion.div
               key={message.id}
