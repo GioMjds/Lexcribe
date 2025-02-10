@@ -6,7 +6,7 @@ interface TooltipProps {
     position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ text, children, position = 'right' }) => {
+const Tooltip: React.FC<TooltipProps> = ({ text, children, position }) => {
 
     let tooltipPositionClasses = '';
     switch (position) {

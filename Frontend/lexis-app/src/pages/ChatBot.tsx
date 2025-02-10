@@ -14,9 +14,9 @@ const ChatBot: FC = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [promptStyle, setPromptStyle] = useState<string>("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false); // Renamed from isDrawerOpen and useState(false) by default
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const apiUrl = import.meta.env.VITE_API_URL2;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
