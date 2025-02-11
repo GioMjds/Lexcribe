@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { CancelToken } from 'axios';
 
 const API = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -26,14 +26,15 @@ export const getUserDetails = async () => {
     }
 };
 
-export const sendPrompt = async (url: string, input: string) => {
+export const sendPrompt = async (url: string, input: string, cancelToken?: CancelToken) => {
     try {
         const response = await API.post(`${url}/prompt/`, {
             input: input
         }, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
-            }
+            },
+            cancelToken: cancelToken,
         });
         return response;
     } catch (error) {
