@@ -13,12 +13,5 @@ export const drawerBtns: DrawerButton[] = [
         icon: "fas fa-plus",
         label: "New Chat",
         action: "newChat"
-    },
-    {
-        id: 2,
-        icon: "fas fa-history",
-        label: "Chat History",
-        action: "chatHistory",
-        loading: false
     }
 ];

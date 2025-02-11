@@ -142,9 +142,6 @@ const ChatBot: FC = () => {
       case 'newChat':
         console.log("new chat");
         break;
-      case 'chatHistory':
-        console.log("chat history");
-        break;
       default:
         break;
     }
