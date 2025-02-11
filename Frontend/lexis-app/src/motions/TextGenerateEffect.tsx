@@ -1,5 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useAnimate, motion, stagger } from "framer-motion";
 
@@ -15,7 +13,7 @@ export const TextGenerateEffect = ({
     duration?: number;
 }) => {
     const [scope, animate] = useAnimate();
-    let wordsArray = words.split(" ");
+    const wordsArray = words.split(" ");
 
     useEffect(() => {
         animate(
@@ -23,7 +21,7 @@ export const TextGenerateEffect = ({
             { opacity: 1, filter: filter ? "blur(0)" : "none" },
             { duration: duration ? duration : 1, delay: stagger(0.1) },
         );
-    }, [scope.current]);
+    }, [animate, duration, filter]);
 
     const renderWords = () => {
         return (

@@ -143,7 +143,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, drawerBtnClick }) =>
 
     fetchChatHistory();
     if (isAuthenticated) handleUserDetails();
-  }, [isOpen, isAuthenticated]);
+  }, [isAuthenticated]);
 
   return (
     <AnimatePresence>
@@ -156,24 +156,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, drawerBtnClick }) =>
             className="fixed inset-0 bg-black z-40"
             onClick={onClose}
           />
-          <motion.div
+          <motion.aside
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={sidebarVariants}
-            className="fixed left-0 top-0 bottom-0 w-72 bg-dark-violet bg-opacity-90 z-50 shadow-lg p-6 flex flex-col"
+            className={`fixed left-0 top-0 bottom-0 bg-dark-violet bg-opacity-90 p-4 z-50 shadow-lg flex flex-col sm:w-72 sm:p-6 ${isOpen ? '' : 'sm:w-24 sm:p-4 overflow-hidden'}`}
           >
             <nav className="space-y-4 flex-1 flex flex-col">
               <button
                 onClick={() => drawerBtnClick('newChat')}
-                className="w-full text-left text-white hover:bg-light-violet/50 p-3 rounded-lg transition-all duration-200 flex items-center backdrop-blur-sm bg-white/5"
+                className={`w-full text-left text-white hover:bg-light-violet/50 p-3 rounded-lg transition-all duration-200 flex items-center backdrop-blur-sm bg-white/5 ${isOpen ? 'justify-start' : 'justify-center sm:justify-start'}`}
               >
                 <i className="fas fa-plus mr-3"></i>
-                New Chat
+                {isOpen && <span className='sm:block hidden'>New Chat</span>}
+                {!isOpen && <span className='sm:hidden block'>New </span>}
               </button>
 
-              <div className="mt-6 flex-1 overflow-y-auto">
-                <h3 className="text-indigo-200 text-sm font-medium mb-3">Chat History</h3>
+              <div className="mt-2 flex-1 overflow-y-auto">
+                <h3 className={`text-indigo-200 text-sm font-medium mb-3 ${isOpen ? 'block' : 'hidden sm:block'}`}>Chat History</h3>
                 <Suspense fallback={<ChatHistorySkeleton />}>
                   {isLoading ? (
                     <ChatHistorySkeleton />
@@ -184,16 +185,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, drawerBtnClick }) =>
                           key={chat.id}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="w-full text-left text-white hover:bg-light-violet/50 p-3 rounded-lg transition-all duration-200 flex items-center justify-between group backdrop-blur-sm bg-white/5"
+                          className={`w-full text-left text-white hover:bg-light-violet/50 p-3 rounded-lg transition-all duration-200 flex items-center justify-between group backdrop-blur-sm bg-white/5 ${isOpen ? 'justify-start' : 'justify-center md:justify-start'}`}
                           onClick={() => drawerBtnClick(`chat-${chat.id}`)}
                         >
                           <div className="flex items-center">
                             <i className="fas fa-message mr-3 text-indigo-300"></i>
-                            <span className="truncate" title={chat.title}>
-                              {chat.title.length > 26 ? `${chat.title.substring(0, 26)}...` : chat.title}
-                            </span>
+                            {isOpen && (
+                              <span className="truncate" title={chat.title}>
+                                {chat.title.length > 26 ? `${chat.title.substring(0, 26)}...` : chat.title}
+                              </span>
+                            )}
                           </div>
-                          <span className="text-xs text-indigo-300 group-hover:text-white transition-colors">
+                          <span className={`text-xs text-indigo-300 group-hover:text-white transition-colors ${isOpen ? 'block' : 'hidden sm:block'}`}>
                             {new Date(chat.timestamp).toLocaleDateString()}
                           </span>
                         </motion.button>
@@ -205,7 +208,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, drawerBtnClick }) =>
             </nav>
 
             {/* Profile Section w/ Dropdown */}
-            <div className='relative mt-6 pt-6 border-t border-light-violet'>
+            <div className={`relative mt-6 pt-6 border-t border-light-violet ${isOpen ? 'flex flex-col' : 'hidden sm:flex flex-col'}`}>
               <div
                 className="flex items-center space-x-3 cursor-pointer"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -227,7 +230,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, drawerBtnClick }) =>
                 className='bottom-full mb-2'
               />
             </div>
-          </motion.div>
+          </motion.aside>
         </>
       )}
 

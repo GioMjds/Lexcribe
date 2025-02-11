@@ -12,7 +12,7 @@ const Hero: FC = () => {
     const { isAuthenticated } = useMyContext();
 
     const goToGenerate = () => {
-        if (isAuthenticated) navigate('/chat');
+        if (isAuthenticated) navigate('/');
         else navigate('/login');
     }
 

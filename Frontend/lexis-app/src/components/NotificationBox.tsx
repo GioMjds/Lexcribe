@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useEffect } from "react";
-import { FaCheckCircle, FaTimesCircle, FaTrash } from 'react-icons/fa';
+import { FaCheckCircle, FaClipboard, FaTimesCircle, FaTrash } from 'react-icons/fa';
 
 type NotificationProps = {
   isOpen: boolean;
   message: string;
-  type?: 'success' | 'error' | 'deleted';
+  type?: 'success' | 'error' | 'deleted' | 'clipboard';
   onClose: () => void;
 }
 
@@ -36,6 +36,8 @@ const NotificationBox: FC<NotificationProps> = ({ isOpen, message, type = 'succe
         return <FaTimesCircle className="w-5 h-5 text-red-500" />;
       case 'deleted':
         return <FaTrash className="w-5 h-5 text-gray-500" />;
+      case 'clipboard':
+        return <FaClipboard className="w-5 h-5 text-gray-500" />;
       default:
         return null;
     }
@@ -49,6 +51,8 @@ const NotificationBox: FC<NotificationProps> = ({ isOpen, message, type = 'succe
       case 'error':
         return `${baseStyles} bg-red-100 border border-red-200`;
       case 'deleted':
+        return `${baseStyles} bg-gray-100 border border-gray-200`;
+      case 'clipboard':
         return `${baseStyles} bg-gray-100 border border-gray-200`;
       default:
         return baseStyles;
